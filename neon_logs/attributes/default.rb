@@ -31,10 +31,10 @@ default[:neon_logs][:collector_port] = 6366
 
 ## Parameters about where to output the logs ##
 # The S3 bucket where the logs will be dropped
-default[:neon_logs][:s3_log_bucket] = neon-server-logs
+default[:neon_logs][:s3_log_bucket] = "neon-server-logs"
 
 # The log types being written to s3
-default[:neon_logs][:log_type] = neon-logs
+default[:neon_logs][:log_type] = "neon-logs"
 
 # The maximum log size in bytes
 default[:neon_logs][:max_log_size] = 1073741824 # 1GB
