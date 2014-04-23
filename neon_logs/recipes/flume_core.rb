@@ -61,7 +61,7 @@ if node[:opsworks][:activity] == 'setup' then
 
   template service_bin do
     source "flume-ng-agent.erb"
-    owner node[:neon_logs][:flume_user]
+    owner "root"
     mode "0755"
     variables({
                 :service_name => node[:neon_logs][:flume_service_name],
