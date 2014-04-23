@@ -4,8 +4,10 @@ node.default[:neon_logs][:flume_conf_template] = "log_collector.conf.erb"
 
 include_recipe "neon_logs::flume_core"
 
-package "hadoop" do
-  action :install
+if node[:opsworks][:activity] == 'setup' then
+  package "hadoop" do
+    action :install
+  end
 end
 
 channel_dir = get_log_dir()
