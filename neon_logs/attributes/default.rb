@@ -1,7 +1,7 @@
 
 # Java specific definitions
 default["neon_logs"]["classpath"] = []
-default["neon_logs"]["java_opts"] = {}
+default["neon_logs"]["java_opts"] = []
 
 # Service name
 default["neon_logs"]["flume_service_name"] = "flume-ng-agent"
