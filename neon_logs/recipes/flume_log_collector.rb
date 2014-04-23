@@ -4,7 +4,7 @@ package "hadoop" do
   action :install
 end
 
-collector_ips = get_collector_ips()
+channel_dir = get_log_dir()
 
 node.default[:neon_logs][:flume_conf_template] = "log_collector.conf.erb"
 node.default[:neon_logs][:flume_service_name] = "flume-log-collector"
@@ -19,7 +19,7 @@ if node[:opsworks][:activity] == 'configure' then
                 :collector_port => node[:neon_logs][:collector_port],
                 :collector_host => node[:opsworks][:instance][:private_ip],
                 :s3_log_bucket => node[:neon_logs][:s3_log_bucket],
-                :channel_dir => get_log_dir(),
+                :channel_dir => channel_dir,
                 :log_type => node[:neon_logs][:log_type],
                 :max_log_rolltime => node[:neon_logs][:max_log_rolltime],
                 :max_log_size => node[:neon_logs][:max_log_size]
