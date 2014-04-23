@@ -73,7 +73,6 @@ if node[:opsworks][:activity] == 'setup' then
                 :flume_home => node[:neon_logs][:flume_home],
                 :flume_user => node[:neon_logs][:flume_user]
               })
-    notifies :reload, "service[#{node[:neon_logs][:flume_service_name]}]"
   end
 end
 
