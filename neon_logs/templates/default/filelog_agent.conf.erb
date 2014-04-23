@@ -54,7 +54,7 @@
 
 # The source is just reading a log file
 <%= @agent %>.sources.file_source.type = exec
-<%= @agent %>.sources.file_source.channel = chan1
+<%= @agent %>.sources.file_source.channels = chan1
 <%= @agent %>.sources.file_source.command = "tail -F <%= @source_file %>"
 <%= @agent %>.sources.file_source.restart = true
 

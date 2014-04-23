@@ -25,7 +25,7 @@
 
 # The source is an avro source
 <%= @agent %>.sources.avro_source.type = avro
-<%= @agent %>.sources.avro_source.channel = chan1
+<%= @agent %>.sources.avro_source.channels = chan1
 <%= @agent %>.sources.avro_source.bind = <%= @collector_host %>
 <%= @agent %>.sources.avro_source.port = <%= @collector_port %>
 <%= @agent %>.sources.avro_source.interceptors = addhost
