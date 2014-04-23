@@ -36,7 +36,7 @@
 <%= @agent %>.sinkgroups.failo.processor.type = failover
 <%= @agent %>.sinkgroups.failo.sinks = <%= @collector_ips.map.with_index{ |x, i| "pk#{i}"}.join(" ") %> <%= @failover_collector_ips.map.with_index{ |x, i| "bk#{i}"}.join(" ") %>
 
-<% @collector_ips.each.with_index do |ip, idx] %>
+<% @collector_ips.each.with_index do |ip, idx| %>
   <%= @agent %>.pk<%= idx %>.type = avro
   <%= @agent %>.pk<%= idx %>.channel = chan1
   <%= @agent %>.pk<%= idx %>.hostname = <%= ip%>
@@ -44,7 +44,7 @@
   <%= @agent %>.sinkgroups.failo.priority.pk<%= idx %>.priority = <%= ncollectors - idx %>
 <% end %>
 
-<% @failover_collector_ips.each.with_index do |ip, idx] %>
+<% @failover_collector_ips.each.with_index do |ip, idx| %>
   <%= @agent %>.bk<%= idx %>.type = avro
   <%= @agent %>.bk<%= idx %>.channel = chan1
   <%= @agent %>.bk<%= idx %>.hostname = <%= ip%>
