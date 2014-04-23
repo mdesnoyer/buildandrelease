@@ -33,8 +33,20 @@ directory conf_dir do
   action :create
 end
 
+directory log_dir do
+  owner node[:neon_logs][:flume_user]
+  mode "0755"
+  action :create
+end
+
 
 service_bin = "/etc/init.d/#{node[:neon_logs][:flume_service_name]}"
+
+service node[:neon_logs][:flume_service_name] do
+  init_command service_bin
+  supports :status => true, :restart => true, :start => true, :stop => true
+  action :enable
+end
 
 if node[:opsworks][:activity] == 'setup' then
   template "#{conf_dir}/flume-env.sh" do
@@ -61,12 +73,7 @@ if node[:opsworks][:activity] == 'setup' then
                 :flume_home => node[:neon_logs][:flume_home],
                 :flume_user => node[:neon_logs][:flume_user]
               })
-  end
-
-  service node[:neon_logs][:flume_service_name] do
-    init_command service_bin
-    supports :status => true, :restart => true, :start => true, :stop => true
-    action :enable
+    notifies :reload, "service[#{node[:neon_logs][:flume_service_name]}]"
   end
 end
 
@@ -74,10 +81,14 @@ end
 
 if node[:opsworks][:activity] == 'deploy' then
   service node[:neon_logs][:flume_service_name] do
+    init_command service_bin
+    supports :status => true, :restart => true, :start => true, :stop => true
     action :start
   end
 elsif node[:opsworks][:activity] == 'undeploy' then
   service node[:neon_logs][:flume_service_name] do
+    init_command service_bin
+    supports :status => true, :restart => true, :start => true, :stop => true
     action :stop
   end
 end
