@@ -45,7 +45,7 @@ service_bin = "/etc/init.d/#{node[:neon_logs][:flume_service_name]}"
 service node[:neon_logs][:flume_service_name] do
   init_command service_bin
   supports :status => true, :restart => true, :start => true, :stop => true
-  action :enable
+  action :nothing
 end
 
 if node[:opsworks][:activity] == 'setup' then
@@ -74,17 +74,15 @@ if node[:opsworks][:activity] == 'setup' then
                 :flume_user => node[:neon_logs][:flume_user]
               })
   end
-end
 
-
-
-if node[:opsworks][:activity] == 'deploy' then
   service node[:neon_logs][:flume_service_name] do
     init_command service_bin
     supports :status => true, :restart => true, :start => true, :stop => true
-    action :start
+    action [:enable, :start]
   end
-elsif node[:opsworks][:activity] == 'undeploy' then
+end
+
+if ['undeploy', 'shutdown'].include? node[:opsworks][:activity] then
   service node[:neon_logs][:flume_service_name] do
     init_command service_bin
     supports :status => true, :restart => true, :start => true, :stop => true
