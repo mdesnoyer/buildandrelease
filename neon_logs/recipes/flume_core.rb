@@ -40,9 +40,9 @@ if node[:opsworks][:activity] == 'configure' then
     owner node[:neon_logs][:flume_user]
     mode "0755"
     variables({
-                :service_name => node[:neon_logs][:flume_service_name]
+                :service_name => node[:neon_logs][:flume_service_name],
                 :agent_name => node[:neon_logs][:flume_agent_name],
-                :flume_bin => node[:neon_logs][:flume_bin]
+                :flume_bin => node[:neon_logs][:flume_bin],
                 :flume_log_dir => node[:neon_logs][:flume_log_dir],
                 :flume_conf_dir => node[:neon_logs][:flume_conf_dir],
                 :flume_run_dir => node[:neon_logs][:flume_run_dir],
