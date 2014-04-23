@@ -1,1 +1,1 @@
-cookbook hadoop
+cookbook "hadoop"
