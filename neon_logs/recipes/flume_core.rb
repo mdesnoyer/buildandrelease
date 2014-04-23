@@ -1,6 +1,14 @@
 include_recipe "apt"
 include_recipe "java::default"
-include_recipe "hadoop::repo"
+
+apt_repository "cloudera-cdh5" do
+  uri "http://archive.cloudera.com/cdh5/ubuntu/precise/amd64/cdh"
+  key "http://archive.cloudera.com/cdh5/ubuntu/precise/amd64/cdh/archive.key"
+  distribution "precise-cdh5"
+  components [ "contrib" ]
+  arch "amd64"
+  action :add
+end
 
 package "flume-ng" do
   action :install
