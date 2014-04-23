@@ -9,4 +9,4 @@ depends 'apt'
 depends 'hadoop', ">= 1.0.4"
 depends 'java'
 
-supports ubuntu
+supports 'ubuntu'
