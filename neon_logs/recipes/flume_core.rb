@@ -1,5 +1,3 @@
-require 'flume_config_utils'
-
 include_recipe "apt"
 include_recipe "java::sun"
 include_recipe "hadoop::repo"

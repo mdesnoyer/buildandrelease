@@ -1,5 +1,3 @@
-require 'flume_config_utils'
-
 include_recipe "neon_logs::flume_core"
 
 collector_ips = get_collector_ips()
