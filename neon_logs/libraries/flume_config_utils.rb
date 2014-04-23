@@ -30,8 +30,8 @@ class Chef
         end
       end
 
-      primary_ips = primary_ips.shuffle(random: Random.new(node[:hostname]))
-      backup_ips = backup_ips.shuffle(random: Random.new(node[:hostname]))
+      primary_ips = primary_ips.shuffle(random: Random.new(node[:hostname].hash))
+      backup_ips = backup_ips.shuffle(random: Random.new(node[:hostname].hash))
 
       return {:primary => primary_ips, :backup => backup_ips}
     end
