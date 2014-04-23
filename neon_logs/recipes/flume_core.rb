@@ -1,5 +1,5 @@
 include_recipe "apt"
-include_recipe "java::sun"
+include_recipe "java::default"
 include_recipe "hadoop::repo"
 
 package "flume-ng" do
