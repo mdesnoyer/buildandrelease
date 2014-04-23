@@ -17,7 +17,7 @@ default["neon_logs"]["flume_home"] = "/usr/lib/flume-ng"
 default["neon_logs"]["flume_conf_template"] = "filelog_agent.conf.erb"
 
 # Flume agent name
-default["neon_logs"]["flume_agent_name"] = lazy { node['hostname'] }
+default["neon_logs"]["flume_agent_name"] = node['hostname']
 
 # Name of the different layers for use in OpsWorks. Must be the short name
 # These are used to find hosts currently up on the different layers
