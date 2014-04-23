@@ -40,7 +40,7 @@ template "#{conf_dir}/flume-env.sh" do
     })
 end
 
-service_bin = "#{conf_dir}/#{node[:neon_logs][:flume_service_name]}"
+service_bin = "/etc/init.d/#{node[:neon_logs][:flume_service_name]}"
 
 if node[:opsworks][:activity] == 'configure' then
   template service_bin do

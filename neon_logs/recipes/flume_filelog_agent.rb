@@ -1,9 +1,10 @@
+# Set parameters that flume_core uses
+node.default[:neon_logs][:flume_conf_template] = "filelog_agent.conf.erb"
+node.default[:neon_logs][:flume_service_name] = "flume-filelog-agent"
+
 include_recipe "neon_logs::flume_core"
 
 collector_ips = get_collector_ips()
-
-node.default[:neon_logs][:flume_conf_template] = "filelog_agent.conf.erb"
-node.default[:neon_logs][:flume_service_name] = "flume-filelog-agent"
 
 if node[:opsworks][:activity] == 'configure' then
   template "#{get_config_dir()}/flume.conf" do

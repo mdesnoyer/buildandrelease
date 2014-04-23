@@ -1,3 +1,4 @@
+# Set parameters that flume_core uses
 node.default[:neon_logs][:flume_service_name] = "flume-log-collector"
 node.default[:neon_logs][:flume_conf_template] = "log_collector.conf.erb"
 
