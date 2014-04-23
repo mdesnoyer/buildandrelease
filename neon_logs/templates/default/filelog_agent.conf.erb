@@ -20,55 +20,55 @@
 # Sources, channels and sinks are defined per agent, 
 # in this case called 'agent'
 
-<%= agent %>.sources = file_source
-<%= agent %>.channels = chan1
+<%= @agent %>.sources = file_source
+<%= @agent %>.channels = chan1
 
 # Define two sink groups, one primary and one backup. 
 # Each group is load balanced within.
-<%= agent %>.sinkgroups = failo
-<%= agent %>.sinkgroups.failo.processor.type = failover
-<%= agent %>.sinkgroups.failo.sinkgroups = primary backup
-<%= agent %>.sinkgroups.failo.processor.priority.primary = 1
-<%= agent %>.sinkgroups.failo.processor.priority.backup = 10
+<%= @agent %>.sinkgroups = failo
+<%= @agent %>.sinkgroups.failo.processor.type = failover
+<%= @agent %>.sinkgroups.failo.sinkgroups = primary backup
+<%= @agent %>.sinkgroups.failo.processor.priority.primary = 1
+<%= @agent %>.sinkgroups.failo.processor.priority.backup = 10
 
 # Define the primary sinks that are load balanced
 <% if @collector_ips %> 
-<%= agent %>.sinkgroups.failo.sinkgroups.primary.sinks = <%= @collector_ips.map.with_index{ |x, i| "p#{i}"}.join(" ") %>
-<%= agent %>.sinkgroups.failo.sinkgroups.primary.processor.type = load_balance
-<%= agent %>.sinkgroups.failo.sinkgroups.primary.processor.backoff = true
+<%= @agent %>.sinkgroups.failo.sinkgroups.primary.sinks = <%= @collector_ips.map.with_index{ |x, i| "p#{i}"}.join(" ") %>
+<%= @agent %>.sinkgroups.failo.sinkgroups.primary.processor.type = load_balance
+<%= @agent %>.sinkgroups.failo.sinkgroups.primary.processor.backoff = true
 
-<% collector_ips.each.with_index do |ip, idx] %>
-  <%= agent %>.sinkgroups.failo.sinkgroups.primary.p<%= idx %>.type = avro
-  <%= agent %>.sinkgroups.failo.sinkgroups.primary.p<%= idx %>.channel = chan1
-  <%= agent %>.sinkgroups.failo.sinkgroups.primary.p<%= idx %>.hostname = <%= ip%>
-  <%= agent %>.sinkgroups.failo.sinkgroups.primary.p<%= idx %>.port = <%= collector_port %>
+<% @collector_ips.each.with_index do |ip, idx] %>
+  <%= @agent %>.sinkgroups.failo.sinkgroups.primary.p<%= idx %>.type = avro
+  <%= @agent %>.sinkgroups.failo.sinkgroups.primary.p<%= idx %>.channel = chan1
+  <%= @agent %>.sinkgroups.failo.sinkgroups.primary.p<%= idx %>.hostname = <%= ip%>
+  <%= @agent %>.sinkgroups.failo.sinkgroups.primary.p<%= idx %>.port = <%= @collector_port %>
 <% end %>
 
 # Define the backup sinks that are load balanced
 <% if @failover_collector_ips %>
-<%= agent %>.sinkgroups.failo.sinkgroups.backup.sinks = <%= @failover_collector_ips.map.with_index{ |x, i| "b#{i}"}.join(" ") %>
-<%= agent %>.sinkgroups.failo.sinkgroups.backup.processor.type = load_balance
-<%= agent %>.sinkgroups.failo.sinkgroups.backup.processor.backoff = true
+<%= @agent %>.sinkgroups.failo.sinkgroups.backup.sinks = <%= @failover_collector_ips.map.with_index{ |x, i| "b#{i}"}.join(" ") %>
+<%= @agent %>.sinkgroups.failo.sinkgroups.backup.processor.type = load_balance
+<%= @agent %>.sinkgroups.failo.sinkgroups.backup.processor.backoff = true
 
-<% failover_collector_ips.each.with_index do |ip, idx] %>
-  <%= agent %>.sinkgroups.failo.sinkgroups.backup.b<%= idx %>.type = avro
-  <%= agent %>.sinkgroups.failo.sinkgroups.backup.b<%= idx %>.channel = chan1
-  <%= agent %>.sinkgroups.failo.sinkgroups.backup.b<%= idx %>.hostname = <%= ip%>
-  <%= agent %>.sinkgroups.failo.sinkgroups.backup.b<%= idx %>.port = <%= collector_port %>
+<% @failover_collector_ips.each.with_index do |ip, idx] %>
+  <%= @agent %>.sinkgroups.failo.sinkgroups.backup.b<%= idx %>.type = avro
+  <%= @agent %>.sinkgroups.failo.sinkgroups.backup.b<%= idx %>.channel = chan1
+  <%= @agent %>.sinkgroups.failo.sinkgroups.backup.b<%= idx %>.hostname = <%= ip%>
+  <%= @agent %>.sinkgroups.failo.sinkgroups.backup.b<%= idx %>.port = <%= @collector_port %>
 <% end %>
 
 # The source is just reading a log file
-<%= agent %>.sources.file_source.type = exec
-<%= agent %>.sources.file_source.command = "tail -F <%= source_file %>"
-<%= agent %>.sources.file_source.restart = true
+<%= @agent %>.sources.file_source.type = exec
+<%= @agent %>.sources.file_source.command = "tail -F <%= @source_file %>"
+<%= @agent %>.sources.file_source.restart = true
 
 # Add metadata to the event
-<%= agent %>.sources.file_source.interceptors = addhost
-<%= agent %>.sources.file_source.interceptors.addhost.type = host
-<%= agent %>.sources.file_source.interceptors.addhost.hostHeader = srchost
-<%= agent %>.sources.file_source.interceptors.addhost.useIP = false
+<%= @agent %>.sources.file_source.interceptors = addhost
+<%= @agent %>.sources.file_source.interceptors.addhost.type = host
+<%= @agent %>.sources.file_source.interceptors.addhost.hostHeader = srchost
+<%= @agent %>.sources.file_source.interceptors.addhost.useIP = false
 
 # The channel is in memory
-<%= agent %>.channels.chan1.type = memory
-<%= agent %>.channels.chan1.capacity = 1000
-<%= agent %>.channels.chan1.transactionCapacity = 1000
+<%= @agent %>.channels.chan1.type = memory
+<%= @agent %>.channels.chan1.capacity = 1000
+<%= @agent %>.channels.chan1.transactionCapacity = 1000
