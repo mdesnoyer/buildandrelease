@@ -23,42 +23,38 @@
 <%= @agent %>.sources = file_source
 <%= @agent %>.channels = chan1
 
-# Define two sink groups, one primary and one backup. 
-# Each group is load balanced within.
+
+
+
+
+# Define the possible sinks. They are in a failover group where the collector 
+# ips are first.
+<% ncollectors = @collector_ips.length + @failover_collector_ips.length %>
+
+<%= @agent %>.sinks = <%= @collector_ips.map.with_index{ |x, i| "pk#{i}"}.join(" ") %> <%= @failover_collector_ips.map.with_index{ |x, i| "bk#{i}"}.join(" ") %>
 <%= @agent %>.sinkgroups = failo
 <%= @agent %>.sinkgroups.failo.processor.type = failover
-<%= @agent %>.sinkgroups.failo.sinkgroups = primary backup
-<%= @agent %>.sinkgroups.failo.processor.priority.primary = 1
-<%= @agent %>.sinkgroups.failo.processor.priority.backup = 10
-
-# Define the primary sinks that are load balanced
-<% if @collector_ips %> 
-<%= @agent %>.sinkgroups.failo.sinkgroups.primary.sinks = <%= @collector_ips.map.with_index{ |x, i| "p#{i}"}.join(" ") %>
-<%= @agent %>.sinkgroups.failo.sinkgroups.primary.processor.type = load_balance
-<%= @agent %>.sinkgroups.failo.sinkgroups.primary.processor.backoff = true
+<%= @agent %>.sinkgroups.failo.sinks = <%= @collector_ips.map.with_index{ |x, i| "pk#{i}"}.join(" ") %> <%= @failover_collector_ips.map.with_index{ |x, i| "bk#{i}"}.join(" ") %>
 
 <% @collector_ips.each.with_index do |ip, idx] %>
-  <%= @agent %>.sinkgroups.failo.sinkgroups.primary.p<%= idx %>.type = avro
-  <%= @agent %>.sinkgroups.failo.sinkgroups.primary.p<%= idx %>.channel = chan1
-  <%= @agent %>.sinkgroups.failo.sinkgroups.primary.p<%= idx %>.hostname = <%= ip%>
-  <%= @agent %>.sinkgroups.failo.sinkgroups.primary.p<%= idx %>.port = <%= @collector_port %>
+  <%= @agent %>.pk<%= idx %>.type = avro
+  <%= @agent %>.pk<%= idx %>.channel = chan1
+  <%= @agent %>.pk<%= idx %>.hostname = <%= ip%>
+  <%= @agent %>.pk<%= idx %>.port = <%= @collector_port %>
+  <%= @agent %>.sinkgroups.failo.priority.pk<%= idx %>.priority = <%= ncollectors - idx %>
 <% end %>
 
-# Define the backup sinks that are load balanced
-<% if @failover_collector_ips %>
-<%= @agent %>.sinkgroups.failo.sinkgroups.backup.sinks = <%= @failover_collector_ips.map.with_index{ |x, i| "b#{i}"}.join(" ") %>
-<%= @agent %>.sinkgroups.failo.sinkgroups.backup.processor.type = load_balance
-<%= @agent %>.sinkgroups.failo.sinkgroups.backup.processor.backoff = true
-
 <% @failover_collector_ips.each.with_index do |ip, idx] %>
-  <%= @agent %>.sinkgroups.failo.sinkgroups.backup.b<%= idx %>.type = avro
-  <%= @agent %>.sinkgroups.failo.sinkgroups.backup.b<%= idx %>.channel = chan1
-  <%= @agent %>.sinkgroups.failo.sinkgroups.backup.b<%= idx %>.hostname = <%= ip%>
-  <%= @agent %>.sinkgroups.failo.sinkgroups.backup.b<%= idx %>.port = <%= @collector_port %>
+  <%= @agent %>.bk<%= idx %>.type = avro
+  <%= @agent %>.bk<%= idx %>.channel = chan1
+  <%= @agent %>.bk<%= idx %>.hostname = <%= ip%>
+  <%= @agent %>.bk<%= idx %>.port = <%= @collector_port %>
+  <%= @agent %>.sinkgroups.failo.priority.bk<%= idx %>.priority = <%= ncollectors - idx - @collector_ips.length %>
 <% end %>
 
 # The source is just reading a log file
 <%= @agent %>.sources.file_source.type = exec
+<%= @agent %>.sources.file_source.channel = chan1
 <%= @agent %>.sources.file_source.command = "tail -F <%= @source_file %>"
 <%= @agent %>.sources.file_source.restart = true
 

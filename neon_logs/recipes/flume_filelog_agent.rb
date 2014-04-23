@@ -16,7 +16,8 @@ if node[:opsworks][:activity] == 'configure' then
                 :source_file => node[:neon_logs][:log_source_file],
                 :collector_ips => collector_ips[:primary],
                 :failover_collector_ips => collector_ips[:backup],
-                :collector_port => node[:neon_logs][:collector_port]
+                :collector_port => node[:neon_logs][:collector_port],
+                :hostname => node[:hostname]
               })
   end
 end

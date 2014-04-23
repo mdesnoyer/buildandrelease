@@ -15,6 +15,7 @@ class Chef
     # The hash has two lists one [:primary] lists the ips in the
     # current availability zone, while [:backup] lists the ips in the
     # same region, but different availability zone.
+    # The IP addresses are randomly sorted based on the current hostname
     def get_collector_ips()
       primary_ips = []
       backup_ips = []
@@ -28,6 +29,9 @@ class Chef
           backup_ips << collector[:private_ip]
         end
       end
+
+      primary_ips = primary_ips.shuffle(random: Random.new(node[:hostname]))
+      backup_ips = backup_ips.shuffle(random: Random.new(node[:hostname]))
 
       return {:primary => primary_ips, :backup => backup_ips}
     end
