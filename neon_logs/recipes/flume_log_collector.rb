@@ -1,3 +1,6 @@
+node.default[:neon_logs][:flume_service_name] = "flume-log-collector"
+node.default[:neon_logs][:flume_conf_template] = "log_collector.conf.erb"
+
 include_recipe "neon_logs::flume_core"
 
 package "hadoop" do
@@ -5,9 +8,6 @@ package "hadoop" do
 end
 
 channel_dir = get_log_dir()
-
-node.default[:neon_logs][:flume_conf_template] = "log_collector.conf.erb"
-node.default[:neon_logs][:flume_service_name] = "flume-log-collector"
 
 if node[:opsworks][:activity] == 'configure' then
   template "#{get_config_dir()}/flume.conf" do
