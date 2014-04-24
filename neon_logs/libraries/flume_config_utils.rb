@@ -11,6 +11,11 @@ class Chef
       "#{node[:neon_logs][:flume_log_dir]}/#{node[:neon_logs][:flume_service_name]}"
     end
 
+    # Returns the directory where the flume logs will live
+    def get_run_dir()
+      "#{node[:neon_logs][:flume_run_dir]}/#{node[:neon_logs][:flume_service_name]}"
+    end
+
     # Returns a hash of collector ips based on the OpsWorks config.
     # The hash has two lists one [:primary] lists the ips in the
     # current availability zone, while [:backup] lists the ips in the

@@ -26,6 +26,7 @@ end
 # Set the variables for the paths based on the service name being used
 conf_dir = get_config_dir()
 log_dir = get_log_dir()
+run_dir = get_run_dir()
 
 directory conf_dir do
   owner node[:neon_logs][:flume_user]
@@ -69,7 +70,7 @@ if node[:opsworks][:activity] == 'setup' then
                 :flume_bin => node[:neon_logs][:flume_bin],
                 :flume_log_dir => log_dir,
                 :flume_conf_dir => conf_dir,
-                :flume_run_dir => node[:neon_logs][:flume_run_dir],
+                :flume_run_dir => run_dir,
                 :flume_home => node[:neon_logs][:flume_home],
                 :flume_user => node[:neon_logs][:flume_user]
               })
