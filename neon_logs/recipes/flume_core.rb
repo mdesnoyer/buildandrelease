@@ -32,12 +32,21 @@ directory conf_dir do
   owner node[:neon_logs][:flume_user]
   mode "0755"
   action :create
+  recursive true
 end
 
 directory log_dir do
   owner node[:neon_logs][:flume_user]
   mode "0755"
   action :create
+  recursive true
+end
+
+directory run_dir do
+  owner node[:neon_logs][:flume_user]
+  mode "0755"
+  action :create
+  recursive true
 end
 
 

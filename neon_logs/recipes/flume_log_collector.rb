@@ -13,10 +13,13 @@ end
 channel_dir = get_log_dir()
 
 if node[:opsworks][:activity] == 'configure' then
+  safe_aws_key = escape_aws_key(node[:aws][:aws_access_key])
+  safe_aws_secret_key = escape_aws_key(node[:aws][:secret_access_key])
+
   template "#{get_config_dir()}/flume.conf" do
     source node[:neon_logs][:flume_conf_template]
     owner  node[:neon_logs][:flume_user]
-    mode "0744"
+    mode "0600"
     variables({
                 :agent => node[:neon_logs][:flume_agent_name],
                 :collector_port => node[:neon_logs][:collector_port],
@@ -25,7 +28,9 @@ if node[:opsworks][:activity] == 'configure' then
                 :channel_dir => channel_dir,
                 :log_type => node[:neon_logs][:log_type],
                 :max_log_rolltime => node[:neon_logs][:max_log_rolltime],
-                :max_log_size => node[:neon_logs][:max_log_size]
+                :max_log_size => node[:neon_logs][:max_log_size],
+                :aws_access_key => safe_aws_key,
+                :aws_secret_key => safe_aws_secret_key
               })
   end
 end

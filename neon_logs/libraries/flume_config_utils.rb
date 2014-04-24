@@ -40,5 +40,12 @@ class Chef
 
       return {:primary => primary_ips, :backup => backup_ips}
     end
+
+    # Makes the aws key safe for writing to a URI. This is done by
+    # replacing the '/' with %2F
+    def escape_aws_key(key)
+      Chef::Application.fatal!("AWS Credentials not set") if key.nil? or key.empty?
+      return key.gsub("/", "%2F")
+    end
   end
 end
