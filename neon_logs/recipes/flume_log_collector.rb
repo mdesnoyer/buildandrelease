@@ -32,6 +32,6 @@ if node[:opsworks][:activity] == 'configure' then
                 :aws_access_key => safe_aws_key,
                 :aws_secret_key => safe_aws_secret_key
               })
-    notifies :start, "services[#{node[:neon_logs][:flume_service_name]}]"
+    notifies :start, "service[#{node[:neon_logs][:flume_service_name]}]"
   end
 end

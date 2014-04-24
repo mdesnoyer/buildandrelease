@@ -19,6 +19,6 @@ if node[:opsworks][:activity] == 'configure' then
                 :collector_port => node[:neon_logs][:collector_port],
                 :hostname => node[:hostname]
               })
-    notifies :start, "services[#{node[:neon_logs][:flume_service_name]}]"
+    notifies :start, "service[#{node[:neon_logs][:flume_service_name]}]"
   end
 end
