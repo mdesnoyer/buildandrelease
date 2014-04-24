@@ -11,6 +11,7 @@ if node[:opsworks][:activity] == 'setup' then
 end
 
 channel_dir = get_log_dir()
+service_bin = get_service_bin()
 
 if node[:opsworks][:activity] == 'configure' then
   safe_aws_key = escape_aws_key(node[:aws][:aws_access_key])
@@ -32,5 +33,6 @@ if node[:opsworks][:activity] == 'configure' then
                 :aws_access_key => safe_aws_key,
                 :aws_secret_key => safe_aws_secret_key
               })
+    notifies :start, "services[#{service_bin}]"
   end
 end

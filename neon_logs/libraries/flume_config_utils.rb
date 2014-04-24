@@ -16,6 +16,10 @@ class Chef
       "#{node[:neon_logs][:flume_run_dir]}/#{node[:neon_logs][:flume_service_name]}"
     end
 
+    def get_service_bin()
+      "/etc/init.d/#{node[:neon_logs][:flume_service_name]}"
+    end
+
     # Returns a hash of collector ips based on the OpsWorks config.
     # The hash has two lists one [:primary] lists the ips in the
     # current availability zone, while [:backup] lists the ips in the

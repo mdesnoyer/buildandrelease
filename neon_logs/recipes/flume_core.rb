@@ -50,7 +50,7 @@ directory run_dir do
 end
 
 
-service_bin = "/etc/init.d/#{node[:neon_logs][:flume_service_name]}"
+service_bin = get_service_bin()
 
 service node[:neon_logs][:flume_service_name] do
   init_command service_bin

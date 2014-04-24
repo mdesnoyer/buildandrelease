@@ -5,6 +5,7 @@ node.default[:neon_logs][:flume_service_name] = "flume-filelog-agent"
 include_recipe "neon_logs::flume_core"
 
 collector_ips = get_collector_ips()
+service_bin = get_service_bin()
 
 if node[:opsworks][:activity] == 'configure' then
   template "#{get_config_dir()}/flume.conf" do
@@ -19,5 +20,6 @@ if node[:opsworks][:activity] == 'configure' then
                 :collector_port => node[:neon_logs][:collector_port],
                 :hostname => node[:hostname]
               })
+    notifies :start, "services[#{service_bin}]"
   end
 end
