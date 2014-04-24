@@ -28,9 +28,11 @@
 <%= @agent %>.sources.avro_source.channels = chan1
 <%= @agent %>.sources.avro_source.bind = <%= @collector_host %>
 <%= @agent %>.sources.avro_source.port = <%= @collector_port %>
-<%= @agent %>.sources.avro_source.interceptors = addhost
+<%= @agent %>.sources.avro_source.interceptors = addhost addtime
 <%= @agent %>.sources.avro_source.interceptors.addhost.type = host
 <%= @agent %>.sources.avro_source.interceptors.addhost.useIP = false
+<%= @agent %>.sources.avro_source.interceptors.addtime.type = timestamp
+<%= @agent %>.sources.avro_source.interceptors.addtime.preserveExisting = true
 
 # The channel is on disk
 <%= @agent %>.channels.chan1.type = file
