@@ -1,15 +1,28 @@
+node.default[:hadoop][:distribution] = 'cdh'
+node.default[:hadoop][:distribution_version] = '5'
+node.default[:hadoop][:core_site]['fs.s3.awsAccessKeyId'] = \
+  node[:aws][:aws_access_key]
+node.default[:hadoop][:core_site]['fs.s3.awsSecretAccessKey'] = \
+  node[:aws][:secret_access_key]
+node.default[:hadoop][:core_site]['fs.s3n.awsAccessKeyId'] = \
+  node[:aws][:aws_access_key]
+node.default[:hadoop][:core_site]['fs.s3n.awsSecretAccessKey'] = \
+  node[:aws][:secret_access_key]
+
 include_recipe "apt"
 include_recipe "java::default"
 
 if node[:opsworks][:activity] == 'setup' then
-  apt_repository "cloudera-cdh5" do
-    uri "http://archive.cloudera.com/cdh5/ubuntu/precise/amd64/cdh"
-    key "http://archive.cloudera.com/cdh5/ubuntu/precise/amd64/cdh/archive.key"
-    distribution "precise-cdh5"
-    components [ "contrib" ]
-    arch "amd64"
-    action :add
-  end
+  include_recipe "hadoop"
+
+  #apt_repository "cloudera-cdh5" do
+  #  uri "http://archive.cloudera.com/cdh5/ubuntu/precise/amd64/cdh"
+  #  key "http://archive.cloudera.com/cdh5/ubuntu/precise/amd64/cdh/archive.key"
+  #  distribution "precise-cdh5"
+  #  components [ "contrib" ]
+  #  arch "amd64"
+  #  action :add
+  #end
 
 
   package "flume-ng" do

@@ -40,7 +40,7 @@
 # The sink goes to s3
 <%= @agent %>.sinks.s3sink.type = hdfs
 <%= @agent %>.sinks.s3sink.channel = chan1
-<%= @agent %>.sinks.s3sink.hdfs.path = s3n://<%= @aws_access_key %>:<%= @aws_secret_key %>@<%= @s3_log_bucket %>/<%= @log_type %>/%{srchost}/<%= @hostname %>/%Y/%m/%d
+<%= @agent %>.sinks.s3sink.hdfs.path = s3n://<%= @s3_log_bucket %>/<%= @log_type %>/%{srchost}/<%= @hostname %>/%Y/%m/%d
 <%= @agent %>.sinks.s3sink.hdfs.codeC = bzip2
 <%= @agent %>.sinks.s3sink.hdfs.fileType = CompressedStream
 <%= @agent %>.sinks.s3sink.hdfs.filePrefix = <%= @log_type %>-Logs
