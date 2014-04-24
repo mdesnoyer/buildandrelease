@@ -69,6 +69,15 @@ if node[:opsworks][:activity] == 'setup' then
               })
   end
 
+  # Create an empty config file so that the flume service can
+  # start. When configure happens, it will be rewritten and
+  # automatically picked up by flume.
+  file "#{conf_dir}/flume.conf" do
+    owner  node[:neon_logs][:flume_user]
+    mode "0600"
+    action :create_if_missing
+  end
+
   template service_bin do
     source "flume-ng-agent.erb"
     owner "root"

@@ -23,10 +23,6 @@
 <%= @agent %>.sources = file_source
 <%= @agent %>.channels = chan1
 
-
-
-
-
 # Define the possible sinks. They are in a failover group where the collector 
 # ips are first.
 <% ncollectors = @collector_ips.length + @failover_collector_ips.length %>
