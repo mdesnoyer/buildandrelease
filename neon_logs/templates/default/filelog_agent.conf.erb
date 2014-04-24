@@ -56,9 +56,9 @@
 
 # Add metadata to the event
 <%= @agent %>.sources.file_source.interceptors = addhost addtime
-<%= @agent %>.sources.file_source.interceptors.addhost.type = host
-<%= @agent %>.sources.file_source.interceptors.addhost.hostHeader = srchost
-<%= @agent %>.sources.file_source.interceptors.addhost.useIP = false
+<%= @agent %>.sources.file_source.interceptors.addhost.type = static
+<%= @agent %>.sources.file_source.interceptors.addhost.key = srchost
+<%= @agent %>.sources.file_source.interceptors.addhost.value = <%= @hostname %>
 <%= @agent %>.sources.file_source.interceptors.addtime.type = timestamp
 
 # The channel is in memory

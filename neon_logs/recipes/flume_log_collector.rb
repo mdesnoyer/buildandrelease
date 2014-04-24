@@ -30,7 +30,8 @@ if node[:opsworks][:activity] == 'configure' then
                 :max_log_rolltime => node[:neon_logs][:max_log_rolltime],
                 :max_log_size => node[:neon_logs][:max_log_size],
                 :aws_access_key => safe_aws_key,
-                :aws_secret_key => safe_aws_secret_key
+                :aws_secret_key => safe_aws_secret_key,
+                :hostname => node[:hostname]
               })
     notifies :start, "service[#{node[:neon_logs][:flume_service_name]}]"
   end

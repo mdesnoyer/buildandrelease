@@ -49,7 +49,7 @@ class Chef
     # replacing the '/' with %2F
     def escape_aws_key(key)
       Chef::Application.fatal!("AWS Credentials not set") if key.nil? or key.empty?
-      return key.gsub("/", "%2F")
+      return key.gsub("/", "%%2F")
     end
   end
 end

@@ -29,8 +29,6 @@
 <%= @agent %>.sources.avro_source.bind = <%= @collector_host %>
 <%= @agent %>.sources.avro_source.port = <%= @collector_port %>
 <%= @agent %>.sources.avro_source.interceptors = addhost addtime
-<%= @agent %>.sources.avro_source.interceptors.addhost.type = host
-<%= @agent %>.sources.avro_source.interceptors.addhost.useIP = false
 <%= @agent %>.sources.avro_source.interceptors.addtime.type = timestamp
 <%= @agent %>.sources.avro_source.interceptors.addtime.preserveExisting = true
 
@@ -42,7 +40,7 @@
 # The sink goes to s3
 <%= @agent %>.sinks.s3sink.type = hdfs
 <%= @agent %>.sinks.s3sink.channel = chan1
-<%= @agent %>.sinks.s3sink.hdfs.path = s3n://<%= @aws_access_key %>:<%= @aws_secret_key %>@<%= @s3_log_bucket %>/<%= @log_type %>/%{srchost}/%{host}/%Y/%m/%d/
+<%= @agent %>.sinks.s3sink.hdfs.path = s3n://<%= @aws_access_key %>:<%= @aws_secret_key %>@<%= @s3_log_bucket %>/<%= @log_type %>/%{srchost}/<%= @hostname %>/%Y/%m/%d
 <%= @agent %>.sinks.s3sink.hdfs.codeC = bzip2
 <%= @agent %>.sinks.s3sink.hdfs.fileType = CompressedStream
 <%= @agent %>.sinks.s3sink.hdfs.filePrefix = <%= @log_type %>-Logs
