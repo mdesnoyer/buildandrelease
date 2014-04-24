@@ -28,7 +28,7 @@
 <%= @agent %>.sources.avro_source.channels = chan1
 <%= @agent %>.sources.avro_source.bind = <%= @collector_host %>
 <%= @agent %>.sources.avro_source.port = <%= @collector_port %>
-<%= @agent %>.sources.avro_source.interceptors = addhost addtime
+<%= @agent %>.sources.avro_source.interceptors =  addtime
 <%= @agent %>.sources.avro_source.interceptors.addtime.type = timestamp
 <%= @agent %>.sources.avro_source.interceptors.addtime.preserveExisting = true
 
