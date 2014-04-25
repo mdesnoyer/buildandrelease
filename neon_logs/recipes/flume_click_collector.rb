@@ -1,6 +1,11 @@
-# Set parameters that flume_core uses
-node.default[:neon_logs][:flume_service_name] = "flume-log-collector"
-node.default[:neon_logs][:flume_conf_template] = "log_collector.conf.erb"
+# Set parameters to specialize flume_core
+node.default[:neon_logs][:flume_service_name] = "flume-click-collector"
+node.default[:neon_logs][:flume_conf_template] = "click_collector.conf.erb"
+node.default[:neon_logs][:s3_log_bucket] = "neon-tracker-logs-v2"
+node.default[:neon_logs][:log_type] = "clicklogs"
+node.default[:neon_logs][:collector_port] = 6367
+node.default[:neon_logs][:max_log_rolltime] = 0 # Don't rollover based on time
+node.default[:neon_logs][:max_log_size] = 2147483648 # 2GB
 node.default[:hadoop][:core_site]['fs.s3.awsAccessKeyId'] = \
   node[:aws][:aws_access_key]
 node.default[:hadoop][:core_site]['fs.s3.awsSecretAccessKey'] = \

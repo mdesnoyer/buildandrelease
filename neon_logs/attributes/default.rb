@@ -42,8 +42,14 @@ default[:neon_logs][:max_log_size] = 1073741824 # 1GB
 # The maximum file rollover interval in seconds
 default[:neon_logs][:max_log_rolltime] = 3600 # 1 hour
 
+# The log batch size before its pushed to s3
+default[:neon_logs][:s3_flush_batch_size] = 1000
+
 # The system file to listen to for logs
 default[:neon_logs][:log_source_file] = "/mnt/logs/neon/neon.log"
+
+# The port to listen for json http messages on
+default[:neon_logs][:json_http_source_port] = 6360
 
 # AWS keys
 default["aws"]["aws_access_key"] = ENV['AWS_ACCESS_KEY_ID']

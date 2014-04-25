@@ -20,31 +20,35 @@
 # Sources, channels and sinks are defined per agent
 
 <%= @agent %>.sources = avro_source
-<%= @agent %>.channels = chan1
+<%= @agent %>.channels = s3chan
 <%= @agent %>.sinks = s3sink
+
+# TODO(mdesnoyer): Add a sink to storm so that we can do realtime updates
 
 # The source is an avro source
 <%= @agent %>.sources.avro_source.type = avro
-<%= @agent %>.sources.avro_source.channels = chan1
+<%= @agent %>.sources.avro_source.channels = s3chan
 <%= @agent %>.sources.avro_source.bind = <%= @collector_host %>
 <%= @agent %>.sources.avro_source.port = <%= @collector_port %>
 <%= @agent %>.sources.avro_source.interceptors =  addtime
 <%= @agent %>.sources.avro_source.interceptors.addtime.type = timestamp
 <%= @agent %>.sources.avro_source.interceptors.addtime.preserveExisting = true
 
-# The channel is on disk
-<%= @agent %>.channels.chan1.type = file
-<%= @agent %>.channels.chan1.checkpointDir = <%= @channel_dir %>/checkpoint
-<%= @agent %>.channels.chan1.dataDirs = <%= @channel_dir %>/data
+# The channel is on disk. Should be an ebs volume so that we can
+# recover if necessary.
+<%= @agent %>.channels.s3chan.type = file
+<%= @agent %>.channels.s3chan.checkpointDir = <%= @channel_dir %>/checkpoint
+<%= @agent %>.channels.s3chan.dataDirs = <%= @channel_dir %>/data
 
 # The sink goes to s3
 <%= @agent %>.sinks.s3sink.type = hdfs
-<%= @agent %>.sinks.s3sink.channel = chan1
-<%= @agent %>.sinks.s3sink.hdfs.path = s3n://<%= @s3_log_bucket %>/<%= @log_type %>/%{srchost}/<%= @hostname %>/%Y/%m/%d
-<%= @agent %>.sinks.s3sink.hdfs.codeC = bzip2
+<%= @agent %>.sinks.s3sink.channel = s3chan
+<%= @agent %>.sinks.s3sink.hdfs.path = s3n://<%= @s3_log_bucket %>/<%= @log_type %>/%Y/%m/%d/<%= @hostname %>
+<%= @agent %>.sinks.s3sink.hdfs.codeC = lzo
 <%= @agent %>.sinks.s3sink.hdfs.fileType = CompressedStream
 <%= @agent %>.sinks.s3sink.hdfs.filePrefix = <%= @log_type %>-Logs
 <%= @agent %>.sinks.s3sink.hdfs.roleSize = <%= @max_log_size %>
 <%= @agent %>.sinks.s3sink.hdfs.rollCount = 0
 <%= @agent %>.sinks.s3sink.hdfs.rollInterval = <%= @max_log_rolltime %>
+<%= @agent %>.sinks.s3sink.hdfs.idleTimeout = 1800
 <%= @agent %>.sinks.s3sink.hdfs.batchSize = <%= @s3_flush_batch_size %>
