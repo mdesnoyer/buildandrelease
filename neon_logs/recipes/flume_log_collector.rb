@@ -14,10 +14,6 @@ include_recipe "neon_logs::flume_core"
 
 if node[:opsworks][:activity] == 'setup' then
   include_recipe "hadoop"
-
-  #package "hadoop" do
-  #  action :install
-  #end
 end
 
 channel_dir = get_log_dir()
