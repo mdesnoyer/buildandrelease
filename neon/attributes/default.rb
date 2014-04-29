@@ -16,6 +16,9 @@ default[:neon][:carbon_port] = 8090
 default[:neon][:config_dir] = "/opt/neon/config"
 default[:neon][:log_dir] = "/mnt/neon/logs"
 
+# Notification settings
+default[:neon][:ops_email] = "ops@neon-labs.com"
+
 # Parameters for the trackserver
 default[:neon][:trackserver][:config] = "#{node[:neon][:config_dir]}/trackserver.conf"
 default[:neon][:trackserver][:log_file] = "#{node[:neon][:log_dir]}/trackserver.log"
