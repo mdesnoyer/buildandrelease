@@ -9,7 +9,7 @@ default[:neon][:code_root] = "/opt/neon/neon-codebase"
 default[:neon][:pyenv] = "#{node[:neon][:code_root]}/.pyenv"
 
 # Parameters for the monitoring server
-default[:neon][:carbon_host] = 54.225.235.97
+default[:neon][:carbon_host] = "54.225.235.97"
 default[:neon][:carbon_port] = 8090
 
 # Common directories
