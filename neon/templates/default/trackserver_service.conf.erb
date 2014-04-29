@@ -1,0 +1,9 @@
+description "Neon Click Trackserver"
+author  "Mark Desnoyer <desnoyer@neon-lab.com>"
+
+start on runlevel [234]
+stop on runlevel [0156]
+
+chdir <%= neon_root_dir %>
+exec <%= neon_root_dir %>/clickTracker/trackserver.py -c <%= config_file%>
+respawn

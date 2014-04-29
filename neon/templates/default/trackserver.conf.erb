@@ -1,0 +1,17 @@
+clickTracker:
+  trackserver:
+    port: <%= port %>
+    flume_port: <%= flume_port %>
+    backup_disk: <%= backup_dir %>
+    backup_max_events_per_file: 100000
+    backup_flush_interval: 100
+
+utils:
+  logs:
+    file: <%= log_file %>
+    do_stderr: 0
+    do_stdout: 1
+    level: info
+  monitor:
+    carbon_server: <%= carbon_host %>
+    carbon_port: <%= carbon_port %>
