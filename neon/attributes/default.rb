@@ -5,6 +5,9 @@ default[:neon][:code_revision] = "HEAD"
 # The neon codebase root
 default[:neon][:code_root] = "/opt/neon/neon-codebase"
 
+# The ssh key for access the neon repo
+default[:neon][:repo_key] = "s3://neon-keys/neon-deploy.pem"
+
 # The python virtualenv
 default[:neon][:pyenv] = "#{node[:neon][:code_root]}/.pyenv"
 
