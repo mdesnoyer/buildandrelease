@@ -59,25 +59,26 @@ class Chef
       end
 
       def fetch_from_s3(source)
-        begin
-          protocol, bucket, name = URI.split(source).compact
-          name = name[1..-1]
-          s3 = AWS::S3.new
-          obj = s3.buckets[bucket].objects[name]
-          Chef::Log.debug("Downloading #{name} from S3 bucket #{bucket}")
-          file = Tempfile.new("chef-s3-file", 'wb')
-          obj.read do |chunk|
-            file.write(chunk)
-          end
-          Chef::Log.debug("File #{name} is #{file.size} bytes on disk")
-          begin
-            yield file
-          ensure
-            file.close
-          end
-        rescue URI::InvalidURIError
+        reg = /s3:\/\/(?<bucket>[A-Za-z0-9_\-\.]+)\/(?<name>.+)/x
+        parse = reg.match(source)
+        if parse.nil? then
           Chef::Log.warn("Expected an S3 URL but found #{source}")
-          nil
+          return nil
+        end
+        bucket = parse['bucket']
+        name = parse['name']
+        s3 = AWS::S3.new
+        obj = s3.buckets[bucket].objects[name]
+        Chef::Log.debug("Downloading #{name} from S3 bucket #{bucket}")
+        file = Tempfile.new("chef-s3-file", 'wb')
+        obj.read do |chunk|
+          file.write(chunk)
+        end
+        Chef::Log.debug("File #{name} is #{file.size} bytes on disk")
+        begin
+          yield file
+        ensure
+          file.close
         end
       end
     end
