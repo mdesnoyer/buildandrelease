@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+require 'aws-sdk'
+
 class Chef
   class Resource
     class S3File < Chef::Resource::RemoteFile
