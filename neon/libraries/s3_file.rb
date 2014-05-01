@@ -60,7 +60,7 @@ class Chef
 
       def fetch_from_s3(source)
         reg = /s3:\/\/(?<bucket>[A-Za-z0-9_\-\.]+)\/(?<name>.+)/x
-        parse = source.match(reg)
+        parse = source[0].match(reg)
         if parse.nil? then
           Chef::Log.warn("Expected an S3 URL but found #{source}")
           return nil
