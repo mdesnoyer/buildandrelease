@@ -23,7 +23,7 @@ s3_file "#{node[:neon][:code_root]}/.ssh/neon.pem" do
   action :create
   mode "0600"
 end
-template "#{neon[:neon][:code_root]}/wrap-ssh4git.sh" do
+template "#{node[:neon][:code_root]}/wrap-ssh4git.sh" do
   owner "neon"
   source "wrap-ssh4git.sh.erb"
   mode "0755"
@@ -39,5 +39,5 @@ git node[:neon][:code_root] do
   action :sync
   user "neon"
   group "neon"
-  ssh_wrapper "#{neon[:neon][:code_root]}/wrap-ssh4git.sh"
+  ssh_wrapper "#{node[:neon][:code_root]}/wrap-ssh4git.sh"
 end
