@@ -61,7 +61,7 @@ if node[:opsworks][:activity] == 'setup' then
 
  end
 
-if node[:opsworks][:activity] == 'config' do
+if node[:opsworks][:activity] == 'config' then
     # Write the configuration file
     template node[:neon][:trackserver][:config] do
       source "trackserver.conf.erb"
@@ -79,12 +79,13 @@ if node[:opsworks][:activity] == 'config' do
 
 end
 
-if node[:opsworks][:activity] == 'deploy' do
-    service "neon-trackserver" do
+if node[:opsworks][:activity] == 'deploy' then
+  service "neon-trackserver" do
     provider Chef::Provider::Service::Upstart
     supports :status => true, :restart => true, :start => true, :stop => true
     action :start
   end
+end
 
 
 if ['undeploy', 'shutdown'].include? node[:opsworks][:activity] then
