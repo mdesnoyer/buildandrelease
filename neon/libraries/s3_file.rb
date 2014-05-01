@@ -18,6 +18,21 @@
 #
 
 class Chef
+  class Resource
+    class S3File < Chef::Resource::RemoteFile
+      def initialize(name, run_context=nil)
+        super
+        @resource_name = :s3_file
+      end
+
+      def provider
+        Chef::Provider::S3File
+      end
+    end 
+  end
+end
+
+class Chef
   class Provider
     class S3File < Chef::Provider::RemoteFile
       def action_create
