@@ -13,7 +13,7 @@ pydeps = {
   "nose" => "1.3.1"
 }
 
-if node[:opsworks][:activity] == 'setup' do
+if node[:opsworks][:activity] == 'setup' then
     # Install the python dependencies
     pydeps.each do |package, vers|
       python_pip package do
