@@ -72,7 +72,8 @@ class Chef
         s3 = AWS::S3.new
         obj = s3.buckets[bucket].objects[name]
         Chef::Log.debug("Downloading #{name} from S3 bucket #{bucket}")
-        file = Tempfile.new("chef-s3-file", :mode => 'wb+')
+        file = Tempfile.new("chef-s3-file")
+        file.binmode
         obj.read do |chunk|
           file.write(chunk)
         end
