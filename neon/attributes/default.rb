@@ -1,5 +1,4 @@
-# Which branch of the codebase to grab
-default[:neon][:code_branch] = "master"
+# Which revision of the codebase to grab. Can also use tags
 default[:neon][:code_revision] = "HEAD"
 
 # The neon codebase root

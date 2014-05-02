@@ -36,7 +36,6 @@ end
 # Get the code repository
 git node[:neon][:code_root] do
   repository "git@github.com:neon-lab/neon-codebase.git"
-  checkout_branch node[:neon][:code_branch]
   revision node[:neon][:code_revision]
   enable_submodules true
   action :sync
