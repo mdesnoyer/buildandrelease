@@ -3,7 +3,8 @@ default[:neon][:code_branch] = "master"
 default[:neon][:code_revision] = "HEAD"
 
 # The neon codebase root
-default[:neon][:code_root] = "/opt/neon/neon-codebase"
+default[:neon][:home] = "/opt/neon"
+default[:neon][:code_root] = "#{node[:neon][:home]}/neon-codebase"
 
 # The ssh key for access the neon repo
 default[:neon][:repo_key] = "s3://neon-keys/neon-deploy.pem"

@@ -12,25 +12,25 @@ directory node[:neon][:code_root] do
 end
 
 # Install the ssh deploy key to get the repository
-directory "#{node[:neon][:code_root]}/.ssh" do
+directory "#{node[:neon][:home]}/.ssh" do
   owner "neon"
   group "neon"
   action :create
   mode "0700"
 end
-s3_file "#{node[:neon][:code_root]}/.ssh/neon.pem" do
+s3_file "#{node[:neon][:home]}/.ssh/neon.pem" do
   source node[:neon][:repo_key]
   owner "neon"
   group "neon"
   action :create
   mode "0600"
 end
-template "#{node[:neon][:code_root]}/wrap-ssh4git.sh" do
+template "#{node[:neon][:home]}/wrap-ssh4git.sh" do
   owner "neon"
   group "neon"
   source "wrap-ssh4git.sh.erb"
   mode "0755"
-  variables({:ssh_key => "#{node[:neon][:code_root]}/.ssh/neon.pem"})
+  variables({:ssh_key => "#{node[:neon][:home]}/.ssh/neon.pem"})
 end
 
 # Get the code repository
@@ -42,5 +42,5 @@ git node[:neon][:code_root] do
   action :sync
   user "neon"
   group "neon"
-  ssh_wrapper "#{node[:neon][:code_root]}/wrap-ssh4git.sh"
+  ssh_wrapper "#{node[:neon][:home]}/wrap-ssh4git.sh"
 end
