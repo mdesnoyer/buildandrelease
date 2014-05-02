@@ -5,6 +5,5 @@ include_recipe "python"
 # Create a neon user
 user "neon" do
   action :create
-  group "neon"
 end
 
