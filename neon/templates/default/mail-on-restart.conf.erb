@@ -1,11 +1,11 @@
 description "Job that sends an e-mail when a service is restarted"
 author  "Mark Desnoyer <desnoyer@neon-lab.com>"
 
-start on stopped <%= service %> RESULT=failed
+start on stopped <%= @service %> RESULT=failed
 
 script
 
-echo "<%= service %> crashed on <%= host %> at `date`. It has probably restarted. The last logs are:\n `tail -n 100 <%= log_file %>" | mail -s "<%= service %> crashed on <%= host %>" <%= email %>
+echo "<%= @service %> crashed on <%= @host %> at `date`. It has probably restarted. The last logs are:\n `tail -n 100 <%= @log_file %>" | mail -s "<%= @service %> crashed on <%= @host %>" <%= @email %>
 
 
 end script
