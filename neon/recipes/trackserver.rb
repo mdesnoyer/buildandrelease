@@ -49,6 +49,11 @@ if node[:opsworks][:activity] == 'setup' then
     group "neon"
     mode "1755"
   end
+  file node[:neon][:trackserver][:log_file] do
+    user "trackserver"
+    group "neon"
+    mode "0644"
+  end
 
   # Test the trackserver
   execute "nosetests --exe clickTracker" do
