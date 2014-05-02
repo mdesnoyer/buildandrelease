@@ -10,7 +10,8 @@ pydeps = {
   "PyYAML" => "3.10",
   "boto" => "2.6.0",
   "simplejson" => "2.3.2",
-  "nose" => "1.3.0"
+  "nose" => "1.3.0",
+  "pyfakefs" => "2.4"
 }
 
 if node[:opsworks][:activity] == 'setup' then
