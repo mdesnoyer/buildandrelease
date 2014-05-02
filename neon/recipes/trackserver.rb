@@ -38,6 +38,18 @@ if node[:opsworks][:activity] == 'setup' then
     :install
   end
 
+  # Make directories 
+  directory node[:neon][:config_dir] do
+    user "neon"
+    group "neon"
+    mode "1755"
+  end
+  directory node[:neon][:log_dir] do
+    user "neon"
+    group "neon"
+    mode "1755"
+  end
+
   # Test the trackserver
   execute "nosetests --exe clickTracker" do
     cwd node[:neon][:code_root]
@@ -74,7 +86,7 @@ if node[:opsworks][:activity] == 'setup' then
 
 end
 
-if node[:opsworks][:activity] == 'config' then
+if ['config', 'setup'].include? node[:opsworks][:activity] then
     # Write the configuration file
     template node[:neon][:trackserver][:config] do
       source "trackserver.conf.erb"
