@@ -14,52 +14,54 @@ pydeps = {
 }
 
 if node[:opsworks][:activity] == 'setup' then
-    # Install the python dependencies
-    pydeps.each do |package, vers|
-      python_pip package do
-        version vers
-        options "--no-index --find-links http://s3-us-west-1.amazonaws.com/neon-dependencies/index.html"
-      end
-    end
+  include_recipe "neon::repo"
 
-    # Install the mail client
-    package "mailutils" do
-      :install
+  # Install the python dependencies
+  pydeps.each do |package, vers|
+    python_pip package do
+      version vers
+      options "--no-index --find-links http://s3-us-west-1.amazonaws.com/neon-dependencies/index.html"
     end
+  end
 
-    # Test the trackserver
-    execute "nosetests --exe clickTracker" do
-      cwd node[:neon][:code_root]
-      user "neon"
-    end
+  # Install the mail client
+  package "mailutils" do
+    :install
+  end
 
-    # Write the daemon service wrapper
-    template "/etc/init/neon-trackserver.conf" do
-      source "trackserver_service.conf.erb"
-      owner "root"
-      mode "0755"
-      variables({
-                  :neon_root_dir => node[:neon][:code_root],
-                  :config_file => node[:neon][:trackserver][:config],
-                  :user => "neon",
-                  :group => "neon",
-                })
-    end
+  # Test the trackserver
+  execute "nosetests --exe clickTracker" do
+    cwd node[:neon][:code_root]
+    user "neon"
+  end
 
-    # Write a script that will send a mail when the service dies
-    template "/etc/init/neon-trackserver-email.conf" do
-      source "mail-on-restart.conf.erb"
-      owner "root"
-      mode "0755"
-      variables({
-                  :service => "neon-trackserver",
-                  :host => node[:hostname],
-                  :email => node[:neon][:ops_email],
-                  :log_file => node[:neon][:trackserver][:log_file]
-                })
-    end
+  # Write the daemon service wrapper
+  template "/etc/init/neon-trackserver.conf" do
+    source "trackserver_service.conf.erb"
+    owner "root"
+    mode "0755"
+    variables({
+                :neon_root_dir => node[:neon][:code_root],
+                :config_file => node[:neon][:trackserver][:config],
+                :user => "neon",
+                :group => "neon",
+              })
+  end
 
- end
+  # Write a script that will send a mail when the service dies
+  template "/etc/init/neon-trackserver-email.conf" do
+    source "mail-on-restart.conf.erb"
+    owner "root"
+    mode "0755"
+    variables({
+                :service => "neon-trackserver",
+                :host => node[:hostname],
+                :email => node[:neon][:ops_email],
+                :log_file => node[:neon][:trackserver][:log_file]
+              })
+  end
+
+end
 
 if node[:opsworks][:activity] == 'config' then
     # Write the configuration file
