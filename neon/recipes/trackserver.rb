@@ -39,16 +39,6 @@ if node[:opsworks][:activity] == 'setup' then
   end
 
   # Make directories 
-  directory node[:neon][:config_dir] do
-    user "neon"
-    group "neon"
-    mode "1755"
-  end
-  directory node[:neon][:log_dir] do
-    user "neon"
-    group "neon"
-    mode "1755"
-  end
   file node[:neon][:trackserver][:log_file] do
     user "trackserver"
     group "neon"
@@ -58,6 +48,7 @@ if node[:opsworks][:activity] == 'setup' then
     user "trackserver"
     group "neon"
     mode "1775"
+    recursive true
   end
 
   # Test the trackserver

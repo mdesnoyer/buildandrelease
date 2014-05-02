@@ -9,3 +9,16 @@ user "neon" do
   home node[:neon][:home]
 end
 
+# Create the common directories
+directory node[:neon][:config_dir] do
+  user "neon"
+  group "neon"
+  mode "1755"
+  recursive true
+end
+directory node[:neon][:log_dir] do
+  user "neon"
+  group "neon"
+  mode "1755"
+  recursive true
+end
