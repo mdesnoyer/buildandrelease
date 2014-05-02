@@ -20,7 +20,7 @@ default[:neon][:config_dir] = "/opt/neon/config"
 default[:neon][:log_dir] = "/mnt/neon/logs"
 
 # Notification settings
-default[:neon][:ops_email] = "ops@neon-labs.com"
+default[:neon][:ops_email] = "ops@neon-lab.com"
 
 # Parameters for the trackserver
 default[:neon][:trackserver][:config] = "#{node[:neon][:config_dir]}/trackserver.conf"
