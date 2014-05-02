@@ -16,6 +16,13 @@ pydeps = {
 if node[:opsworks][:activity] == 'setup' then
   include_recipe "neon::repo"
 
+  # Create a trackserver user
+  user "trackserver" do
+    action :create
+    system true
+    shell "/bin/false"
+  end
+
   # Install the python dependencies
   pydeps.each do |package, vers|
     python_pip package do
@@ -32,19 +39,20 @@ if node[:opsworks][:activity] == 'setup' then
   # Test the trackserver
   execute "nosetests --exe clickTracker" do
     cwd node[:neon][:code_root]
-    user "neon"
+    user "trackserver"
   end
 
   # Write the daemon service wrapper
   template "/etc/init/neon-trackserver.conf" do
     source "trackserver_service.conf.erb"
     owner "root"
-    mode "0755"
+    group "root"
+    mode "0644"
     variables({
                 :neon_root_dir => node[:neon][:code_root],
                 :config_file => node[:neon][:trackserver][:config],
-                :user => "neon",
-                :group => "neon",
+                :user => "trackserver",
+                :group => "trackserver",
               })
   end
 
@@ -52,7 +60,8 @@ if node[:opsworks][:activity] == 'setup' then
   template "/etc/init/neon-trackserver-email.conf" do
     source "mail-on-restart.conf.erb"
     owner "root"
-    mode "0755"
+    group "root"
+    mode "0644"
     variables({
                 :service => "neon-trackserver",
                 :host => node[:hostname],
@@ -67,8 +76,9 @@ if node[:opsworks][:activity] == 'config' then
     # Write the configuration file
     template node[:neon][:trackserver][:config] do
       source "trackserver.conf.erb"
-      owner "neon"
-      mode "0755"
+      owner "trackserver"
+      group "trackserver"
+      mode "0644"
       variables({
                   :port => node[:neon][:trackserver][:port],
                   :flume_port => node[:neon][:trackserver][:flume_port],
