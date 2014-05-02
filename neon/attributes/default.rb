@@ -26,5 +26,5 @@ default[:neon][:ops_email] = "ops@neon-lab.com"
 default[:neon][:trackserver][:config] = "#{node[:neon][:config_dir]}/trackserver.conf"
 default[:neon][:trackserver][:log_file] = "#{node[:neon][:log_dir]}/trackserver.log"
 default[:neon][:trackserver][:port] = 7214
-default[:neon][:trackserver][:flume_port] = 6367
+default[:neon][:trackserver][:flume_port] = 6360
 default[:neon][:trackserver][:backup_dir] = "/mnt/neon/trackserver/backlog"

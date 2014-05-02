@@ -1,6 +1,8 @@
 # Set parameters that flume_core uses
-node.default[:neon_logs][:flume_conf_template] = "filelog_agent.conf.erb"
-node.default[:neon_logs][:flume_service_name] = "flume-filelog-agent"
+node.default[:neon_logs][:flume_conf_template] = "click_agent.conf.erb"
+node.default[:neon_logs][:flume_service_name] = "flume-click-agent"
+node.default[:neon_logs][:collector_layer] = "clicklog_aggregator"
+node.default[:neon_logs][:collector_port] = 6367
 
 include_recipe "neon_logs::flume_core"
 
@@ -13,11 +15,11 @@ if node[:opsworks][:activity] == 'configure' then
     mode "0744"
     variables({
                 :agent => node[:neon_logs][:flume_agent_name],
-                :source_file => node[:neon_logs][:log_source_file],
                 :collector_ips => collector_ips[:primary],
                 :failover_collector_ips => collector_ips[:backup],
                 :collector_port => node[:neon_logs][:collector_port],
-                :hostname => node[:hostname]
+                :hostname => node[:hostname],
+                :json_http_source_port => node[:neon_logs][:json_http_source_port]
               })
     notifies :start, "service[#{node[:neon_logs][:flume_service_name]}]"
   end
