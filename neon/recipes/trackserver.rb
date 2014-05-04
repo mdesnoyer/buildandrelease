@@ -3,6 +3,9 @@
 node.default[:neon_logs][:json_http_source_port] = node[:neon][:trackserver][:flume_port]
 include_recipe "neon_logs::flume_click_agent"
 
+node.default[:neon_logs][:log_source_file] = node[:neon][:trackserver][:log_file]
+include_recipe "neon_logs::flume_filelog_agent"
+
 # List the python dependencies for this server. We don't install
 # all the neon dependencies so that the server can come up more
 # quickly
