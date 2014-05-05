@@ -1,10 +1,22 @@
 # This recipe installs the neon click trackserver
 
-node.default[:neon_logs][:json_http_source_port] = node[:neon][:trackserver][:flume_port]
-include_recipe "neon_logs::flume_click_agent"
+# Configure the flume agent that will listen to the click data and
+# will watch the log file.
+node.default[:neon_logs][:flume_streams][:click_data] = \
+  get_jsonagent_config(node[:neon][:trackserver][:flume_port],
+                       "tracklog",
+                       "tracklog_collector"
+                       node[:neon_logs][:collector_port])
 
-node.default[:neon_logs][:log_source_file] = node[:neon][:trackserver][:log_file]
-include_recipe "neon_logs::flume_filelog_agent"
+node.default[:neon_logs][:flume_streams][:trackserver_logs] = \
+  get_fileagent_config(default[:neon][:trackserver][:log_file],
+                       "trackserver")
+
+node.default[:neon_logs][:flume_streams][:trackserver_logs] = \
+  get_fileagent_config("#{get_log_dir()}/flume.init.log",
+                       "trackserver-flume")
+
+include_recipe "neon_logs::flume_core"
 
 # List the python dependencies for this server. We don't install
 # all the neon dependencies so that the server can come up more
@@ -116,7 +128,7 @@ if node[:opsworks][:activity] == 'setup' then
   service "neon-trackserver" do
     provider Chef::Provider::Service::Upstart
     supports :status => true, :restart => true, :start => true, :stop => true
-    action :start
+    action [:enable, :start]
   end
 end
 

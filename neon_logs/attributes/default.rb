@@ -10,7 +10,7 @@ default["neon_logs"]["flume_service_name"] = "flume-ng-agent"
 default["neon_logs"]["flume_conf_dir"] = "/etc/flume-ng/conf"
 default["neon_logs"]["flume_bin"] = "/usr/bin/flume-ng"
 default["neon_logs"]["flume_run_dir"] = "/var/run/flume-ng"
-default["neon_logs"]["flume_log_dir"] = "/var/log"
+default["neon_logs"]["flume_log_dir"] = "/mnt/neon/logs"
 default["neon_logs"]["flume_home"] = "/usr/lib/flume-ng"
 
 # Flume agent name
@@ -43,8 +43,7 @@ default[:neon_logs][:flume_user] = "flume"
 default[:neon_logs][:flume_streams] = {}
 
 # The template used to configure flume
-default["neon_logs"]["flume_conf_template"] = "filelog_agent.conf.erb"
-
+default["neon_logs"]["flume_conf_template"] = "flume.conf.erb"
 
 # Name of the different layers for use in OpsWorks. Must be the short name
 # These are used to find hosts currently up on the different layers
@@ -53,9 +52,17 @@ default["neon_logs"]["collector_layer"] = "log-collector"
 # The port that the collectors will listen on
 default[:neon_logs][:collector_port] = 6366
 
+# The port to listen for json http messages on
+default[:neon_logs][:json_http_source_port] = 6360
+
 ## Parameters about where to output the logs ##
-# The S3 bucket where the logs will be dropped
-default[:neon_logs][:s3_log_bucket] = "neon-server-logs"
+# The S3 path where the logs will be dropped. Can be parameterized by
+# flume event headers using %{header_name} syntax. See flume
+# documentation for the HDFS sink for more details.
+default[:neon_logs][:s3_log_path] = "s3n://neon-server-logs/%{logtype}/%{srchost}/%Y/%m/%d"
+
+# The compression type for writing to s3
+default[:neon_logs][:s3_log_compression] = "lzo"
 
 # The log types being written to s3
 default[:neon_logs][:log_type] = "neon-logs"
@@ -67,13 +74,7 @@ default[:neon_logs][:max_log_size] = 1073741824 # 1GB
 default[:neon_logs][:max_log_rolltime] = 3600 # 1 hour
 
 # The log batch size before its pushed to s3
-default[:neon_logs][:s3_flush_batch_size] = 1000
-
-# The system file to listen to for logs
-default[:neon_logs][:log_source_file] = "/mnt/logs/neon/neon.log"
-
-# The port to listen for json http messages on
-default[:neon_logs][:json_http_source_port] = 6360
+default[:neon_logs][:s3_flush_batch_size] = 100
 
 # AWS keys
 default["aws"]["aws_access_key"] = ENV['AWS_ACCESS_KEY_ID']

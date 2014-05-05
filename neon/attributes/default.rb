@@ -28,3 +28,7 @@ default[:neon][:trackserver][:log_file] = "#{node[:neon][:log_dir]}/trackserver.
 default[:neon][:trackserver][:port] = 7214
 default[:neon][:trackserver][:flume_port] = 6360
 default[:neon][:trackserver][:backup_dir] = "/mnt/neon/trackserver/backlog"
+
+# Parameters for the clicklog_collector
+default[:neon][:clicklog_collector][:s3_path] = "s3n://neon-tracker-logs-v2/v%{track_vers}/%{tai}/%Y/%m/%d"
+default[:neon][:clicklog_collector][:channel_dir] = "/mnt/neon/channels/clicklog"

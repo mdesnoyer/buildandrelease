@@ -11,11 +11,11 @@ agent.sinkgroups.<%= @kg %>.sinks = <%= @sinks.map{ |x| x[:name]}.join(" " %>
   agent.sinkgroups.<%= @kg %>.priority.<%= sink[:name] %>.priority = <%= sink[:priority] %>
 <% end %>
 
-# The source is just reading a log file
-agent.sources.<%= @s %>.type = exec
+# The source is an http json source
+agent.sources.<%= @s %>.type = http
 agent.sources.<%= @s %>.channels = <%= @c %>
-agent.sources.<%= @s %>.command = /usr/bin/tail -F <%= @source_file %>
-agent.sources.<%= @s %>.restart = true
+agent.sources.<%= @s %>.port = <%= @json_port %>
+agent.sources.<%= @s %>.bind = localhost
 
 # Add metadata to the event
 agent.sources.<%= @s %>.interceptors = addhost addtime addtype
@@ -23,6 +23,7 @@ agent.sources.<%= @s %>.interceptors.addhost.type = static
 agent.sources.<%= @s %>.interceptors.addhost.key = srchost
 agent.sources.<%= @s %>.interceptors.addhost.value = <%= @hostname %>
 agent.sources.<%= @s %>.interceptors.addtime.type = timestamp
+agent.sources.<%= @s %>.interceptors.addtime.preserveExisting = true
 agent.sources.<%= @s %>.interceptors.addtype.type = static
 agent.sources.<%= @s %>.interceptors.addtype.key = logtype
 agent.sources.<%= @s %>.interceptors.addtype.value = <%= @log_type %>

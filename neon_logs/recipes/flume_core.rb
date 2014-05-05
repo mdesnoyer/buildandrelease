@@ -54,6 +54,8 @@ service node[:neon_logs][:flume_service_name] do
 end
 
 if node[:opsworks][:activity] == 'setup' then
+  include_recipe "hadoop"
+
   template "#{conf_dir}/flume-env.sh" do
     source "flume-env.sh.erb"
     owner  node[:neon_logs][:flume_user]
@@ -97,7 +99,7 @@ if node[:opsworks][:activity] == 'setup' then
 end
 
 if node[:opsworks][:activity] == 'configure' then
-  template "#{get_config_dir()}/flume.conf" do
+  template "#{conf_dir}/flume.conf" do
     source "flume.conf.erb"
     owner  node[:neon_logs][:flume_user]
     mode "0744"

@@ -24,11 +24,11 @@
 <% sinks = @streams.values.map{|x| x[:sinks]}.reduce(:+) %>
 <% sinkgroups = @streams.values.map{|x| x[:sinkgroups]}.reduce(:+) %>
 
-<%= @agent %>.sources = <%= sources.join(" ") %>
-<%= @agent %>.channels = <%= channels.join(" ") %>
-<%= @agent %>.sinks = <%= sinks.join(" ") %>
+agent.sources = <%= sources.join(" ") %>
+agent.channels = <%= channels.join(" ") %>
+agent.sinks = <%= sinks.join(" ") %>
 <% if sinkgroups.length > 0 then %>
-  <%= @agent %>.sinkgroups = <%= sinkgroups.join(" ") %>
+  agent.sinkgroups = <%= sinkgroups.join(" ") %>
 <% end %>
 
 <% for @streams.values do | data | %>
