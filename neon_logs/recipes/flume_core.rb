@@ -80,8 +80,8 @@ if node[:opsworks][:activity] == 'setup' then
     owner "root"
     mode "0755"
     variables({
+                :agent_name => "agent",
                 :service_name => node[:neon_logs][:flume_service_name],
-                :agent_name => node[:neon_logs][:flume_agent_name],
                 :flume_bin => node[:neon_logs][:flume_bin],
                 :flume_log_dir => log_dir,
                 :flume_conf_dir => conf_dir,
@@ -104,7 +104,6 @@ if node[:opsworks][:activity] == 'configure' then
     owner  node[:neon_logs][:flume_user]
     mode "0744"
     variables({
-                :agent => node[:neon_logs][:flume_agent_name],
                 :streams => node[:neon_logs][:flume_streams]
               })
     notifies :start, "service[#{node[:neon_logs][:flume_service_name]}]"

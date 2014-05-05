@@ -13,9 +13,6 @@ default["neon_logs"]["flume_run_dir"] = "/var/run/flume-ng"
 default["neon_logs"]["flume_log_dir"] = "/mnt/neon/logs"
 default["neon_logs"]["flume_home"] = "/usr/lib/flume-ng"
 
-# Flume agent name
-default["neon_logs"]["flume_agent_name"] = node['hostname']
-
 # User management
 default[:neon_logs][:flume_user] = "flume"
 
