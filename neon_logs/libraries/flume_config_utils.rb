@@ -40,29 +40,29 @@ class Chef
       sinks = []
       collector_ips[:primary].each.with_index do |ip, idx|
         sinks << {
-          :name => '#{namespace}_pk_#{idx}',
+          :name => "#{namespace}_pk_#{idx}",
           :ip => ip,
           :priority => ncollectors - idx
         }
       end
       collector_ips[:backup].each.with_index do |ip, idx|
         sinks << {
-          :name => '#{namespace}_bk_#{idx}',
+          :name => "#{namespace}_bk_#{idx}",
           :ip => ip,
           :priority => ncollectors - idx - collector_ips[:primary].length
         }
       end
 
       return {
-        :sources => ['#{namespace}_s'],
-        :channels => ['#{namespace}_c'],
+        :sources => ["#{namespace}_s"],
+        :channels => ["#{namespace}_c"],
         :sinks => sinks.map{|x| x[:name]},
-        :sinkgroups => ['#{namespace}_kg'],
+        :sinkgroups => ["#{namespace}_kg"],
         :template => 'filelog_agent.conf.erb',
         :variables => {
-          :s => '#{namespace}_s',
-          :c => '#{namespace}_c',
-          :kg => '#{namespace}_kg',
+          :s => "#{namespace}_s",
+          :c => "#{namespace}_c",
+          :kg => "#{namespace}_kg",
           :sinks => sinks,
           :source_file => filename,
           :collector_port => collector_port,
@@ -100,22 +100,22 @@ class Chef
       end
       collector_ips[:backup].each.with_index do |ip, idx|
         sinks << {
-          :name => '#{namespace}_bk_#{idx}',
+          :name => "#{namespace}_bk_#{idx}",
           :ip => ip,
           :priority => ncollectors - idx - collector_ips[:primary].length
         }
       end
 
       return {
-        :sources => ['#{namespace}_s'],
-        :channels => ['#{namespace}_c'],
+        :sources => ["#{namespace}_s"],
+        :channels => ["#{namespace}_c"],
         :sinks => sinks.map{|x| x[:name]},
-        :sinkgroups => ['#{namespace}_kg'],
+        :sinkgroups => ["#{namespace}_kg"],
         :template => 'json_agent.conf.erb',
         :variables => {
-          :s => '#{namespace}_s',
-          :c => '#{namespace}_c',
-          :kg => '#{namespace}_kg',
+          :s => "#{namespace}_s",
+          :c => "#{namespace}_c",
+          :kg => "#{namespace}_kg",
           :sinks => sinks,
           :json_port => json_port,
           :collector_port => collector_port,
@@ -158,15 +158,15 @@ class Chef
       namespace = "lc_#{log_type}"
 
       return {
-        :sources => ['#{namespace}_s'],
-        :channels => ['#{namespace}_c'],
-        :sinks => ['#{namespace}_k'],
+        :sources => ["#{namespace}_s"],
+        :channels => ["#{namespace}_c"],
+        :sinks => ["#{namespace}_k"],
         :sinkgroups => [],
         :template => 'log_collector.conf.erb',
         :variables => {
-          :s => '#{namespace}_s',
-          :c => '#{namespace}_c',
-          :k => '#{namespace}_k',
+          :s => "#{namespace}_s",
+          :c => "#{namespace}_c",
+          :k => "#{namespace}_k",
           :collector_port => listen_port,
           :collector_host => node[:opsworks][:instance][:private_ip],
           :channel_dir => channel_path,
