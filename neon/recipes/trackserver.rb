@@ -5,7 +5,7 @@
 node.default[:neon_logs][:flume_streams][:click_data] = \
   get_jsonagent_config(node[:neon][:trackserver][:flume_port],
                        "tracklog",
-                       "tracklog_collector"
+                       "tracklog_collector",
                        node[:neon_logs][:collector_port])
 
 node.default[:neon_logs][:flume_streams][:trackserver_logs] = \
