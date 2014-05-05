@@ -28,9 +28,10 @@ agent.sources = <%= sources.join(" ") %>
 agent.channels = <%= channels.join(" ") %>
 agent.sinks = <%= sinks.join(" ") %>
 <% if sinkgroups.length > 0 then %>
-  agent.sinkgroups = <%= sinkgroups.join(" ") %>
+agent.sinkgroups = <%= sinkgroups.join(" ") %>
 <% end %>
 
-<% for @streams.values do | data | %>
-  <%= render data[:template], :variables => data[:variables] %>
+<% @streams.each do | name, data | %>
+<%= render data[:template], :variables => data[:variables] %>
+
 <% end %> 
