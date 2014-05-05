@@ -11,7 +11,7 @@ class Chef
       "#{node[:neon_logs][:flume_log_dir]}/#{node[:neon_logs][:flume_service_name]}"
     end
 
-    # Returns the directory where the flume logs will live
+    # Returns the directory where the flume proceedure will run
     def get_run_dir()
       "#{node[:neon_logs][:flume_run_dir]}/#{node[:neon_logs][:flume_service_name]}"
     end
