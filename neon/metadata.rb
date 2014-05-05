@@ -7,5 +7,6 @@ version          '0.9.0'
 
 depends 'apt'
 depends 'python', "= 1.4.6"
+depends 'neon_logs'
 
 supports 'ubuntu'
