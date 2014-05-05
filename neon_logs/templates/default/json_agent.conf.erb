@@ -2,7 +2,7 @@
 # Define the possible sinks. They are in a failover group where the collector 
 # ips are first.
 agent.sinkgroups.<%= @kg %>.processor_type = failover
-agent.sinkgroups.<%= @kg %>.sinks = <%= @sinks.map{ |x| x[:name]}.join(" " %>
+agent.sinkgroups.<%= @kg %>.sinks = <%= @sinks.map{ |x| x[:name]}.join(" ") %>
 <% @sinks.each do |sink|  %>
   agent.sinks.<%= sink[:name] %>.type = avro
   agent.sinks.<%= sink[:name] %>.channel = <%= @c %>
