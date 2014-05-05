@@ -96,6 +96,19 @@ if node[:opsworks][:activity] == 'setup' then
   end
 end
 
+if node[:opsworks][:activity] == 'configure' then
+  template "#{get_config_dir()}/flume.conf" do
+    source "flume.conf.erb"
+    owner  node[:neon_logs][:flume_user]
+    mode "0744"
+    variables({
+                :agent => node[:neon_logs][:flume_agent_name],
+                :streams => node[:neon_logs][:flume_streams]
+              })
+    notifies :start, "service[#{node[:neon_logs][:flume_service_name]}]"
+  end
+end
+
 if ['undeploy', 'shutdown'].include? node[:opsworks][:activity] then
   service node[:neon_logs][:flume_service_name] do
     init_command service_bin

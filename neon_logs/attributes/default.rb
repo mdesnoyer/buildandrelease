@@ -13,18 +13,42 @@ default["neon_logs"]["flume_run_dir"] = "/var/run/flume-ng"
 default["neon_logs"]["flume_log_dir"] = "/var/log"
 default["neon_logs"]["flume_home"] = "/usr/lib/flume-ng"
 
+# Flume agent name
+default["neon_logs"]["flume_agent_name"] = node['hostname']
+
+# User management
+default[:neon_logs][:flume_user] = "flume"
+
+# Configuring flume is done by definining logcial streams in a single
+# host. For each of these streams, you must provide the following
+# attribute structure:
+#
+# default[:neon_logs][:flume_streams][:stream_name] = { 
+#   :sources => [source_names],
+#   :channels => [channel_names],
+#   :sinks => [sink_names],
+#   :sinkgroups => [sinkgroup_names],
+#   :template => template_file,
+#   :variables => {hash of variables for the template}
+#
+# The partial template file contains all the lines in the flume config
+# except for the ones that look like:
+#
+# agent.sources = s1 s2
+# agent.channels = c1 c2
+# agent.sinks = k1 k2
+#
+# Your source, channel and sink names must be unique, so you might
+# want to namespace them, but you must do that yourself.
+default[:neon_logs][:flume_streams] = {}
+
 # The template used to configure flume
 default["neon_logs"]["flume_conf_template"] = "filelog_agent.conf.erb"
 
-# Flume agent name
-default["neon_logs"]["flume_agent_name"] = node['hostname']
 
 # Name of the different layers for use in OpsWorks. Must be the short name
 # These are used to find hosts currently up on the different layers
 default["neon_logs"]["collector_layer"] = "log-collector"
-
-# User management
-default[:neon_logs][:flume_user] = "flume"
 
 # The port that the collectors will listen on
 default[:neon_logs][:collector_port] = 6366
