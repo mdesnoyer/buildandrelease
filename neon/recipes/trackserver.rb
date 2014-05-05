@@ -9,10 +9,10 @@ node.default[:neon_logs][:flume_streams][:click_data] = \
                        node[:neon_logs][:collector_port])
 
 node.default[:neon_logs][:flume_streams][:trackserver_logs] = \
-  get_fileagent_config(default[:neon][:trackserver][:log_file],
+  get_fileagent_config(node[:neon][:trackserver][:log_file],
                        "trackserver")
 
-node.default[:neon_logs][:flume_streams][:trackserver_logs] = \
+node.default[:neon_logs][:flume_streams][:trackserver_flume_logs] = \
   get_fileagent_config("#{get_log_dir()}/flume.init.log",
                        "trackserver-flume")
 
