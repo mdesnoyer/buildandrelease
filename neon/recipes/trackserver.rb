@@ -153,7 +153,7 @@ if ['config', 'setup'].include? node[:opsworks][:activity] then
                 :service_port => node[:neon][:trackserver][:port],
                 :frontend_port => node[:neon][:trackserver][:external_port]
               })
-    :notifies :reload, 'service[nginx]'
+    notifies :reload, 'service[nginx]'
   end
 end
 
