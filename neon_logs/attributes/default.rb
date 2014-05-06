@@ -59,7 +59,7 @@ default[:neon_logs][:json_http_source_port] = 6360
 default[:neon_logs][:s3_log_path] = "s3n://neon-server-logs/%{logtype}/%{srchost}/%Y/%m/%d"
 
 # The compression type for writing to s3
-default[:neon_logs][:s3_log_compression] = "lzo"
+default[:neon_logs][:s3_log_compression] = "bzip2"
 
 # The log types being written to s3
 default[:neon_logs][:log_type] = "neon-logs"

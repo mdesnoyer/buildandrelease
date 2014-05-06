@@ -19,7 +19,7 @@ node.default[:neon_logs][:flume_streams][:clicklog_collector] = \
                           2147483648, # 2GB
                           3600, # 1 hour
                           1000, # flush size
-                          "lzo")
+                          "bzip2")
 
 include_recipe "neon_logs::flume_core"
 
