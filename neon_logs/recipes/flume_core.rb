@@ -47,12 +47,6 @@ end
 
 service_bin = get_service_bin()
 
-service node[:neon_logs][:flume_service_name] do
-  init_command service_bin
-  supports :status => true, :restart => true, :start => true, :stop => true
-  action :nothing
-end
-
 if ['configure', 'setup'].include? node[:opsworks][:activity] then
   monitoring_master = node[:opsworks][:layers]['monitoring-master'][:instances].collect{ |instance, names|
     names['private_ip']
@@ -75,19 +69,6 @@ if ['configure', 'setup'].include? node[:opsworks][:activity] then
               })
     notifies :restart, "service[#{node[:neon_logs][:flume_service_name]}]"
   end
-end
-
-if node[:opsworks][:activity] == 'setup' then
-  include_recipe "hadoop"
-
-  # Create an empty config file so that the flume service can
-  # start. When configure happens, it will be rewritten and
-  # automatically picked up by flume.
-  file "#{conf_dir}/flume.conf" do
-    owner  node[:neon_logs][:flume_user]
-    mode "0600"
-    action :create_if_missing
-  end
 
   template service_bin do
     source "flume-ng-agent.erb"
@@ -103,13 +84,32 @@ if node[:opsworks][:activity] == 'setup' then
                 :flume_home => node[:neon_logs][:flume_home],
                 :flume_user => node[:neon_logs][:flume_user]
               })
+    notifies :restart, "service[#{node[:neon_logs][:flume_service_name]}]"
+  end
+end
+
+if node[:opsworks][:activity] == 'setup' then
+  include_recipe "hadoop"
+
+  # Create an empty config file so that the flume service can
+  # start. When configure happens, it will be rewritten and
+  # automatically picked up by flume.
+  file "#{conf_dir}/flume.conf" do
+    owner  node[:neon_logs][:flume_user]
+    mode "0600"
+    action :create_if_missing
   end
 
   service node[:neon_logs][:flume_service_name] do
-    init_command service_bin
-    supports :status => true, :restart => true, :start => true, :stop => true
     action [:enable, :start]
   end
+end
+
+service node[:neon_logs][:flume_service_name] do
+  init_command service_bin
+  supports :status => true, :restart => true, :start => true, :stop => true
+  action :nothing
+  subscribes :restart, "template[/etc/hadoop/#{node['hadoop']['conf_dir']}/core-site.xml]"
 end
 
 if node[:opsworks][:activity] == 'configure' then
@@ -126,8 +126,6 @@ end
 
 if ['undeploy', 'shutdown'].include? node[:opsworks][:activity] then
   service node[:neon_logs][:flume_service_name] do
-    init_command service_bin
-    supports :status => true, :restart => true, :start => true, :stop => true
     action :stop
   end
 end
