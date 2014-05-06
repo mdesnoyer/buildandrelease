@@ -174,7 +174,8 @@ class Chef
           :max_log_size => max_log_size,
           :max_log_rolltime => max_log_rolltime,
           :s3_flush_batch_size => s3_flush_batch_size,
-          :compression => compression
+          :compression => compression,
+          :log_type => log_type
         }
       }
     end
