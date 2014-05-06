@@ -29,7 +29,7 @@ verbose = true
 # sheet, i.e., siege > file.csv 
 # ex: csv = true|false (default false)
 #
-# csv = true
+csv = true
 
 #
 # Full URL verbose format: By default siege displays
@@ -68,7 +68,7 @@ logging = true
 #     logfile = ${HOME}/var/log/siege.log
 #     logfile = ${LOGFILE}
 #
-# logfile = 
+logfile = ${HOME}/log/siege.log
 
 #
 # HTTP protocol.  Options HTTP/1.1 and HTTP/1.0.
@@ -121,7 +121,7 @@ connection = close
 # Default number of simulated  concurrent users
 # ex: concurrent = 25
 #
-concurrent = 15
+concurrent = 10000
 
 #
 # Default duration of the siege.  The right hand argument has
@@ -130,7 +130,7 @@ concurrent = 15
 # are assumed.
 # ex: time = 50M
 #
-# time =
+time = 5M
 
 #
 # Repetitions.  The length of siege may be specified in client
@@ -153,7 +153,7 @@ concurrent = 15
 #     file = $HOME/etc/urls.txt
 #     file = $URLSFILE
 #
-# file =
+file = ${HOME}/urls.txt
 
 #
 # Default URL, this is a single URL that you want to test. This
@@ -171,7 +171,7 @@ concurrent = 15
 # for benchmarking.
 # ex: delay = 3
 #
-delay = 1
+delay = 3
 
 #
 # Connection timeout value. Set the value in seconds for 
@@ -187,7 +187,7 @@ delay = 1
 # value is false.
 # ex: expire-session = true
 #
-# expire-session = 
+expire-session = true
 
 #
 # Failures: This is the number of total connection failures allowed
@@ -208,7 +208,7 @@ delay = 1
 # urls.txt file in order from first to last and back again.
 # ex: internet = true
 #
-internet = false
+internet = true
 
 #
 # Default benchmarking value, If true, there is NO delay

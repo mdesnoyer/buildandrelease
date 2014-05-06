@@ -36,7 +36,7 @@ default[:neon][:clicklog_collector][:channel_dir] = "/mnt/neon/channels/clicklog
 
 # Nginx parameters
 default[:nginx][:init_style] = "upstart"
-default[:nginx][:large_client_header_buffers] = 1024000
+default[:nginx][:large_client_header_buffers] = "8 1024000"
 default[:nginx][:disable_access_log] = true
 default[:nginx][:install_method] = "source"
 default[:nginx][:log_dir] = "#{node[:neon][:log_dir]}/nginx"
