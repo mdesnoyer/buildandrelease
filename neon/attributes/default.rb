@@ -40,7 +40,7 @@ default[:nginx][:large_client_header_buffers] = 1024000
 default[:nginx][:disable_access_log] = true
 default[:nginx][:install_method] = "source"
 default[:nginx][:log_dir] = "#{node[:neon][:log_dir]}/nginx"
-default[:nginx][:source][:modules:] = %w(
+default[:nginx][:source][:modules] = %w(
   nginx::http_realip_module
   nginx::http_geoip_module
 )
