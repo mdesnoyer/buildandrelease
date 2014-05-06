@@ -53,8 +53,17 @@ service node[:neon_logs][:flume_service_name] do
   action :nothing
 end
 
-if node[:opsworks][:activity] == 'setup' then
-  include_recipe "hadoop"
+if ['configure', 'setup'].include? node[:opsworks][:activity] then
+  monitoring_master = node[:opsworks][:layers]['monitoring-master'][:instances].collect{ |instance, names|
+    names['private_ip']
+  }.first rescue nil
+  if not monitoring_master.nil?
+    node.default[:neon_logs][:java_opts] = \
+    [
+     "-Dflume.monitoring.type=ganglia",
+     "-Dflume.monitoring.hosts=#{monitoring_master}:#{node[:ganglia][:tcp_client_port]}"
+    ]
+  end
 
   template "#{conf_dir}/flume-env.sh" do
     source "flume-env.sh.erb"
@@ -64,7 +73,12 @@ if node[:opsworks][:activity] == 'setup' then
                 :classpath => node["neon_logs"]["classpath"],
                 :java_opts => node["neon_logs"]["java_opts"],
               })
+    notifies :restart, "services[#{node[:neon_logs][:flume_service_name]}]"
   end
+end
+
+if node[:opsworks][:activity] == 'setup' then
+  include_recipe "hadoop"
 
   # Create an empty config file so that the flume service can
   # start. When configure happens, it will be rewritten and
