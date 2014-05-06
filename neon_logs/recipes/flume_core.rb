@@ -55,7 +55,7 @@ if ['configure', 'setup'].include? node[:opsworks][:activity] then
     node.default[:neon_logs][:java_opts] = \
     [
      "-Dflume.monitoring.type=ganglia",
-     "-Dflume.monitoring.hosts=#{monitoring_master}:#{node[:ganglia][:tcp_client_port]}"
+     "-Dflume.monitoring.hosts=#{monitoring_master}:#{node[:ganglia][:udp_client_port]}"
     ]
   end
 
