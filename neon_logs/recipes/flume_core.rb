@@ -73,7 +73,7 @@ if ['configure', 'setup'].include? node[:opsworks][:activity] then
                 :classpath => node["neon_logs"]["classpath"],
                 :java_opts => node["neon_logs"]["java_opts"],
               })
-    notifies :restart, "services[#{node[:neon_logs][:flume_service_name]}]"
+    notifies :restart, "service[#{node[:neon_logs][:flume_service_name]}]"
   end
 end
 
