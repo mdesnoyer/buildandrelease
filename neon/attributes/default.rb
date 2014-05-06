@@ -25,10 +25,22 @@ default[:neon][:ops_email] = "ops@neon-lab.com"
 # Parameters for the trackserver
 default[:neon][:trackserver][:config] = "#{node[:neon][:config_dir]}/trackserver.conf"
 default[:neon][:trackserver][:log_file] = "#{node[:neon][:log_dir]}/trackserver.log"
-default[:neon][:trackserver][:port] = 80
+default[:neon][:trackserver][:port] = 7214 # Port being listened to internally
+default[:neon][:trackserver][:external_port] = 80 # External port being listened to
 default[:neon][:trackserver][:flume_port] = 6360
 default[:neon][:trackserver][:backup_dir] = "/mnt/neon/trackserver/backlog"
 
 # Parameters for the clicklog_collector
 default[:neon][:clicklog_collector][:s3_path] = "s3n://neon-tracker-logs-v2/v%{track_vers}/%{tai}/%Y/%m/%d"
 default[:neon][:clicklog_collector][:channel_dir] = "/mnt/neon/channels/clicklog"
+
+# Nginx parameters
+default[:nginx][:init_style] = "upstart"
+default[:nginx][:large_client_header_buffers] = 1024000
+default[:nginx][:disable_access_log] = true
+default[:nginx][:install_method] = "source"
+default[:nginx][:log_dir] = "#{node[:neon][:log_dir]}/nginx"
+default[:nginx][:source][:modules:] = %w(
+  nginx::http_realip_module,
+  nginx::http_geoip_module
+)

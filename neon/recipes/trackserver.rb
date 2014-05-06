@@ -16,6 +16,10 @@ node.default[:neon_logs][:flume_streams][:trackserver_flume_logs] = \
   get_fileagent_config("#{get_log_dir()}/flume.init.log",
                        "trackserver-flume")
 
+node.default[:neon_logs][:flume_streams][:trackserver_nginx_logs] = \
+  get_fileagent_config("#{node[:nginx][:log_dir]}/error.log",
+                       "trackserver-nginx")
+
 include_recipe "neon_logs::flume_core"
 
 # List the python dependencies for this server. We don't install
@@ -34,6 +38,10 @@ pydeps = {
 }
 
 if node[:opsworks][:activity] == 'setup' then
+  # Install nginx
+  include_recipe "nginx::default"
+
+  # Install the neon code
   include_recipe "neon::repo"
 
   # Create a trackserver user
@@ -103,25 +111,50 @@ if node[:opsworks][:activity] == 'setup' then
               })
   end
 
+  template "/etc/init/nginx-email.conf" do
+    source "mail-on-restart.conf.erb"
+    owner "root"
+    group "root"
+    mode "0644"
+    variables({
+                :service => "nginx",
+                :host => node[:hostname],
+                :email => node[:neon][:ops_email],
+                :log_file => "#{node[:nginx][:log_dir]}/error.log"
+              })
+  end
+
 end
 
 if ['config', 'setup'].include? node[:opsworks][:activity] then
-    # Write the configuration file
-    template node[:neon][:trackserver][:config] do
-      source "trackserver.conf.erb"
-      owner "trackserver"
-      group "trackserver"
-      mode "0644"
-      variables({
-                  :port => node[:neon][:trackserver][:port],
-                  :flume_port => node[:neon][:trackserver][:flume_port],
-                  :backup_dir => node[:neon][:trackserver][:backup_dir],
-                  :log_file => node[:neon][:trackserver][:log_file],
-                  :carbon_host => node[:neon][:carbon_host],
-                  :carbon_port => node[:neon][:carbon_port],
-                })
-    end
+  # Write the configuration file for the trackserver
+  template node[:neon][:trackserver][:config] do
+    source "trackserver.conf.erb"
+    owner "trackserver"
+    group "trackserver"
+    mode "0644"
+    variables({
+                :port => node[:neon][:trackserver][:port],
+                :flume_port => node[:neon][:trackserver][:flume_port],
+                :backup_dir => node[:neon][:trackserver][:backup_dir],
+                :log_file => node[:neon][:trackserver][:log_file],
+                :carbon_host => node[:neon][:carbon_host],
+                :carbon_port => node[:neon][:carbon_port],
+              })
+  end
 
+  # Write the configuration for nginx
+  template "#{node[:nginx][:dir]}/conf.d/trackserver.conf" do
+    source "trackserver_nginx.conf.erb"
+    owner node['nginx']['user']
+    group node['nginx']['group']
+    mode "0644"
+    variables({
+                :service_port => node[:neon][:trackserver][:port],
+                :frontend_port => node[:neon][:trackserver][:external_port]
+              })
+    :notifies :reload, 'service[nginx]'
+  end
 end
 
 if node[:opsworks][:activity] == 'setup' then
