@@ -3,7 +3,7 @@ package 'siege'
 if node[:opsworks][:activity] == 'configure' then
   template "/home/ubuntu/.siegerc" do
     source "siegerc.erb"
-    owner "ubunutu"
+    owner "ubuntu"
     group "ubuntu"
     mode "0644"
     variables({})
