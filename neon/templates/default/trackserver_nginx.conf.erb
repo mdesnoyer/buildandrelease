@@ -1,0 +1,16 @@
+large_client_header_buffers = <%= node[:nginx][:large_client_header_buffers] %>;
+
+upstream tornado_servers {
+  server 127.0.0.1:<%= @service_port %>;
+}
+
+server {
+  listen <%= @frontend_port %>
+  location / {
+    proxy_redirect off;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_pass http://tornado_servers;
+  }
+}
