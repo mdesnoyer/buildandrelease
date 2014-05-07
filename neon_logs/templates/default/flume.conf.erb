@@ -19,10 +19,10 @@
 # the channels and the sinks.
 # Sources, channels and sinks are defined per agent
 
-<% sources = @streams.values.map{|x| x[:sources]}.reduce(:+) %>
-<% channels = @streams.values.map{|x| x[:channels]}.reduce(:+) %>
-<% sinks = @streams.values.map{|x| x[:sinks]}.reduce(:+) %>
-<% sinkgroups = @streams.values.map{|x| x[:sinkgroups]}.reduce(:+) %>
+<% sources = @streams.values.map{|x| x[:sources]}.select{|x| x}.reduce(:+) %>
+<% channels = @streams.values.map{|x| x[:channels]}.select{|x| x}.reduce(:+) %>
+<% sinks = @streams.values.map{|x| x[:sinks]}.select{|x| x}.reduce(:+) %>
+<% sinkgroups = @streams.values.map{|x| x[:sinkgroups]}.select{|x| x}.reduce(:+) %>
 
 agent.sources = <%= sources.join(" ") %>
 agent.channels = <%= channels.join(" ") %>
