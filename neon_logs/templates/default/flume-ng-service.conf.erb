@@ -1,0 +1,16 @@
+description "A flume agent"
+author  "Mark Desnoyer <desnoyer@neon-lab.com>"
+
+start on runlevel [234]
+stop on runlevel [0156]
+
+kill timeout 30
+limit nofile 65536 65536
+
+setuid <%= @flume_user %>
+setgid <%= @flume_group %>
+
+chdir <%= @flume_run_dir %>
+
+exec <%= @flume_bin %> agent --conf <%= @flume_conf_dir %> --conf-file <%= @flume_conf_dir %>/flume.conf --name agent >> <%= @flume_log_dir %>/flume.init.log 2>&1
+respawn

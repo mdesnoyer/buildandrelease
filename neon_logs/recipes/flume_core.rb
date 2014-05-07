@@ -44,8 +44,12 @@ directory run_dir do
   recursive true
 end
 
-
-service_bin = get_service_bin()
+service node[:neon_logs][:flume_service_name] do
+  provider Chef::Provider::Service::Upstart
+  supports :status => true, :restart => true, :start => true, :stop => true
+  action :nothing
+  subscribes :restart, "template[/etc/hadoop/#{node['hadoop']['conf_dir']}/core-site.xml]"
+end
 
 if ['configure', 'setup'].include? node[:opsworks][:activity] then
   monitoring_master = node[:opsworks][:layers]['monitoring-master'][:instances].collect{ |instance, names|
@@ -70,19 +74,17 @@ if ['configure', 'setup'].include? node[:opsworks][:activity] then
     notifies :restart, "service[#{node[:neon_logs][:flume_service_name]}]"
   end
 
-  template service_bin do
-    source "flume-ng-agent.erb"
+  template "/etc/init/#{node[:neon_logs][:flume_service_name]}.conf" do
+    source "flume-ng-service.conf.erb"
     owner "root"
     mode "0755"
     variables({
-                :agent_name => "agent",
-                :service_name => node[:neon_logs][:flume_service_name],
                 :flume_bin => node[:neon_logs][:flume_bin],
                 :flume_log_dir => log_dir,
                 :flume_conf_dir => conf_dir,
                 :flume_run_dir => run_dir,
-                :flume_home => node[:neon_logs][:flume_home],
-                :flume_user => node[:neon_logs][:flume_user]
+                :flume_user => node[:neon_logs][:flume_user],
+                :flume_group => node[:neon_logs][:flume_user]
               })
     notifies :restart, "service[#{node[:neon_logs][:flume_service_name]}]"
   end
@@ -103,13 +105,6 @@ if node[:opsworks][:activity] == 'setup' then
   service node[:neon_logs][:flume_service_name] do
     action [:enable, :start]
   end
-end
-
-service node[:neon_logs][:flume_service_name] do
-  init_command service_bin
-  supports :status => true, :restart => true, :start => true, :stop => true
-  action :nothing
-  subscribes :restart, "template[/etc/hadoop/#{node['hadoop']['conf_dir']}/core-site.xml]"
 end
 
 if node[:opsworks][:activity] == 'configure' then

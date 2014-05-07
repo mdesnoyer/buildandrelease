@@ -11,7 +11,6 @@ default["neon_logs"]["flume_conf_dir"] = "/etc/flume-ng/conf"
 default["neon_logs"]["flume_bin"] = "/usr/bin/flume-ng"
 default["neon_logs"]["flume_run_dir"] = "/var/run/flume-ng"
 default["neon_logs"]["flume_log_dir"] = "/mnt/neon/logs"
-default["neon_logs"]["flume_home"] = "/usr/lib/flume-ng"
 
 # User management
 default[:neon_logs][:flume_user] = "flume"
