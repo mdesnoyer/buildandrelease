@@ -99,6 +99,20 @@ if ['configure', 'setup'].include? node[:opsworks][:activity] then
     notifies :restart, "service[#{node[:neon_logs][:flume_service_name]}]"
   end
 
+  # Write a script that will send a mail when flume dies
+  template "/etc/init/flume-email.conf" do
+    source "mail-on-restart.conf.erb"
+    owner "root"
+    group "root"
+    mode "0644"
+    variables({
+                :service => node[:neon_logs][:flume_service_name],
+                :host => node[:hostname],
+                :email => node[:neon][:ops_email],
+                :log_file => "#{log_dir}/flume.log"
+              })
+  end
+
   template "/etc/init/#{node[:neon_logs][:flume_service_name]}.conf" do
     source "flume-ng-service.conf.erb"
     owner "root"
