@@ -65,7 +65,8 @@ if ['configure', 'setup'].include? node[:opsworks][:activity] then
   if not monitoring_master.nil?
     node.default[:neon_logs][:java_opts] = \
     [
-     "-Dflume.monitoring.type=ganglia",
+     "-Dflume.monitoring.type=http",
+     "-Dflume.monitoring.port=41414",
      "-Dflume.monitoring.hosts=#{monitoring_master}:#{node[:ganglia][:udp_client_port]}"
     ]
   end
@@ -94,7 +95,7 @@ if ['configure', 'setup'].include? node[:opsworks][:activity] then
     source "jets3t.properties.erb"
     owner  node[:neon_logs][:flume_user]
     mode   "0744"
-    variables({ node[:neon_logs][:max_s3_upload_speed],
+    variables({:max_s3_upload_speed => node[:neon_logs][:max_s3_upload_speed],
               })
     notifies :restart, "service[#{node[:neon_logs][:flume_service_name]}]"
   end
