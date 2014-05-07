@@ -44,6 +44,13 @@ directory run_dir do
   recursive true
 end
 
+directory node[:neon_logs][:s3_buffer_dir] do
+  owner node[:neon_logs][:flume_user]
+  mode "0755"
+  action :create
+  recursive true
+end
+
 service node[:neon_logs][:flume_service_name] do
   provider Chef::Provider::Service::Upstart
   supports :status => true, :restart => true, :start => true, :stop => true
@@ -74,13 +81,30 @@ if ['configure', 'setup'].include? node[:opsworks][:activity] then
     notifies :restart, "service[#{node[:neon_logs][:flume_service_name]}]"
   end
 
+  template "#{conf_dir}/log4j.properties" do
+    source "flume_log4j.conf.erb"
+    owner  node[:neon_logs][:flume_user]
+    mode   "0744"
+    variables({ :log_dir => log_dir,
+              })
+    notifies :restart, "service[#{node[:neon_logs][:flume_service_name]}]"
+  end
+
+  template "#{conf_dir}/jets3t.properties" do
+    source "jets3t.properties.erb"
+    owner  node[:neon_logs][:flume_user]
+    mode   "0744"
+    variables({ node[:neon_logs][:max_s3_upload_speed],
+              })
+    notifies :restart, "service[#{node[:neon_logs][:flume_service_name]}]"
+  end
+
   template "/etc/init/#{node[:neon_logs][:flume_service_name]}.conf" do
     source "flume-ng-service.conf.erb"
     owner "root"
     mode "0755"
     variables({
                 :flume_bin => node[:neon_logs][:flume_bin],
-                :flume_log_dir => log_dir,
                 :flume_conf_dir => conf_dir,
                 :flume_run_dir => run_dir,
                 :flume_user => node[:neon_logs][:flume_user],

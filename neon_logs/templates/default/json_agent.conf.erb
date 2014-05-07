@@ -30,5 +30,5 @@ agent.sources.<%= @s %>.interceptors.addtype.value = <%= @log_type %>
 
 # The channel is in memory
 agent.channels.<%= @c %>.type = memory
-agent.channels.<%= @c %>.capacity = 1000
+agent.channels.<%= @c %>.capacity = 100000
 agent.channels.<%= @c %>.transactionCapacity = 1000

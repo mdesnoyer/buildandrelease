@@ -147,13 +147,11 @@ class Chef
     def get_logcollector_config(listen_port=nil,
                                 s3_log_path=nil,
                                 log_type=nil,
-                                channel_path=nil,
                                 max_log_size=nil,
                                 max_log_rolltime=nil,
                                 s3_flush_batch_size=nil,
                                 compression=nil)
       listen_port = listen_port || node[:neon_logs][:collector_port]
-      channel_path = channel_path || get_log_dir()
       s3_log_path = s3_log_path || node[:neon_logs][:s3_log_path]
       max_log_size = max_log_size || node[:neon_logs][:max_log_size]
       max_log_rolltime = max_log_rolltime || node[:neon_logs][:max_log_rolltime]
@@ -175,7 +173,6 @@ class Chef
           :k => "#{namespace}_k",
           :collector_port => listen_port,
           :collector_host => node[:opsworks][:instance][:private_ip],
-          :channel_dir => channel_path,
           :s3_log_path => s3_log_path,
           :max_log_size => max_log_size,
           :max_log_rolltime => max_log_rolltime,

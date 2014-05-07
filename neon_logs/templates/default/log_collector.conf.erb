@@ -7,11 +7,10 @@ agent.sources.<%= @s %>.interceptors =  addtime
 agent.sources.<%= @s %>.interceptors.addtime.type = timestamp
 agent.sources.<%= @s %>.interceptors.addtime.preserveExisting = true
 
-# The channel is on disk. Should be an ebs volume so that we can
-# recover if necessary.
-agent.channels.<%= @c %>.type = file
-agent.channels.<%= @c %>.checkpointDir = <%= @channel_dir %>/checkpoint
-agent.channels.<%= @c %>.dataDirs = <%= @channel_dir %>/data
+# The channel is in memory because it will be buffered on disk before going to S3
+agent.channels.<%= @c %>.type = memory
+agent.channels.<%= @c %>.capacity = 100000
+agent.channels.<%= @c %>.transactionCapacity = 1000
 
 # The sink goes to s3
 agent.sinks.<%= @k %>.type = hdfs
@@ -21,8 +20,8 @@ agent.sinks.<%= @k %>.hdfs.codeC = <%= @compression %>
 agent.sinks.<%= @k %>.hdfs.fileType = CompressedStream
 agent.sinks.<%= @k %>.hdfs.filePrefix = <%= @log_type %>
 agent.sinks.<%= @k %>.hdfs.threadsPoolSize = 100
-agent.sinks.<%= @k %>.hdfs.roleSize = 0 #<%= @max_log_size %>
-agent.sinks.<%= @k %>.hdfs.rollCount = 10000000 # 0
+agent.sinks.<%= @k %>.hdfs.rollSize = <%= @max_log_size %>
+agent.sinks.<%= @k %>.hdfs.rollCount = 0
 agent.sinks.<%= @k %>.hdfs.rollInterval = <%= @max_log_rolltime %>
 agent.sinks.<%= @k %>.hdfs.idleTimeout = 1800
 agent.sinks.<%= @k %>.hdfs.batchSize = <%= @s3_flush_batch_size %>

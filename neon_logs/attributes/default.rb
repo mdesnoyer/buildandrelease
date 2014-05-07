@@ -10,7 +10,7 @@ default["neon_logs"]["flume_service_name"] = "flume-ng-agent"
 default["neon_logs"]["flume_conf_dir"] = "/etc/flume-ng/conf"
 default["neon_logs"]["flume_bin"] = "/usr/bin/flume-ng"
 default["neon_logs"]["flume_run_dir"] = "/var/run/flume-ng"
-default["neon_logs"]["flume_log_dir"] = "/mnt/neon/logs"
+default["neon_logs"]["flume_log_dir"] = "/var/log/flume-ng"
 
 # User management
 default[:neon_logs][:flume_user] = "flume"
@@ -63,15 +63,35 @@ default[:neon_logs][:s3_log_compression] = "bzip2"
 # The log types being written to s3
 default[:neon_logs][:log_type] = "neon-logs"
 
-# The maximum log size in bytes
-default[:neon_logs][:max_log_size] = 1073741824 # 1GB
+# The maximum log size in bytes uncompressed
+default[:neon_logs][:max_log_size] = 4294967296 # 4GB
 
 # The maximum file rollover interval in seconds
 default[:neon_logs][:max_log_rolltime] = 3600 # 1 hour
 
-# The log batch size before its pushed to s3
-default[:neon_logs][:s3_flush_batch_size] = 100
+# The log batch size before its pushed to s3 (doesn't actually go to s3 yet. it goes to disk until file rollover)
+default[:neon_logs][:s3_flush_batch_size] = 1000
+default[:neon_logs][:s3_buffer_dir] = "/mnt/neon/s3buffer"
+
+# Maximum upload speed to s3 in KB/s
+default[:neon_logs][:max_s3_upload_speed] = 12800 # 100 Mbps
 
 # AWS keys
 default["aws"]["aws_access_key"] = ENV['AWS_ACCESS_KEY_ID']
 default["aws"]["secret_access_key"] = ENV['AWS_SECRET_ACCESS_KEY']
+
+
+# Overwrite the hadoop parameters
+default[:hadoop][:core_site]['fs.s3.awsAccessKeyId'] = \
+  node[:aws][:aws_access_key]
+default[:hadoop][:core_site]['fs.s3.awsSecretAccessKey'] = \
+  node[:aws][:secret_access_key]
+default[:hadoop][:core_site]['fs.s3n.awsAccessKeyId'] = \
+  node[:aws][:aws_access_key]
+default[:hadoop][:core_site]['fs.s3n.awsSecretAccessKey'] = \
+  node[:aws][:secret_access_key]
+default[:hadoop][:core_site]['fs.s3.buffer.dir'] = \
+  node[:neon_logs][:s3_buffer_dir]
+default[:hadoop][:core_site]['fs.s3n.multipart.uploads.enabled'] = true
+default[:hadoop][:core_site]['fs.s3n.multipart.uploads.block.size'] = 67108864 # 64 MB
+default[:hadoop][:core_site]['fs.s3n.multipart.copy.block.size'] = 5368709120 #5GB

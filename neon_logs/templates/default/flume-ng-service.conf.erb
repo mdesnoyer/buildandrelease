@@ -12,5 +12,5 @@ setgid <%= @flume_group %>
 
 chdir <%= @flume_run_dir %>
 
-exec <%= @flume_bin %> agent --conf <%= @flume_conf_dir %> --conf-file <%= @flume_conf_dir %>/flume.conf --name agent >> <%= @flume_log_dir %>/flume.init.log 2>&1
+exec <%= @flume_bin %> agent --conf <%= @flume_conf_dir %> --conf-file <%= @flume_conf_dir %>/flume.conf --name agent
 respawn

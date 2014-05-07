@@ -13,7 +13,7 @@ node.default[:neon_logs][:flume_streams][:trackserver_logs] = \
                        "trackserver")
 
 node.default[:neon_logs][:flume_streams][:trackserver_flume_logs] = \
-  get_fileagent_config("#{get_log_dir()}/flume.init.log",
+  get_fileagent_config("#{get_log_dir()}/flume.log",
                        "trackserver-flume")
 
 node.default[:neon_logs][:flume_streams][:trackserver_nginx_logs] = \
