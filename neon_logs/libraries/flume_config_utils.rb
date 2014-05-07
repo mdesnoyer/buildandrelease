@@ -36,6 +36,9 @@ class Chef
       namespace = "fa_#{File.basename(filename).split('.')[0]}"
       collector_ips = get_collector_ips(collector_layer)
       ncollectors = collector_ips[:primary].length + collector_ips[:backup].length
+      if ncollectors == 0
+        return {}
+      end
       # Determine all the sinks based on the collector ips
       sinks = []
       collector_ips[:primary].each.with_index do |ip, idx|
@@ -89,6 +92,9 @@ class Chef
       namespace = "ja_#{json_port}"
       collector_ips = get_collector_ips(collector_layer)
       ncollectors = collector_ips[:primary].length + collector_ips[:backup].length
+      if ncollectors == 0
+        return {}
+      end
       # Determine all the sinks based on the collector ips
       sinks = []
       collector_ips[:primary].each.with_index do |ip, idx|
