@@ -34,7 +34,8 @@ pydeps = {
   "simplejson" => "2.3.2",
   "nose" => "1.3.0",
   "pyfakefs" => "2.4",
-  "mock" => "1.0.1"
+  "mock" => "1.0.1",
+  "httpagentparser" => "1.6.0"
 }
 
 if node[:opsworks][:activity] == 'setup' then
