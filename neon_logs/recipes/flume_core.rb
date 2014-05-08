@@ -174,7 +174,7 @@ if ['undeploy', 'shutdown'].include? node[:opsworks][:activity] then
 end
 
 cron "monitor_flume_cron" do
-  action default[:neon_logs][:monitor_flume] ? :create : :delete
+  action node[:neon_logs][:monitor_flume] ? :create : :delete
   user node[:neon_logs][:flume_user]
   mailto "ops@neon-lab.com"
   command "#{conf_dir}/monitor_flume.py"
