@@ -6,7 +6,7 @@ node.default[:neon_logs][:flume_streams][:clicklog_collector] = \
                           node[:neon][:clicklog_collector][:s3_path],
                           "clicklog",
                           4294967296, #4 GB
-                          3600, # 1 hour
+                          43200, # 12 hours
                           1000, # flush size
                           "bzip2")
 
