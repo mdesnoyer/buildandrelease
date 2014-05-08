@@ -173,7 +173,7 @@ if ['undeploy', 'shutdown'].include? node[:opsworks][:activity] then
   end
 end
 
-cron monitor_flume_cron do
+cron "monitor_flume_cron" do
   action default[:neon_logs][:monitor_flume] ? :create : :delete
   user node[:neon_logs][:flume_user]
   mailto "ops@neon-lab.com"
