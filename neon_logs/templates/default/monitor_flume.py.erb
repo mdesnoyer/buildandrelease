@@ -12,13 +12,13 @@ import socket
 import time
 import urllib2
 
-def json2graphite(self, json_str):
+def json2graphite(json_str):
   msgs = []
   data = json.loads(json_str)
   node = platform.node().replace('.', '-')
   timestamp = int(time.time())
-  for component, stats_dict in data:
-    for metric, val in stats_dict:
+  for component, stats_dict in data.iteritems():
+    for metric, val in stats_dict.iteritems():
       try:
         fval = float(val)
       except ValueError:
@@ -31,14 +31,14 @@ def json2graphite(self, json_str):
 if __name__ == '__main__':
   # Get the json data from the flume instance
   json_str = urllib2.urlopen(
-    'http://localhost:<%= @flume_monitoring_port %>/metrics')
+    'http://localhost:<%= @flume_monitoring_port %>/metrics').read()
 
   # Translate the data
   graphite_msg = json2graphite(json_str)
 
   # Send it to graphite
   with contextlib.closing(socket.socket()) as sock:
-    sock.connect((<%= @carbon_host %>, <%= @carbon_port %>))
+    sock.connect(("<%= @carbon_host %>", <%= @carbon_port %>))
     sock.sendall(graphite_msg)
     
 
