@@ -59,15 +59,11 @@ service node[:neon_logs][:flume_service_name] do
 end
 
 if ['configure', 'setup'].include? node[:opsworks][:activity] then
-  monitoring_master = node[:opsworks][:layers]['monitoring-master'][:instances].collect{ |instance, names|
-    names['private_ip']
-  }.first rescue nil
-  if not monitoring_master.nil?
+  if node[:neon_logs][:monitor_flume] then
     node.default[:neon_logs][:java_opts] = \
     [
      "-Dflume.monitoring.type=http",
-     "-Dflume.monitoring.port=41414",
-     "-Dflume.monitoring.hosts=#{monitoring_master}:#{node[:ganglia][:udp_client_port]}"
+     "-Dflume.monitoring.port=#{node[:neon_logs][:flume_monitoring_port]}"
     ]
   end
 
@@ -85,7 +81,7 @@ if ['configure', 'setup'].include? node[:opsworks][:activity] then
   template "#{conf_dir}/log4j.properties" do
     source "flume_log4j.conf.erb"
     owner  node[:neon_logs][:flume_user]
-    mode   "0744"
+    mode   "0644"
     variables({ :log_dir => log_dir,
               })
     notifies :restart, "service[#{node[:neon_logs][:flume_service_name]}]"
@@ -94,7 +90,7 @@ if ['configure', 'setup'].include? node[:opsworks][:activity] then
   template "#{conf_dir}/jets3t.properties" do
     source "jets3t.properties.erb"
     owner  node[:neon_logs][:flume_user]
-    mode   "0744"
+    mode   "0644"
     variables({:max_s3_upload_speed => node[:neon_logs][:max_s3_upload_speed],
               })
     notifies :restart, "service[#{node[:neon_logs][:flume_service_name]}]"
@@ -126,6 +122,19 @@ if ['configure', 'setup'].include? node[:opsworks][:activity] then
                 :flume_group => node[:neon_logs][:flume_user]
               })
     notifies :restart, "service[#{node[:neon_logs][:flume_service_name]}]"
+  end
+
+  if node[:neon_logs][:monitor_flume] then
+    template "#{conf_dir}/monitor_flume.py" do
+      source "monitor_flume.py.erb"
+      owner node[:neon_logs][:flume_user]
+      mode "0755"
+      variables({
+                  :flume_monitoring_port => node[:neon_logs][:flume_monitoring_port],
+                  :carbon_host => node[:neon_logs][:carbon_host],
+                  :carbon_port => node[:neon_logs][:carbon_port]
+                })
+    end
   end
 end
 
@@ -162,4 +171,11 @@ if ['undeploy', 'shutdown'].include? node[:opsworks][:activity] then
   service node[:neon_logs][:flume_service_name] do
     action :stop
   end
+end
+
+cron monitor_flume_cron do
+  action default[:neon_logs][:monitor_flume] ? :create : :delete
+  user node[:neon_logs][:flume_user]
+  mailto "ops@neon-lab.com"
+  command "#{conf_dir}/monitor_flume.py"
 end

@@ -24,7 +24,7 @@
 # Give Flume more memory and pre-allocate, enable remote monitoring via JMX
 #JAVA_OPTS="-Xms100m -Xmx200m -Dcom.sun.management.jmxremote"
 <% if @java_opts %>
-UOPTS="<%= @java_opts.join(" ") %>"
+JAVA_OPTS="<%= @java_opts.join(" ") %>"
 <% end %>
 
 # Note that the Flume conf directory is always included in the classpath.

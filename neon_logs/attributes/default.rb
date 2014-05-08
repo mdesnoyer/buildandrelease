@@ -76,6 +76,12 @@ default[:neon_logs][:s3_buffer_dir] = "/mnt/neon/s3buffer"
 # Maximum upload speed to s3 in KB/s
 default[:neon_logs][:max_s3_upload_speed] = 12800 # 100 Mbps
 
+# Parameters to monitor flume
+default[:neon_logs][:monitor_flume] = true
+default[:neon_logs][:flume_monitoring_port] = 41414
+default[:neon_logs][:carbon_host] = "54.225.235.97"
+default[:neon_logs][:carbon_port] = 8090
+
 # AWS keys
 default["aws"]["aws_access_key"] = ENV['AWS_ACCESS_KEY_ID']
 default["aws"]["secret_access_key"] = ENV['AWS_SECRET_ACCESS_KEY']
