@@ -23,7 +23,7 @@ def json2graphite(json_str):
         fval = float(val)
       except ValueError:
         continue
-      msgs.append('system.%s.%s.%s %s %d' % 
+      msgs.append('system.%s.flume.%s.%s %s %d' % 
                   (node, component, metric, val, timestamp))
 
   return '\n'.join(msgs)
