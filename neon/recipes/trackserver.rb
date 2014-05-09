@@ -22,6 +22,13 @@ node.default[:neon_logs][:flume_streams][:trackserver_nginx_logs] = \
 
 include_recipe "neon_logs::flume_core"
 
+service "neon-trackserver" do
+  provider Chef::Provider::Service::Upstart
+  supports :status => true, :restart => true, :start => true, :stop => true
+  action :nothing
+  subscribes :restart, "git[#{node[:neon][:code_root]}]"
+end
+
 # List the python dependencies for this server. We don't install
 # all the neon dependencies so that the server can come up more
 # quickly
@@ -160,8 +167,6 @@ end
 
 if node[:opsworks][:activity] == 'setup' then
   service "neon-trackserver" do
-    provider Chef::Provider::Service::Upstart
-    supports :status => true, :restart => true, :start => true, :stop => true
     action [:enable, :start]
   end
 end
@@ -170,8 +175,6 @@ end
 if ['undeploy', 'shutdown'].include? node[:opsworks][:activity] then
   # Turn off the trackserver
   service "neon-trackserver" do
-    provider Chef::Provider::Service::Upstart
-    supports :status => true, :restart => true, :start => true, :stop => true
     action :stop
   end
 end
