@@ -59,6 +59,7 @@ default[:neon_logs][:s3_log_path] = "s3n://neon-server-logs/%{logtype}/%{srchost
 
 # The compression type for writing to s3
 default[:neon_logs][:s3_log_compression] = "bzip2"
+default[:neon_logs][:s3_output_serializer] = "TEXT"
 
 # The log types being written to s3
 default[:neon_logs][:log_type] = "neon-logs"

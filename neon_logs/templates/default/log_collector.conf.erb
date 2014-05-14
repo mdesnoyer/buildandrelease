@@ -25,3 +25,8 @@ agent.sinks.<%= @k %>.hdfs.rollCount = 0
 agent.sinks.<%= @k %>.hdfs.rollInterval = <%= @max_log_rolltime %>
 agent.sinks.<%= @k %>.hdfs.idleTimeout = 1800
 agent.sinks.<%= @k %>.hdfs.batchSize = <%= @s3_flush_batch_size %>
+agent.sinks.<%= @k %>.serializer = <%= @output_serializer %>
+
+<% if @output_serializer == 'org.apache.flume.serialization.AvroEventSerializer$Builder' %>
+agent.sinks.<%= @k %>.serializer.compressionCodec = snappy
+<% end %>

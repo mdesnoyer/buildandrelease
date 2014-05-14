@@ -150,7 +150,8 @@ class Chef
                                 max_log_size=nil,
                                 max_log_rolltime=nil,
                                 s3_flush_batch_size=nil,
-                                compression=nil)
+                                compression=nil,
+                                output_serializer=nil)
       listen_port = listen_port || node[:neon_logs][:collector_port]
       s3_log_path = s3_log_path || node[:neon_logs][:s3_log_path]
       max_log_size = max_log_size || node[:neon_logs][:max_log_size]
@@ -158,6 +159,7 @@ class Chef
       s3_flush_batch_size = s3_flush_batch_size || node[:neon_logs][:s3_flush_batch_size]
       compression = compression || node[:neon_logs][:s3_log_compression]
       log_type = log_type || node[:neon_logs][:log_type]
+      output_serializer = output_serializer || node[:neon_logs][:s3_output_serializer]
 
       namespace = "lc_#{log_type}"
 
@@ -178,7 +180,8 @@ class Chef
           :max_log_rolltime => max_log_rolltime,
           :s3_flush_batch_size => s3_flush_batch_size,
           :compression => compression,
-          :log_type => log_type
+          :log_type => log_type,
+          :output_serializer => output_serializer
         }
       }
     end
