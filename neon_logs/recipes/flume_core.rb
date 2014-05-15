@@ -146,7 +146,7 @@ if node[:opsworks][:activity] == 'setup' then
   # automatically picked up by flume.
   file "#{conf_dir}/flume.conf" do
     owner  node[:neon_logs][:flume_user]
-    mode "0600"
+    mode "0644"
     action :create_if_missing
   end
 
