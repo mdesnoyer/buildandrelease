@@ -9,7 +9,7 @@ node.default[:neon_logs][:flume_streams][:clicklog_collector] = \
                           43200, # 12 hours
                           1000, # flush size
                           "bzip2",
-                          'org.apache.flume.serialization.AvroEventSerializer$Builder')
+                          'org.apache.flume.sink.hdfs.AvroEventSerializer$Builder')
 
 include_recipe "neon_logs::flume_core"
   
