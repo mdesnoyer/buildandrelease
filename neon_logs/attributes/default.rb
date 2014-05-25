@@ -51,6 +51,9 @@ default[:neon_logs][:collector_port] = 6366
 # The port to listen for json http messages on
 default[:neon_logs][:json_http_source_port] = 6360
 
+# The port to listen for thrift messages on
+default[:neon_logs][:thrift_source_port] = 6361
+
 ## Parameters about where to output the logs ##
 # The S3 path where the logs will be dropped. Can be parameterized by
 # flume event headers using %{header_name} syntax. See flume

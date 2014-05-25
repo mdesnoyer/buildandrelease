@@ -3,7 +3,7 @@
 # Configure the flume agent that will listen to the click data and
 # will watch the log file.
 node.default[:neon_logs][:flume_streams][:click_data] = \
-  get_jsonagent_config(node[:neon][:trackserver][:flume_port],
+  get_thriftagent_config(node[:neon][:trackserver][:flume_port],
                        "tracklog",
                        "tracklog_collector",
                        node[:neon_logs][:collector_port])

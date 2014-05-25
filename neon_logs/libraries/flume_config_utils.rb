@@ -131,6 +131,54 @@ class Chef
       }
     end
 
+    def get_thriftagent_config(thrift_port=nil, log_type=nil,
+                               collector_layer=nil, collector_port=nil)
+      thrift_port = thrift_port || node[:neon_logs][:thrift_source_port]
+      collector_port = collector_port || node[:neon_logs][:collector_port]
+      log_type = log_type || node[:neon_logs][:log_type]
+
+      namespace = "ta_#{thrift_port}"
+      collector_ips = get_collector_ips(collector_layer)
+      ncollectors = collector_ips[:primary].length + collector_ips[:backup].length
+      if ncollectors == 0
+        return {}
+      end
+      # Determine all the sinks based on the collector ips
+      sinks = []
+      collector_ips[:primary].each.with_index do |ip, idx|
+        sinks << {
+          :name => '#{namespace}_pk_#{idx}',
+          :ip => ip,
+          :priority => ncollectors - idx
+        }
+      end
+      collector_ips[:backup].each.with_index do |ip, idx|
+        sinks << {
+          :name => "#{namespace}_bk_#{idx}",
+          :ip => ip,
+          :priority => ncollectors - idx - collector_ips[:primary].length
+        }
+      end
+
+      return {
+        :sources => ["#{namespace}_s"],
+        :channels => ["#{namespace}_c"],
+        :sinks => sinks.map{|x| x[:name]},
+        :sinkgroups => ["#{namespace}_kg"],
+        :template => 'thrift_agent.conf.erb',
+        :variables => {
+          :s => "#{namespace}_s",
+          :c => "#{namespace}_c",
+          :kg => "#{namespace}_kg",
+          :sinks => sinks,
+          :thrift_port => thrift_port,
+          :collector_port => collector_port,
+          :hostname => node[:hostname],
+          :log_type => log_type
+        }
+      }
+    end
+
     # Returns the configuration variables necessary to setup flume to
     # act as a log collector
     #
