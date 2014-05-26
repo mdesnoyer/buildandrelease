@@ -1,4 +1,4 @@
 cookbook "hadoop"
 cookbook "java"
-cookbook "nginx"
-cookbook "python"
+cookbook "nginx", "= 2.6.2"
+cookbook "python", "= 1.4.6"
