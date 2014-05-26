@@ -4,7 +4,9 @@ clickTracker:
     flume_port: <%= @flume_port %>
     backup_disk: <%= @backup_dir %>
     backup_max_events_per_file: 100000
-    backup_flush_interval: 100
+    flume_flush_interval: 1000
+    schema_bucket: neon-avro-schema
+    
 
 utils:
   logs:
