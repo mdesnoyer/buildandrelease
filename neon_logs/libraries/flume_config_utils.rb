@@ -99,7 +99,7 @@ class Chef
       sinks = []
       collector_ips[:primary].each.with_index do |ip, idx|
         sinks << {
-          :name => '#{namespace}_pk_#{idx}',
+          :name => "#{namespace}_pk_#{idx}",
           :ip => ip,
           :priority => ncollectors - idx
         }
@@ -147,7 +147,7 @@ class Chef
       sinks = []
       collector_ips[:primary].each.with_index do |ip, idx|
         sinks << {
-          :name => '#{namespace}_pk_#{idx}',
+          :name => "#{namespace}_pk_#{idx}",
           :ip => ip,
           :priority => ncollectors - idx
         }
