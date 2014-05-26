@@ -43,7 +43,8 @@ pydeps = {
   "pyfakefs" => "2.4",
   "mock" => "1.0.1",
   "httpagentparser" => "1.6.0",
-  "avro" => "1.7.6"
+  "avro" => "1.7.6",
+  "thrift" => "0.9.1",
 }
 
 if node[:opsworks][:activity] == 'setup' then
