@@ -6,7 +6,7 @@ node.default[:neon_logs][:flume_streams][:clicklog_collector] = \
                           node[:neon][:clicklog_collector][:s3_path],
                           "clicklog",
                           4294967296, #4 GB
-                          43200, # 12 hours
+                          10800, # 3 hours
                           1000, # flush size
                           "bzip2",
                           'org.apache.flume.sink.hdfs.AvroEventSerializer$Builder')

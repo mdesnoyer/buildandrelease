@@ -16,8 +16,6 @@ agent.channels.<%= @c %>.transactionCapacity = 1000
 agent.sinks.<%= @k %>.type = hdfs
 agent.sinks.<%= @k %>.channel = <%= @c %>
 agent.sinks.<%= @k %>.hdfs.path = <%= @s3_log_path %>
-agent.sinks.<%= @k %>.hdfs.codeC = <%= @compression %>
-agent.sinks.<%= @k %>.hdfs.fileType = CompressedStream
 agent.sinks.<%= @k %>.hdfs.filePrefix = <%= @log_type %>
 agent.sinks.<%= @k %>.hdfs.threadsPoolSize = 100
 agent.sinks.<%= @k %>.hdfs.rollSize = <%= @max_log_size %>
@@ -29,4 +27,10 @@ agent.sinks.<%= @k %>.serializer = <%= @output_serializer %>
 
 <% if @output_serializer == 'org.apache.flume.sink.hdfs.AvroEventSerializer$Builder' %>
 agent.sinks.<%= @k %>.serializer.compressionCodec = snappy
+agent.sinks.<%= @k %>.hdfs.fileSuffix = .avro
+# Avro data shouldn't be compressed again, so force it to be a datastream
+agent.sinks.<%= @k %>.hdfs.fileType = DataStream
+<% else %>
+agent.sinks.<%= @k %>.hdfs.codeC = <%= @compression %>
+agent.sinks.<%= @k %>.hdfs.fileType = CompressedStream
 <% end %>
