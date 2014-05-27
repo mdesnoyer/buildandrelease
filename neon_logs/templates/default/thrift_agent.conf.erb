@@ -11,7 +11,7 @@ agent.sinkgroups.<%= @kg %>.sinks = <%= @sinks.map{ |x| x[:name]}.join(" ") %>
   agent.sinkgroups.<%= @kg %>.priority.<%= sink[:name] %>.priority = <%= sink[:priority] %>
 <% end %>
 
-# The source is an http json source
+# The source is an thrift source
 agent.sources.<%= @s %>.type = thrift
 agent.sources.<%= @s %>.channels = <%= @c %>
 agent.sources.<%= @s %>.port = <%= @thrift_port %>
