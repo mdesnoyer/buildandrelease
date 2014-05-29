@@ -45,3 +45,6 @@ default[:nginx][:source][:modules] = %w(
   nginx::http_realip_module
   nginx::http_geoip_module
 )
+default[:nginx][:realip][:header] = "X-Forwarded-For"
+default[:nginx][:realip][:addresses] = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+default[:nginx][:realip][:real_ip_recursive] = true
