@@ -1,12 +1,13 @@
-# Look at the stats schema branch for now
-node.default[:neon][:code_revision] = "stats_schema"
+node.default["java"]["version"]
 
 include_recipe "java"
 include_recipe "neon::repo"
 
 pydeps = {
+  "setuptools" => "4.0.1",
   "avro" => "1.7.6",
   "boto" => "2.29.1",
+  "impyla" => "0.8.1",
   "simplejson" => "2.3.2",
   "paramiko" => "1.14.0",
   "nose" => "1.3.0",
