@@ -49,3 +49,6 @@ default[:nginx][:source][:modules] = %w(
 force_default[:nginx][:realip][:header] = "X-Forwarded-For"
 force_default[:nginx][:realip][:addresses] = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
 force_default[:nginx][:realip][:real_ip_recursive] = "on"
+
+# ssh key to control Elastic Map Reduce clusters
+default[:neon][:emr_key] = "s3://neon-keys/emr-runner.pem"
