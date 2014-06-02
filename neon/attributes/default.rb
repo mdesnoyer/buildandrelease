@@ -53,4 +53,6 @@ force_default[:nginx][:realip][:real_ip_recursive] = "on"
 # ssh key to control Elastic Map Reduce clusters
 default[:neon][:emr_key] = "s3://neon-keys/emr-runner.pem"
 
-
+# set the desired java version
+default[:java][:install_flavor] = 'oracle'
+default[:java][:jdk_version] = '7'
