@@ -46,3 +46,13 @@ s3_file "#{node[:neon][:home]}/statsmanager/.ssh/emr.pem" do
   action :create
   mode "0600"
 end
+
+# Build the stats processing jar
+package "maven" do
+  :install
+end
+execute "build stats jar" do
+  command "mvn generate-sources; mvn package"
+  cwd "#{node[:neon][:code_root]}/stats/java"
+  user "neon"
+end
