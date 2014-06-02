@@ -4,6 +4,7 @@ node.default[:neon][:code_revision] = "stats_schema"
 include_recipe "neon::repo"
 
 pydeps = {
+  "avro" => "1.7.6",
   "boto" => "2.29.1",
   "simplejson" => "2.3.2",
   "paramiko" => "1.14.0",
