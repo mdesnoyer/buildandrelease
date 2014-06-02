@@ -1,6 +1,7 @@
 # Look at the stats schema branch for now
 node.default[:neon][:code_revision] = "stats_schema"
 
+include_recipe "java"
 include_recipe "neon::repo"
 
 pydeps = {
