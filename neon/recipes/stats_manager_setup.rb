@@ -53,6 +53,13 @@ end
 package "maven" do
   :install
 end
+directory "#{node[:neon][:home]}/.m2" do
+  owner "neon"
+  group "neon"
+  action :create
+  mode "0755"
+  recursive true
+end
 execute "build stats jar" do
   command "mvn generate-sources; mvn package"
   cwd "#{node[:neon][:code_root]}/stats/java"
