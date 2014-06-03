@@ -1,4 +1,5 @@
 # This recipe gets the most recent version of the repository
+# TODO(mdesnoyer): Use the actual deploy data to install the repo
 
 include_recipe "neon::default"
 

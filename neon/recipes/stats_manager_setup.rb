@@ -50,7 +50,6 @@ s3_file "#{node[:neon][:home]}/statsmanager/.ssh/emr.pem" do
   mode "0600"
 end
 
-# Build the stats processing jar
 package "maven" do
   :install
 end
@@ -61,8 +60,17 @@ directory "#{node[:neon][:home]}/.m2" do
   mode "0755"
   recursive true
 end
-execute "build stats jar" do
-  command "mvn generate-sources; mvn package"
+
+directory "#{node[:neon][:log_dir]}/stats_manager" do
+  owner "statsmanager"
+  group "statsmanager"
+  action :create
+  mode "0755"
+  recursive true
+end
+
+execute "get cluster host key" do
+  command "#{node[:neon][:code_root]}/stats/batch_processor.py --master_host_key_file #{node[:neon][:home]}/statsmanager/.ssh/cluster_known_hosts --get_master_host_key 1"
   cwd "#{node[:neon][:code_root]}/stats/java"
-  user "neon"
+  user "statsmanager"
 end
