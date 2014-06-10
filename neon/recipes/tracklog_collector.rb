@@ -5,7 +5,7 @@ node.default[:neon_logs][:flume_streams][:clicklog_collector] = \
   get_logcollector_config(node[:neon_logs][:collector_port],
                           node[:neon][:clicklog_collector][:s3_path],
                           "clicklog",
-                          4294967296, #4 GB
+                          1073741824, #1 GB
                           10800, # 3 hours
                           1000, # flush size
                           "bzip2",

@@ -68,7 +68,7 @@ default[:neon_logs][:s3_output_serializer] = "TEXT"
 default[:neon_logs][:log_type] = "neon-logs"
 
 # The maximum log size in bytes uncompressed
-default[:neon_logs][:max_log_size] = 4294967296 # 4GB
+default[:neon_logs][:max_log_size] = 1073741824 # 1GB
 
 # The maximum file rollover interval in seconds
 default[:neon_logs][:max_log_rolltime] = 3600 # 1 hour
