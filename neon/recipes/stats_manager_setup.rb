@@ -4,6 +4,8 @@ include_recipe "java"
 include_recipe "neon::repo"
 
 pydeps = {
+  "futures" => "2.1.5",
+  "tornado" => "3.1.1",
   "setuptools" => "4.0.1",
   "avro" => "1.7.6",
   "boto" => "2.29.1",
