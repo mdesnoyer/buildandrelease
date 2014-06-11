@@ -49,7 +49,7 @@ default["neon_logs"]["collector_layer"] = "log-collector"
 default[:neon_logs][:collector_port] = 6366
 
 # The port to listen for json http messages on
-default[:neon_logs][:json_http_source_port] = 6360
+default[:neon_logs][:json_http_source_port] = 6362
 
 # The port to listen for thrift messages on
 default[:neon_logs][:thrift_source_port] = 6361
