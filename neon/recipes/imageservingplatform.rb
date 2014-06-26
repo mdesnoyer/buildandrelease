@@ -87,8 +87,8 @@ if ['config', 'setup'].include? node[:opsworks][:activity] then
     mode "0644"
     variables({
                 :port => node[:neon][:neonisp][:port],
-                :mastermind_validated_filepath => node[:neon][:neoisp][:mastermind_validated_filepath],
-                :mastermind_file_url => node[:neon][:neoisp][:mastermind_file_url]
+                :mastermind_validated_filepath => node[:neon][:neonisp][:mastermind_validated_filepath],
+                :mastermind_file_url => node[:neon][:neonisp][:mastermind_file_url]
               })
     notifies :reload, 'service[nginx]'
   end
