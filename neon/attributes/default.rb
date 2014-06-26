@@ -34,6 +34,11 @@ default[:neon][:trackserver][:backup_dir] = "/mnt/neon/trackserver/backlog"
 default[:neon][:clicklog_collector][:s3_path] = "s3n://neon-tracker-logs-v2/v%{track_vers}/%{tai}/%Y/%m/%d"
 default[:neon][:clicklog_collector][:channel_dir] = "/mnt/neon/channels/clicklog"
 
+# Parameters for imageservingplatform (neonisp)
+default[:neon][:neonisp][:log_file] = "#{node[:neon][:log_dir]}/neonisp.log"
+default[:neon][:neonisp][:mastermind_validated_filepath] = "/opt/neon/mastermind.validated"
+default[:neon][:neonisp][:mastermind_file_url] = "http://neon-test.s3.amazonaws.com/mastermind"
+
 # Nginx parameters
 default[:nginx][:init_style] = "upstart"
 default[:nginx][:large_client_header_buffers] = "8 1024000"
