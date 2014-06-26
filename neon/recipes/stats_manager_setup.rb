@@ -70,8 +70,3 @@ directory "#{node[:neon][:log_dir]}/stats_manager" do
   mode "0755"
   recursive true
 end
-
-execute "get cluster host key" do
-  command "#{node[:neon][:code_root]}/stats/batch_processor.py --master_host_key_file #{node[:neon][:home]}/statsmanager/.ssh/cluster_known_hosts --get_master_host_key 1"
-  user "statsmanager"
-end

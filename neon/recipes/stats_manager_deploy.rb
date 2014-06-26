@@ -1,6 +1,11 @@
 # Grab the latest repo
 include_recipe "neon::repo"
 
+execute "get cluster host key" do
+  command "#{node[:neon][:code_root]}/stats/batch_processor.py --master_host_key_file #{node[:neon][:home]}/statsmanager/.ssh/cluster_known_hosts --get_master_host_key 1"
+  user "statsmanager"
+end
+
 # Build the job to run
 execute "build stats jar" do
   command "mvn generate-sources package"
