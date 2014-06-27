@@ -36,6 +36,7 @@ default[:neon][:clicklog_collector][:channel_dir] = "/mnt/neon/channels/clicklog
 
 # Parameters for imageservingplatform (neonisp)
 default[:neon][:neonisp][:log_file] = "#{node[:neon][:log_dir]}/neonisp.log"
+default[:neon][:neonisp][:port] = 80 #port for isp to listen on
 default[:neon][:neonisp][:mastermind_validated_filepath] = "/opt/neon/mastermind.validated"
 default[:neon][:neonisp][:mastermind_file_url] = "http://neon-test.s3.amazonaws.com/mastermind"
 
