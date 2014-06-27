@@ -78,6 +78,7 @@ if node[:opsworks][:activity] == 'setup' then
 end
 
 if ['config', 'setup'].include? node[:opsworks][:activity] then
+  node.run_state[:nginx_configure_flags] = node.run_state[:nginx_configure_flags] | ["--add-module=#{node[:neon][:code_root]}/imageservingplatform/neon_isp"]
 
   # Write the configuration for nginx
   template "#{node[:nginx][:dir]}/conf.d/neonisp.conf" do
