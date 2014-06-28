@@ -8,13 +8,6 @@ node.default[:neon_logs][:flume_streams][:isp_nginx_logs] = \
 
 include_recipe "neon_logs::flume_core"
 
-service "neonisp" do
-  provider Chef::Provider::Service::Upstart
-  supports :status => true, :restart => true, :start => true, :stop => true
-  action :nothing
-  subscribes :restart, "git[#{node[:neon][:code_root]}]"
-end
-
 # Opswork Setup Phase
 if node[:opsworks][:activity] == 'setup' then
   # Install nginx
@@ -94,6 +87,7 @@ if node[:opsworks][:activity] == 'setup' then
 end
 
 # Opsworks DEPLOY stage
+# Since ISP is an nginx module, starting the nginx service starts ISP
 if node[:opsworks][:activity] == 'deploy' then
   service "nginx" do
     action [:enable, :start]
