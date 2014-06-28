@@ -1,5 +1,6 @@
 # Nginx parameters
-#default['nginx']['source']['version']  = node['nginx']['version']
+#default['nginx']['source']['version'] = '1.4.7'
+default[:nginx][:user] = "neon"
 default[:nginx][:init_style] = "upstart"
 default[:nginx][:large_client_header_buffers] = "8 1024000"
 default[:nginx][:disable_access_log] = true

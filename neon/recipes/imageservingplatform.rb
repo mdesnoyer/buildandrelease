@@ -11,21 +11,11 @@ include_recipe "neon_logs::flume_core"
 # Opswork Setup Phase
 if node[:opsworks][:activity] == 'setup' then
   
-  # Set the configure flag for nginx 
-  #node.run_state[:nginx_configure_flags] = ["--add-module=#{node[:neon][:code_root]}/imageservingplatform/neon_isp"]
-  
   # Install the neon code (Make sure to install before nginx setup)
   include_recipe "neon::repo"
   
   # Install nginx
   include_recipe "nginx::default"
-
-  # Create a neonisp user
-  user "neonisp" do
-    action :create
-    system true
-    shell "/bin/false"
-  end
 
   # Install the mail client
   package "mailutils" do
@@ -34,7 +24,13 @@ if node[:opsworks][:activity] == 'setup' then
 
   # Make directories 
   file node[:neon][:neonisp][:log_file] do
-    user "neonisp"
+    user "#{node[:neon][:neonisp][:nginx_user]}"
+    group "neon"
+    mode "0644"
+  end
+  
+  file node[:neon][:neonisp][:mastermind_download_location] do
+    user "#{node[:neon][:neonisp][:nginx_user]}"
     group "neon"
     mode "0644"
   end
