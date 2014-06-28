@@ -10,6 +10,10 @@ include_recipe "neon_logs::flume_core"
 
 # Opswork Setup Phase
 if node[:opsworks][:activity] == 'setup' then
+  
+  # Set the configure flag for nginx 
+  node.run_state[:nginx_configure_flags] = node.run_state[:nginx_configure_flags] | ["--add-module=#{node[:neon][:code_root]}/imageservingplatform/neon_isp"]
+  
   # Install nginx
   include_recipe "nginx::default"
 
@@ -68,8 +72,6 @@ if node[:opsworks][:activity] == 'setup' then
               })
   end
 
-  # Set the configure flag for nginx 
-  node.run_state[:nginx_configure_flags] = node.run_state[:nginx_configure_flags] | ["--add-module=#{node[:neon][:code_root]}/imageservingplatform/neon_isp"]
 
   # Write the configuration for nginx
   template "#{node[:nginx][:dir]}/conf.d/neonisp.conf" do
