@@ -12,7 +12,8 @@ include_recipe "neon_logs::flume_core"
 if node[:opsworks][:activity] == 'setup' then
   
   # Set the configure flag for nginx 
-  node.run_state[:nginx_configure_flags] = node.run_state[:nginx_configure_flags] | ["--add-module=#{node[:neon][:code_root]}/imageservingplatform/neon_isp"]
+  node.run_state[:nginx_configure_flags] = ["--add-module=#{node[:neon][:code_root]}/imageservingplatform/neon_isp"]
+  node.run_state[:nginx][:nginx_configure_flags] = ["--add-module=#{node[:neon][:code_root]}/imageservingplatform/neon_isp"]
   
   # Install nginx
   include_recipe "nginx::default"
