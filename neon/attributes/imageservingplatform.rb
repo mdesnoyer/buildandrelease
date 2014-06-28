@@ -1,10 +1,12 @@
 # Nginx parameters
+#default['nginx']['source']['version']  = node['nginx']['version']
 default[:nginx][:init_style] = "upstart"
 default[:nginx][:large_client_header_buffers] = "8 1024000"
 default[:nginx][:disable_access_log] = true
 default[:nginx][:install_method] = "source"
 default[:nginx][:log_dir] = "#{node[:neon][:log_dir]}/nginx"
 default[:nginx][:worker_rlimit_nofile] = 65536
+default[:nginx]['configure_flags'] = ["--add-module=#{node[:neon][:code_root]}/imageservingplatform/neon_isp"]
 default[:nginx][:source][:modules] = %w(
   nginx::http_realip_module
   nginx::http_geoip_module

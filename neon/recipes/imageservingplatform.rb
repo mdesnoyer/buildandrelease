@@ -12,14 +12,13 @@ include_recipe "neon_logs::flume_core"
 if node[:opsworks][:activity] == 'setup' then
   
   # Set the configure flag for nginx 
-  node.run_state[:nginx_configure_flags] = ["--add-module=#{node[:neon][:code_root]}/imageservingplatform/neon_isp"]
-  node.run_state[:nginx][:nginx_configure_flags] = ["--add-module=#{node[:neon][:code_root]}/imageservingplatform/neon_isp"]
+  #node.run_state[:nginx_configure_flags] = ["--add-module=#{node[:neon][:code_root]}/imageservingplatform/neon_isp"]
+  
+  # Install the neon code (Make sure to install before nginx setup)
+  include_recipe "neon::repo"
   
   # Install nginx
   include_recipe "nginx::default"
-
-  # Install the neon code
-  include_recipe "neon::repo"
 
   # Create a neonisp user
   user "neonisp" do
