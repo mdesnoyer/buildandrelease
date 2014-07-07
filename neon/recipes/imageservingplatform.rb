@@ -86,6 +86,7 @@ end
 
 # Opsworks DEPLOY stage
 # Since ISP is an nginx module, starting the nginx service starts ISP
+# #TODO: Start the monitoring script to send data
 if node[:opsworks][:activity] == 'deploy' then
   service "nginx" do
     action [:enable, :start]

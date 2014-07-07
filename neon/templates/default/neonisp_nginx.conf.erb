@@ -3,6 +3,16 @@ mastermind_validated_filepath <%= @mastermind_validated_filepath %>;
 
 server {
   listen <%= @port%>;
+  
+  # Caches information about open FDs, freqently accessed files.
+  open_file_cache max=200000 inactive=20s;
+  open_file_cache_valid 30s;
+  open_file_cache_min_uses 2;
+  open_file_cache_errors on;
+
+  #keepalive requests
+  keepalive_requests 10000;
+
   #large_client_header_buffers <%= node[:nginx][:large_client_header_buffers] %>;
   location / {
     proxy_redirect off;
