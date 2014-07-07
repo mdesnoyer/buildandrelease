@@ -34,6 +34,20 @@ if node[:opsworks][:activity] == 'setup' then
     group "neon"
     mode "0644"
   end
+  
+  # Write the daemon service wrapper for collecting system metrics
+  template "/etc/init/neon-system-metrics.conf" do
+    source "system_metrics_service.conf.erb"
+    owner "root"
+    group "root"
+    mode "0644"
+    variables({
+                :neon_root_dir => node[:neon][:code_root],
+                :user => "neon",
+                :group => "neon",
+              })
+  end
+
 
   # Test the imageservingplatform 
   #execute "nosetests --exe imageservingplatform" do
