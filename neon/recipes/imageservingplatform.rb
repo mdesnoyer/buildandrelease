@@ -8,6 +8,14 @@ node.default[:neon_logs][:flume_streams][:isp_nginx_logs] = \
 
 include_recipe "neon_logs::flume_core"
 
+# Collect system metrics
+service "neon-system-metrics" do
+  provider Chef::Provider::Service::Upstart
+  supports :status => true, :restart => true, :start => true, :stop => true
+  action :nothing
+  subscribes :restart, "git[#{node[:neon][:code_root]}]"
+end
+
 # Opswork Setup Phase
 if node[:opsworks][:activity] == 'setup' then
   
@@ -100,17 +108,23 @@ end
 
 # Opsworks DEPLOY stage
 # Since ISP is an nginx module, starting the nginx service starts ISP
-# #TODO: Start the monitoring script to send data
+# Start the monitoring script to send data
+
 if node[:opsworks][:activity] == 'deploy' then
   service "nginx" do
+    action [:enable, :start]
+  end
+  
+  # start collecting the system metrics
+  service "neon-system-metrics" do
     action [:enable, :start]
   end
 end
 
 # Opsworks UNDEPLOY or SHUTDOWN stage
-if ['undeploy', 'shutdown'].include? node[:opsworks][:activity] then
-  # Turn off the trackserver
-  service "neonisp" do
-    action :stop
-  end
-end
+#if ['undeploy', 'shutdown'].include? node[:opsworks][:activity] then
+#  # Turn off the trackserver
+#  service "neonisp" do
+#    action :stop
+#  end
+#end
