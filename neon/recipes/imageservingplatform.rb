@@ -8,24 +8,6 @@ node.default[:neon_logs][:flume_streams][:isp_nginx_logs] = \
 
 include_recipe "neon_logs::flume_core"
 
-# List the python dependencies for this server.
-pydeps = {
-  "futures" => "2.1.5",
-  "tornado" => "3.1.1",
-  "shortuuid" => "0.3",
-  "PyYAML" => "3.10",
-  "boto" => "2.29.1",
-  "psutil" => "1.2.1",
-}
-
-# Collect system metrics
-service "neon-system-metrics" do
-  provider Chef::Provider::Service::Upstart
-  supports :status => true, :restart => true, :start => true, :stop => true
-  action :nothing
-  subscribes :restart, "git[#{node[:neon][:code_root]}]"
-end
-
 # Opswork Setup Phase
 if node[:opsworks][:activity] == 'setup' then
   
@@ -34,6 +16,9 @@ if node[:opsworks][:activity] == 'setup' then
   
   # Install nginx
   include_recipe "nginx::default"
+
+  # Setup collecting system metrics
+  include_recipe "neon::system_metrics"
 
   # Install the mail client
   package "mailutils" do
@@ -64,14 +49,6 @@ if node[:opsworks][:activity] == 'setup' then
                 :user => "neon",
                 :group => "neon",
               })
-  end
-
-  # Install the python dependencies
-  pydeps.each do |package, vers|
-    python_pip package do
-      version vers
-      options "--no-index --find-links http://s3-us-west-1.amazonaws.com/neon-dependencies/index.html"
-    end
   end
 
   # Test the imageservingplatform 
@@ -132,10 +109,6 @@ if node[:opsworks][:activity] == 'deploy' then
     action [:enable, :start]
   end
   
-  # start collecting the system metrics
-  service "neon-system-metrics" do
-    action [:enable, :start]
-  end
 end
 
 # Opsworks UNDEPLOY or SHUTDOWN stage

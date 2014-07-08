@@ -45,6 +45,7 @@ pydeps = {
   "httpagentparser" => "1.6.0",
   "avro" => "1.7.6",
   "thrift" => "0.9.1",
+  "psutil" => "1.2.1",
 }
 
 if node[:opsworks][:activity] == 'setup' then
