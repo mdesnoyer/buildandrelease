@@ -88,7 +88,7 @@ if node[:opsworks][:activity] == 'setup' then
                 :port => node[:neon][:neonisp][:port],
                 :mastermind_validated_filepath => node[:neon][:neonisp][:mastermind_validated_filepath],
                 :mastermind_file_url => node[:neon][:neonisp][:mastermind_file_url],
-                :client_expires => node[:neon][:neon_isp][:client_api_expiry]
+                :client_expires => node[:neon][:neonisp][:client_api_expiry]
               })
     notifies :reload, 'service[nginx]'
   end
