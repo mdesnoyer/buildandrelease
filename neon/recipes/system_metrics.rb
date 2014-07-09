@@ -1,6 +1,9 @@
 # System metrics collecter recipe
 
-# List the python dependencies for this server.
+# Install the neon code
+include_recipe "neon::repo"
+
+# List the python dependencies needed for this script.
 pydeps = {
   "tornado" => "3.1.1",
   "PyYAML" => "3.10",

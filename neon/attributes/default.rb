@@ -41,6 +41,7 @@ default[:neon][:neonisp][:port] = 80 #port for isp to listen on
 default[:neon][:neonisp][:mastermind_validated_filepath] = "/opt/neon/mastermind.validated"
 default[:neon][:neonisp][:mastermind_file_url] = "http://neon-test.s3.amazonaws.com/mastermind"
 default[:neon][:neonisp][:mastermind_download_location] = "/tmp/mastermind"
+default[:neon][:neonisp][:client_api_expiry] = "10m" #10 mins
 
 # Nginx parameters
 default[:nginx][:init_style] = "upstart"

@@ -38,9 +38,17 @@ if node[:opsworks][:activity] == 'setup' then
     mode "0644"
   end
   
-  # Write the daemon service wrapper for collecting system metrics
-  template "/etc/init/neon-system-metrics.conf" do
-    source "system_metrics_service.conf.erb"
+  # Collect Nginx/ISP metrics
+  service "neon-isp-metrics" do
+    provider Chef::Provider::Service::Upstart
+    supports :status => true, :restart => true, :start => true, :stop => true
+    action :nothing
+    subscribes :restart, "git[#{node[:neon][:code_root]}]"
+  end
+  
+  # Write the daemon service wrapper for collecting Nginx/ISP stats 
+  template "/etc/init/neon-isp-metrics.conf" do
+    source "neonisp_metrics_service.conf.erb"
     owner "root"
     group "root"
     mode "0644"
@@ -57,20 +65,6 @@ if node[:opsworks][:activity] == 'setup' then
   #  user "trackserver"
   #end
 
-  # Write a script that will send a mail when the service dies
-  #template "/etc/init/neon-isp-email.conf" do
-  #  source "mail-on-restart.conf.erb"
-  #  owner "root"
-  #  group "root"
-  #  mode "0644"
-  #  variables({
-  #              :service => "neon-trackserver",
-  #              :host => node[:hostname],
-  #              :email => node[:neon][:ops_email],
-  #              :log_file => node[:neon][:neonisp][:log_file]
-  #            })
-  #end
-
   template "/etc/init/nginx-email.conf" do
     source "mail-on-restart.conf.erb"
     owner "root"
@@ -84,8 +78,7 @@ if node[:opsworks][:activity] == 'setup' then
               })
   end
 
-
-  # Write the configuration for nginx
+  # Write the imageservingplatform configuration for nginx
   template "#{node[:nginx][:dir]}/conf.d/neonisp.conf" do
     source "neonisp_nginx.conf.erb"
     owner node['nginx']['user']
@@ -94,7 +87,8 @@ if node[:opsworks][:activity] == 'setup' then
     variables({
                 :port => node[:neon][:neonisp][:port],
                 :mastermind_validated_filepath => node[:neon][:neonisp][:mastermind_validated_filepath],
-                :mastermind_file_url => node[:neon][:neonisp][:mastermind_file_url]
+                :mastermind_file_url => node[:neon][:neonisp][:mastermind_file_url],
+                :client_expires => node[:neon][:neon_isp][:client_api_expiry]
               })
     notifies :reload, 'service[nginx]'
   end
@@ -109,6 +103,10 @@ if node[:opsworks][:activity] == 'deploy' then
     action [:enable, :start]
   end
   
+  # start collecting the nginx/isp metrics
+  service "neon-isp-metrics" do
+    action [:enable, :start]
+  end
 end
 
 # Opsworks UNDEPLOY or SHUTDOWN stage

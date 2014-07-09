@@ -29,6 +29,9 @@ server {
 
   location ~ ^/v1/client/(.+\.*)$ {
     v1_client;
+    expires  <%= @client_expires %>;
+    add_header  Cache-Control private;
+
   }
 
   location ~ ^/v1/server/(.+\.*)$ {
