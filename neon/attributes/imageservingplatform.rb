@@ -40,3 +40,6 @@ force_default[:opsworks_initial_setup][:sysctl]['net.ipv4.tcp_max_tw_buckets'] =
 
 # Determines the wait time between isAlive interval probes (reduce from 75 sec to 15)
 #force_default[:opsworks_initial_setup][:sysctl]['net.ipv4.tcp_keepalive_intvl'] = 15   
+
+# increase the ephemeral port range (TODO: figure out the format)
+#force_default[:opsworks_initial_setup][:sysctl]['net.ipv4.ip_local_port_range'] = 10000 64000   

@@ -6,6 +6,7 @@ include_recipe "neon::repo"
 # List the python dependencies needed for this script.
 pydeps = {
   "tornado" => "3.1.1",
+  "simplejson" => "2.3.2",
   "PyYAML" => "3.10",
   "boto" => "2.29.1",
   "psutil" => "1.2.1",
