@@ -3,7 +3,7 @@
 default[:nginx][:user] = "neon"
 default[:nginx][:init_style] = "upstart"
 default[:nginx][:large_client_header_buffers] = "8 1024000"
-default[:nginx][:disable_access_log] = true
+default[:nginx][:disable_access_log] = false 
 default[:nginx][:install_method] = "source"
 default[:nginx][:log_dir] = "#{node[:neon][:log_dir]}/nginx"
 default[:nginx][:worker_rlimit_nofile] = 65536
