@@ -2,7 +2,7 @@ include_attribute "neon::default"
 
 # Parameters for imageservingplatform (neonisp)
 default[:neonisp][:nginx_user] = "neon"
-default[:neonisp][:log_file] = "/tmp/neon_log" #"#{node[:neon][:log_dir]}/neonisp.log"
+default[:neonisp][:log_file] = "#{node[:neon][:log_dir]}/neonisp.log"
 default[:neonisp][:port] = 80 #port for isp to listen on
 default[:neonisp][:mastermind_validated_filepath] = "/opt/neon/mastermind.validated"
 default[:neonisp][:mastermind_file_url] = "http://neon-test.s3.amazonaws.com/mastermind"

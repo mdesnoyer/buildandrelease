@@ -19,7 +19,7 @@ if node[:opsworks][:activity] == 'deploy' then
 else
   deploy_apps << {
     :name => "core",
-    :code_folder => "",
+    :code_folder => "core",
     :repo_key => node[:neon][:repo_key],
     :repo_url => node[:neon][:repo_url],
     :revision => node[:neon][:code_revision]

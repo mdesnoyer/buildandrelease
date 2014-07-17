@@ -47,6 +47,9 @@ if node[:opsworks][:activity] == 'setup' then
   # Install nginx
   include_recipe "nginx::default"
 
+  # Setup collecting system metrics
+  include_recipe "neon::system_metrics"
+
   # Create a trackserver user
   user "trackserver" do
     action :create

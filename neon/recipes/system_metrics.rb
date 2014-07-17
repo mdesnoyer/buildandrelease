@@ -25,7 +25,7 @@ service "neon-system-metrics" do
   provider Chef::Provider::Service::Upstart
   supports :status => true, :restart => true, :start => true, :stop => true
   action :nothing
-  subscribes :restart, "git[#{node[:neon][:code_root]}]"
+  subscribes :restart, "git[#{node[:neon][:code_root]}/core]"
 end
   
 # Write the daemon service wrapper for collecting system metrics
@@ -35,9 +35,9 @@ template "/etc/init/neon-system-metrics.conf" do
   group "root"
   mode "0644"
   variables({
-                :neon_root_dir => node[:neon][:code_root],
-                :user => "neon",
-                :group => "neon",
+              :neon_root_dir => "#{node[:neon][:code_root]}/core",
+              :user => "neon",
+              :group => "neon",
             })
 end
 

@@ -12,12 +12,6 @@ include_recipe "neon_logs::flume_core"
 # Opswork Setup Phase
 if node[:opsworks][:activity] == 'setup' then
   
-  # Install the neon code (Make sure to install before nginx setup)
-  include_recipe "neon::repo"
-  
-  # Install nginx
-  include_recipe "nginx::default"
-
   # Setup collecting system metrics
   include_recipe "neon::system_metrics"
 
@@ -28,43 +22,40 @@ if node[:opsworks][:activity] == 'setup' then
 
   # Make directories 
   file node[:neonisp][:log_file] do
-    user "#{node[:neon][:neonisp][:nginx_user]}"
+    user "#{node[:neonisp][:nginx_user]}"
     group "neon"
     mode "0644"
   end
   
   file node[:neonisp][:mastermind_download_location] do
-    user "#{node[:neon][:neonisp][:nginx_user]}"
+    user "#{node[:neonisp][:nginx_user]}"
     group "neon"
     mode "0644"
   end
   
-  # Collect Nginx/ISP metrics
-  service "neon-isp-metrics" do
-    provider Chef::Provider::Service::Upstart
-    supports :status => true, :restart => true, :start => true, :stop => true
-    action :nothing
-    subscribes :restart, "git[#{node[:neon][:code_root]}]"
-  end
-  
-  # Write the daemon service wrapper for collecting Nginx/ISP stats 
-  template "/etc/init/neon-isp-metrics.conf" do
-    source "neonisp_metrics_service.conf.erb"
-    owner "root"
-    group "root"
-    mode "0644"
-    variables({
-                :neon_root_dir => node[:neon][:code_root],
-                :user => "neon",
-                :group => "neon",
-              })
-  end
+end
+
+# Opsworks DEPLOY stage
+# Since ISP is an nginx module, starting the nginx service starts ISP
+# Start the monitoring script to send data
+
+if node[:opsworks][:activity] == 'deploy' then
+  # Install the neon code (Make sure to install before nginx setup)
+  include_recipe "neon::repo"
 
   # Test the imageservingplatform 
   #execute "nosetests --exe imageservingplatform" do
-  #  cwd node[:neon][:code_root]
+  #  cwd "#{node[:neon][:code_root]}/neonisp"
   #  user "trackserver"
+  #  subscribes :run, "git[#{node[:neon][:code_root]}/neonisp]", :immediately
   #end
+  
+  # Install nginx
+  include_recipe "nginx::default"
+
+  service "nginx" do
+    action [:enable, :start]
+  end
 
   template "/etc/init/nginx-email.conf" do
     source "mail-on-restart.conf.erb"
@@ -78,27 +69,33 @@ if node[:opsworks][:activity] == 'setup' then
                 :log_file => "#{node[:nginx][:log_dir]}/error.log"
               })
   end
-end
 
-# Opsworks DEPLOY stage
-# Since ISP is an nginx module, starting the nginx service starts ISP
-# Start the monitoring script to send data
-
-if node[:opsworks][:activity] == 'deploy' then
-  service "nginx" do
-    action [:enable, :start]
+  # Write the daemon service wrapper for collecting Nginx/ISP stats 
+  template "/etc/init/neon-isp-metrics.conf" do
+    source "neonisp_metrics_service.conf.erb"
+    owner "root"
+    group "root"
+    mode "0644"
+    variables({
+                :neon_root_dir => "#{node[:neon][:code_root]}/neonisp",
+                :user => "neon",
+                :group => "neon",
+              })
   end
   
   # start collecting the nginx/isp metrics
   service "neon-isp-metrics" do
+    provider Chef::Provider::Service::Upstart
+    supports :status => true, :restart => true, :start => true, :stop => true
     action [:enable, :start]
+    subscribes :restart, "git[#{node[:neon][:code_root]}/neonisp]"
   end
 end
 
 # Opsworks UNDEPLOY or SHUTDOWN stage
-#if ['undeploy', 'shutdown'].include? node[:opsworks][:activity] then
-#  # Turn off the trackserver
-#  service "neonisp" do
-#    action :stop
-#  end
-#end
+if ['undeploy', 'shutdown'].include? node[:opsworks][:activity] then
+  # Turn off the trackserver
+  service "nginx" do
+    action :stop
+  end
+end
