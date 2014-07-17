@@ -1,0 +1,21 @@
+clickTracker:
+  trackserver:
+    port: <%= @port %>
+    flume_port: <%= @flume_port %>
+    backup_disk: <%= @backup_dir %>
+    backup_max_events_per_file: 100000
+    flume_flush_interval: 1000
+    schema_bucket: neon-avro-schema
+    
+
+utils:
+  logs:
+    file: <%= @log_file %>
+    do_stderr: 0
+    do_stdout: 1
+    level: info
+    flume_url: http://localhost:<%= @flume_log_port %>
+    loggly_tag: trackserver
+  monitor:
+    carbon_server: <%= @carbon_host %>
+    carbon_port: <%= @carbon_port %>

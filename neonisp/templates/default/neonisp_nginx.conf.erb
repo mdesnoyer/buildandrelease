@@ -1,0 +1,62 @@
+mastermind_file_url <%= @mastermind_file_url %>;
+mastermind_validated_filepath <%= @mastermind_validated_filepath %>;
+
+server {
+  listen <%= @port%>;
+  
+  # Caches information about open FDs, freqently accessed files.
+  open_file_cache max=200000 inactive=20s;
+  open_file_cache_valid 30s;
+  open_file_cache_min_uses 2;
+  open_file_cache_errors on;
+
+  #keepalive requests
+  keepalive_requests 10000;
+
+  #large_client_header_buffers <%= node[:nginx][:large_client_header_buffers] %>;
+  location / {
+    add_header 'Access-Control-Allow-Origin' '*';
+    add_header 'Access-Control-Allow-Credentials' 'true';
+    add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+    add_header 'Access-Control-Allow-Headers' 'DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type';
+
+
+    proxy_redirect off;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header GEOIP_COUNTRY_CODE3 $geoip_country_code3;
+    proxy_set_header GEOIP_CITY $geoip_city;
+    proxy_set_header GEOIP_REGION $geoip_region;
+    proxy_set_header GEOIP_POSTAL_CODE $geoip_postal_code;
+    proxy_set_header GEOIP_LATITUDE $geoip_latitude;
+    proxy_set_header GEOIP_LONGITUDE $geoip_longitude;
+  }
+
+  location ~ ^/v1/client/(.+\.*)$ {
+    v1_client;
+    expires  <%= @client_expires %>;
+    add_header  Cache-Control private;
+
+  }
+
+  location ~ ^/v1/server/(.+\.*)$ {
+    v1_server;
+  }
+
+  location ~ ^/v1/getthumbnailid(.+\.*)$ {
+    v1_getthumbnailid;
+    add_header 'Access-Control-Allow-Origin' '*';
+    add_header 'Access-Control-Allow-Credentials' 'true';
+    add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+    add_header 'Access-Control-Allow-Headers' 'DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type';
+  }
+
+  location = /stats {
+    mastermind_stats;
+  }
+
+  location = /healthcheck {
+    mastermind_healthcheck;
+  }
+}

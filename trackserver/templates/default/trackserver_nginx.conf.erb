@@ -1,0 +1,21 @@
+upstream tornado_servers {
+  server 127.0.0.1:<%= @service_port %>;
+}
+
+server {
+  listen <%= @frontend_port %>;
+  large_client_header_buffers <%= node[:nginx][:large_client_header_buffers] %>;
+  location / {
+    proxy_redirect off;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header GEOIP_COUNTRY_CODE3 $geoip_country_code3;
+    proxy_set_header GEOIP_CITY $geoip_city;
+    proxy_set_header GEOIP_REGION $geoip_region;
+    proxy_set_header GEOIP_POSTAL_CODE $geoip_postal_code;
+    proxy_set_header GEOIP_LATITUDE $geoip_latitude;
+    proxy_set_header GEOIP_LONGITUDE $geoip_longitude;
+    proxy_pass http://tornado_servers;
+  }
+}
