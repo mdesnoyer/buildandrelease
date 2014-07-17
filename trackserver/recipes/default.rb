@@ -24,13 +24,6 @@ node.default[:neon_logs][:flume_streams][:trackserver_nginx_logs] = \
 
 include_recipe "neon_logs::flume_core"
 
-service "neon-trackserver" do
-  provider Chef::Provider::Service::Upstart
-  supports :status => true, :restart => true, :start => true, :stop => true
-  action :nothing
-  subscribes :restart, "git[#{node[:neon][:code_root]}]"
-end
-
 # List the python dependencies for this server. We don't install
 # all the neon dependencies so that the server can come up more
 # quickly
@@ -53,9 +46,6 @@ pydeps = {
 if node[:opsworks][:activity] == 'setup' then
   # Install nginx
   include_recipe "nginx::default"
-
-  # Install the neon code
-  include_recipe "neon::repo"
 
   # Create a trackserver user
   user "trackserver" do
@@ -88,40 +78,6 @@ if node[:opsworks][:activity] == 'setup' then
     group "neon"
     mode "1775"
     recursive true
-  end
-
-  # Test the trackserver
-  execute "nosetests --exe clickTracker" do
-    cwd node[:neon][:code_root]
-    user "trackserver"
-  end
-
-  # Write the daemon service wrapper
-  template "/etc/init/neon-trackserver.conf" do
-    source "trackserver_service.conf.erb"
-    owner "root"
-    group "root"
-    mode "0644"
-    variables({
-                :neon_root_dir => node[:neon][:code_root],
-                :config_file => node[:trackserver][:config],
-                :user => "trackserver",
-                :group => "trackserver",
-              })
-  end
-
-  # Write a script that will send a mail when the service dies
-  template "/etc/init/neon-trackserver-email.conf" do
-    source "mail-on-restart.conf.erb"
-    owner "root"
-    group "root"
-    mode "0644"
-    variables({
-                :service => "neon-trackserver",
-                :host => node[:hostname],
-                :email => node[:neon][:ops_email],
-                :log_file => node[:trackserver][:log_file]
-              })
   end
 
   template "/etc/init/nginx-email.conf" do
@@ -171,9 +127,52 @@ if ['config', 'setup'].include? node[:opsworks][:activity] then
   end
 end
 
-if node[:opsworks][:activity] == 'setup' then
+if node[:opsworks][:activity] == 'deploy' then
+  # Install the neon code
+  include_recipe "neon::repo"
+
+  # Test the trackserver
+  execute "nosetests --exe clickTracker" do
+    cwd "#{node[:neon][:code_root]}/trackserver"
+    user "trackserver"
+    action :nothing
+    subscribes :run, "git[#{node[:neon][:code_root]}/trackserver]", :immediately
+  end
+
+  # Write the daemon service wrapper
+  template "/etc/init/neon-trackserver.conf" do
+    source "trackserver_service.conf.erb"
+    owner "root"
+    group "root"
+    mode "0644"
+    variables({
+                :neon_root_dir => "#{node[:neon][:code_root]}/trackserver",
+                :config_file => node[:trackserver][:config],
+                :user => "trackserver",
+                :group => "trackserver",
+              })
+  end
+
+  # Write a script that will send a mail when the service dies
+  template "/etc/init/neon-trackserver-email.conf" do
+    source "mail-on-restart.conf.erb"
+    owner "root"
+    group "root"
+    mode "0644"
+    variables({
+                :service => "neon-trackserver",
+                :host => node[:hostname],
+                :email => node[:neon][:ops_email],
+                :log_file => node[:trackserver][:log_file]
+              })
+  end
+
   service "neon-trackserver" do
+    provider Chef::Provider::Service::Upstart
+    supports :status => true, :restart => true, :start => true, :stop => true
     action [:enable, :start]
+    subscribes :restart, "git[#{node[:neon][:code_root]}/trackserver]"
+    subscribes :restart, "template[#{node[:trackserver][:config]}]"
   end
 end
 
