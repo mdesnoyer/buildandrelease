@@ -8,9 +8,10 @@ include_recipe "neon::default"
 deploy_apps = []
 if node[:opsworks][:activity] == 'deploy' then
   node[:deploy].each do |app_name, data|
+    valid_name = app_name.downcase.tr(' ', '')
     deploy_apps << { 
-      :name => app_name,
-      :code_folder => data[:document_root] || app_name,
+      :name => valid_name,
+      :code_folder => data[:document_root] || valid_name,
       :repo_key => data[:scm][:ssh_key] || node[:neon][:repo_key],
       :repo_url => data[:scm][:repository] || node[:neon][:repo_url],
       :revision => data[:scm][:revision] || node[:neon][:code_revision]
