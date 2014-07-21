@@ -65,6 +65,9 @@ if node[:opsworks][:activity] == 'setup' then
     end
   end
 
+  # Setup collecting system metrics
+  include_recipe "neon::system_metrics"
+
   # Install the mail client
   package "mailutils" do
     :install
@@ -110,8 +113,8 @@ if ['config', 'setup'].include? node[:opsworks][:activity] then
                 :flume_port => node[:trackserver][:flume_port],
                 :backup_dir => node[:trackserver][:backup_dir],
                 :log_file => node[:trackserver][:log_file],
-                :carbon_host => node[:carbon_host],
-                :carbon_port => node[:carbon_port],
+                :carbon_host => node[:neon][:carbon_host],
+                :carbon_port => node[:neon][:carbon_port],
                 :flume_log_port => node[:neon_logs][:json_http_source_port],
               })
   end

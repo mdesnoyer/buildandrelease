@@ -35,6 +35,11 @@ if node[:opsworks][:activity] == 'setup' then
   
 end
 
+# Opsworks Configure Phase
+if ['config', 'setup'].include? node[:opsworks][:activity] then
+
+end
+
 # Opsworks DEPLOY stage
 # Since ISP is an nginx module, starting the nginx service starts ISP
 # Start the monitoring script to send data
@@ -53,11 +58,7 @@ if node[:opsworks][:activity] == 'deploy' then
   # Install nginx
   include_recipe "nginx::default"
 
-  service "nginx" do
-    action [:enable, :start]
-  end
-
-  template "/etc/init/nginx-email.conf" do
+    template "/etc/init/nginx-email.conf" do
     source "mail-on-restart.conf.erb"
     owner "root"
     group "root"
@@ -69,6 +70,7 @@ if node[:opsworks][:activity] == 'deploy' then
                 :log_file => "#{node[:nginx][:log_dir]}/error.log"
               })
   end
+
 
   # Write the daemon service wrapper for collecting Nginx/ISP stats 
   template "/etc/init/neon-isp-metrics.conf" do
@@ -82,6 +84,11 @@ if node[:opsworks][:activity] == 'deploy' then
                 :group => "neon",
               })
   end
+
+  service "nginx" do
+    action [:enable, :start]
+  end
+
   
   # start collecting the nginx/isp metrics
   service "neon-isp-metrics" do
@@ -94,8 +101,13 @@ end
 
 # Opsworks UNDEPLOY or SHUTDOWN stage
 if ['undeploy', 'shutdown'].include? node[:opsworks][:activity] then
-  # Turn off the trackserver
+  # Turn off nginx
   service "nginx" do
+    action :stop
+  end
+
+  # Turn off the isp metrics daemon
+  service "neon-isp-metrics" do
     action :stop
   end
 end

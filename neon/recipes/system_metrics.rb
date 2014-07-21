@@ -38,6 +38,8 @@ template "/etc/init/neon-system-metrics.conf" do
               :neon_root_dir => "#{node[:neon][:code_root]}/core",
               :user => "neon",
               :group => "neon",
+              :carbon_host => node[:neon][:carbon_host],
+              :carbon_port => node[:neon][:carbon_port]
             })
 end
 

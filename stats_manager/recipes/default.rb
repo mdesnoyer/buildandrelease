@@ -1,68 +1,30 @@
-# This recipe installs the neon click trackserver
+# This recipe installs the neon stats manager
 
 include_recipe "neon::default"
 
-# Configure the flume agent that will listen to the click data and
-# will watch the log file.
-node.default[:neon_logs][:flume_streams][:click_data] = \
-  get_thriftagent_config(node[:trackserver][:flume_port],
-                         "tracklog",
-                         "tracklog_collector",
-                         node[:neon_logs][:collector_port])
-
+# Configure the flume agent that will listen to the logs from the
+# stats manager job
 node.default[:neon_logs][:flume_streams][:trackserver_logs] = 
   get_jsonagent_config(node[:neon_logs][:json_http_source_port],
-                       "trackserver")
-
-node.default[:neon_logs][:flume_streams][:trackserver_flume_logs] = \
-  get_fileagent_config("#{get_log_dir()}/flume.log",
-                       "trackserver-flume")
-
-node.default[:neon_logs][:flume_streams][:trackserver_nginx_logs] = \
-  get_fileagent_config("#{node[:nginx][:log_dir]}/error.log",
-                       "trackserver-nginx")
+                       "stats_manager")
 
 include_recipe "neon_logs::flume_core"
 
-service "neon-trackserver" do
-  provider Chef::Provider::Service::Upstart
-  supports :status => true, :restart => true, :start => true, :stop => true
-  action :nothing
-  subscribes :restart, "git[#{node[:neon][:code_root]}]"
-end
-
-# List the python dependencies for this server. We don't install
-# all the neon dependencies so that the server can come up more
-# quickly
-pydeps = {
-  "futures" => "2.1.5",
-  "tornado" => "3.1.1",
-  "shortuuid" => "0.3",
-  "PyYAML" => "3.10",
-  "boto" => "2.29.1",
-  "simplejson" => "2.3.2",
-  "nose" => "1.3.0",
-  "pyfakefs" => "2.4",
-  "mock" => "1.0.1",
-  "httpagentparser" => "1.6.0",
-  "avro" => "1.7.6",
-  "thrift" => "0.9.1",
-  "psutil" => "1.2.1",
-}
-
 if node[:opsworks][:activity] == 'setup' then
-  # Install nginx
-  include_recipe "nginx::default"
+  include_recipe "java"
 
-  # Install the neon code
-  include_recipe "neon::repo"
-
-  # Create a trackserver user
-  user "trackserver" do
-    action :create
-    system true
-    shell "/bin/false"
-  end
+  pydeps = {
+    "futures" => "2.1.5",
+    "tornado" => "3.1.1",
+    "setuptools" => "4.0.1",
+    "avro" => "1.7.6",
+    "boto" => "2.29.1",
+    "impyla" => "0.8.1",
+    "simplejson" => "2.3.2",
+    "paramiko" => "1.14.0",
+    "nose" => "1.3.0",
+    "thrift" => "0.9.1",
+  }
 
   # Install the python dependencies
   pydeps.each do |package, vers|
@@ -72,115 +34,90 @@ if node[:opsworks][:activity] == 'setup' then
     end
   end
 
+  # Create a statsmanager user
+  user "statsmanager" do
+    action :create
+    system true
+    shell "/bin/false"
+  end
+
   # Install the mail client
   package "mailutils" do
     :install
   end
-
-  # Make directories 
-  file node[:trackserver][:log_file] do
-    user "trackserver"
-    group "neon"
-    mode "0644"
+  
+  # Install maven
+  package "maven" do
+    :install
   end
-  directory node[:trackserver][:backup_dir] do
-    user "trackserver"
+  directory "#{node[:neon][:home]}/.m2" do
+    owner "neon"
     group "neon"
-    mode "1775"
+    action :create
+    mode "0755"
     recursive true
   end
 
-  # Test the trackserver
-  execute "nosetests --exe clickTracker" do
-    cwd node[:neon][:code_root]
-    user "trackserver"
-  end
-
-  # Write the daemon service wrapper
-  template "/etc/init/neon-trackserver.conf" do
-    source "trackserver_service.conf.erb"
-    owner "root"
-    group "root"
-    mode "0644"
-    variables({
-                :neon_root_dir => node[:neon][:code_root],
-                :config_file => node[:trackserver][:config],
-                :user => "trackserver",
-                :group => "trackserver",
-              })
-  end
-
-  # Write a script that will send a mail when the service dies
-  template "/etc/init/neon-trackserver-email.conf" do
-    source "mail-on-restart.conf.erb"
-    owner "root"
-    group "root"
-    mode "0644"
-    variables({
-                :service => "neon-trackserver",
-                :host => node[:hostname],
-                :email => node[:neon][:ops_email],
-                :log_file => node[:trackserver][:log_file]
-              })
-  end
-
-  template "/etc/init/nginx-email.conf" do
-    source "mail-on-restart.conf.erb"
-    owner "root"
-    group "root"
-    mode "0644"
-    variables({
-                :service => "nginx",
-                :host => node[:hostname],
-                :email => node[:neon][:ops_email],
-                :log_file => "#{node[:nginx][:log_dir]}/error.log"
-              })
+  # Create the log dir
+  directory "#{node[:neon][:log_dir]}/stats_manager" do
+    owner "statsmanager"
+    group "statsmanager"
+    action :create
+    mode "0755"
+    recursive true
   end
 
 end
 
 if ['config', 'setup'].include? node[:opsworks][:activity] then
-  # Write the configuration file for the trackserver
-  template node[:trackserver][:config] do
-    source "trackserver.conf.erb"
-    owner "trackserver"
-    group "trackserver"
-    mode "0644"
-    variables({
-                :port => node[:trackserver][:port],
-                :flume_port => node[:trackserver][:flume_port],
-                :backup_dir => node[:trackserver][:backup_dir],
-                :log_file => node[:trackserver][:log_file],
-                :carbon_host => node[:carbon_host],
-                :carbon_port => node[:carbon_port],
-                :flume_log_port => node[:neon_logs][:json_http_source_port],
-              })
+  # Grab the ssh identity file to talk to the cluster with
+  directory "#{node[:neon][:home]}/statsmanager/.ssh" do
+    owner "statsmanager"
+    group "statsmanager"
+    action :create
+    mode "0700"
+    recursive true
   end
-
-  # Write the configuration for nginx
-  template "#{node[:nginx][:dir]}/conf.d/trackserver.conf" do
-    source "trackserver_nginx.conf.erb"
-    owner node['nginx']['user']
-    group node['nginx']['group']
-    mode "0644"
-    variables({
-                :service_port => node[:trackserver][:port],
-                :frontend_port => node[:trackserver][:external_port]
-              })
-    notifies :reload, 'service[nginx]'
+  s3_file "#{node[:neon][:home]}/statsmanager/.ssh/emr.pem" do
+    source node[:stats_manager][:emr_key]
+    owner "statsmanager"
+    group "statsmanager"
+    action :create
+    mode "0600"
   end
 end
 
-if node[:opsworks][:activity] == 'setup' then
-  service "neon-trackserver" do
-    action [:enable, :start]
+if node[:opsworks][:activity] == 'deploy' then
+  # Grab the latest repo
+  include_recipe "neon::repo"
+
+  execute "get cluster host key" do
+    command "#{node[:neon][:code_root]}/statsmanager/stats/batch_processor.py --master_host_key_file #{node[:neon][:home]}/statsmanager/.ssh/cluster_known_hosts --get_master_host_key 1"
+    user "statsmanager"
+  end
+
+  # Build the job to run
+  execute "build stats jar" do
+    command "mvn generate-sources package"
+    cwd "#{node[:neon][:code_root]}/statsmanager/stats/java"
+    user "neon"
+  end
+
+  # Turn on the cron job
+  cron "stats_manager" do
+    action :create
+    user "statsmanager"
+    hour "1-23/3"
+    minute "10"
+    mailto "ops@neon-lab.com"
+    command "#{node[:neon][:code_root]}/statsmanager/stats/batch_processor.py --mr_jar #{node[:neon][:code_root]}/statsmanager/stats/java/target/neon-stats-1.0-job.jar --utils.monitor.carbon_server #{node[:neon][:carbon_host]} --utils.monitor.carbon_port #{node[:neon][:carbon_port]} --utils.logs.file #{node[:neon][:log_dir]}/stats_manager/stdout.log --utils.logs.do_stderr 0 --master_host_key_file #{node[:neon][:home]}/statsmanager/.ssh/cluster_known_hosts --utils.logs.loggly_tag statsmanager --utils.logs.flume_url http://localhost:#{node[:neon_logs][:json_http_source_port]}" 
   end
 end
 
 
 if ['undeploy', 'shutdown'].include? node[:opsworks][:activity] then
-  # Turn off the trackserver
-  service "neon-trackserver" do
-    action :stop
+  # Turn off the cron job
+  cron "stats_manager" do
+    action :delete
   end
 end
