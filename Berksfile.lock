@@ -9,7 +9,8 @@ DEPENDENCIES
   neon_logs
     path: neon_logs
   nginx
-  python (= 1.4.6)
+    path: neon-nginx
+  python (~> 1.4.6)
   stats_manager
     path: stats_manager
   trackserver
@@ -46,14 +47,14 @@ GRAPH
     apt (>= 0.0.0)
     hadoop (>= 1.0.4)
     java (>= 0.0.0)
-  nginx (2.6.2)
+  nginx (2.7.4)
     apt (~> 2.2)
     bluepill (~> 2.3)
     build-essential (~> 2.0)
-    ohai (~> 1.1)
+    ohai (~> 2.0)
     runit (~> 1.2)
     yum-epel (~> 0.3)
-  ohai (1.1.12)
+  ohai (2.0.1)
   python (1.4.6)
     build-essential (>= 0.0.0)
     yum-epel (>= 0.0.0)
@@ -73,7 +74,7 @@ GRAPH
     java (>= 0.0.0)
     neon (>= 0.0.0)
     neon_logs (>= 0.0.0)
-    nginx (>= 0.0.0)
+    nginx (= 2.7.4)
     python (= 1.4.6)
   windows (1.33.1)
     chef_handler (>= 0.0.0)

@@ -1,0 +1,3 @@
+[submodule "neon-nginx"]
+	path = neon-nginx
+	url = https://github.com/miketheman/nginx.git
