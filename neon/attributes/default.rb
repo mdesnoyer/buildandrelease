@@ -29,3 +29,7 @@ default[:neon][:ops_email] = "ops@neon-lab.com"
 default[:java][:install_flavor] = 'oracle'
 default[:java][:jdk_version] = '7'
 default[:java][:oracle][:accept_oracle_download_terms] = true
+
+# Aws access keys
+default[:aws][:access_key_id] = nil
+default[:aws][:secret_access_key] = nil

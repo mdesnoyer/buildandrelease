@@ -1,6 +1,11 @@
+chef_gem 'aws-sdk'
+
 # Install python
 node.default[:python][:version] = '2.7.5'
 include_recipe "python"
+
+node.default[:git][:version] = '1.7.9.5'
+include_recipe "git"
 
 # Create a neon user
 user "neon" do

@@ -60,6 +60,7 @@ if node[:opsworks][:activity] == 'deploy' then
 
     template "/etc/init/nginx-email.conf" do
     source "mail-on-restart.conf.erb"
+    cookbook "neon"
     owner "root"
     group "root"
     mode "0644"

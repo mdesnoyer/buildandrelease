@@ -1,0 +1,59 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_solo
+
+platforms:
+  - name: ubuntu-12.04
+    attributes: 
+      aws :
+        access_key_id : <%= ENV['AWS_ACCESS_KEY'] %>
+        secret_access_key : <%= ENV['AWS_SECRET_KEY'] %>      
+      opsworks :
+        instance : 
+          private_ip : "10.0.0.1"
+          availability_zone : "us-east-1d"
+          region : "us-east"
+        layers : 
+          tracklog_collector :
+            instances : 
+              log-collector1 : 
+                private_ip : "10.0.2.2"
+                availability_zone : "us-east-1d"
+                region : "us-east"
+              
+              log-collector2 : 
+                private_ip : "10.0.3.2"
+                availability_zone : "us-east-1c"
+                region : "us-east"
+          log-collector : 
+            instances : 
+              log-collector1 : 
+                private_ip : "10.0.0.2"
+                availability_zone : "us-east-1d"
+                region : "us-east"
+              
+              log-collector2 : 
+                private_ip : "10.0.1.2"
+                availability_zone : "us-east-1c"
+                region : "us-east"
+
+suites:
+  - name: trackserver_deploy
+    run_list:
+      - recipe[trackserver::default]
+      
+    attributes: 
+      deploy :
+        "Track Server" :
+          document_root : "trackserver"
+          scm :
+            scm_type : "git"
+            repository : "git@github.com:neon-lab/neon-codebase.git"
+            revision : "working"      
+      opsworks :
+        activity : "deploy"
+        
+      

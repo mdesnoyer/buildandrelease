@@ -16,9 +16,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-require 'aws-sdk'
-
 class Chef
   class Resource
     class S3File < Chef::Resource::RemoteFile
@@ -61,6 +58,7 @@ class Chef
       end
 
       def fetch_from_s3(source)
+        require 'aws-sdk'
         reg = /s3:\/\/(?<bucket>[A-Za-z0-9_\-\.]+)\/(?<name>.+)/x
         parse = source[0].match(reg)
         if parse.nil? then
@@ -69,6 +67,10 @@ class Chef
         end
         bucket = parse['bucket']
         name = parse['name']
+        if not node[:aws][:access_key_id].nil? then
+          s3 = AWS.config(:access_key_id => node[:aws][:access_key_id],
+                          :secret_access_key => node[:aws][:secret_access_key])
+        end
         s3 = AWS::S3.new
         obj = s3.buckets[bucket].objects[name]
         Chef::Log.debug("Downloading #{name} from S3 bucket #{bucket}")

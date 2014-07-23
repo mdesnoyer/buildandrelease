@@ -10,81 +10,78 @@ node.default[:neon_logs][:flume_streams][:trackserver_logs] =
 
 include_recipe "neon_logs::flume_core"
 
-if node[:opsworks][:activity] == 'setup' then
-  include_recipe "java"
+include_recipe "java"
 
-  pydeps = {
-    "futures" => "2.1.5",
-    "tornado" => "3.1.1",
-    "setuptools" => "4.0.1",
-    "avro" => "1.7.6",
-    "boto" => "2.29.1",
-    "impyla" => "0.8.1",
-    "simplejson" => "2.3.2",
-    "paramiko" => "1.14.0",
-    "nose" => "1.3.0",
-    "thrift" => "0.9.1",
-  }
+pydeps = {
+  "futures" => "2.1.5",
+  "tornado" => "3.1.1",
+  "setuptools" => "4.0.1",
+  "avro" => "1.7.6",
+  "boto" => "2.29.1",
+  "impyla" => "0.8.1",
+  "simplejson" => "2.3.2",
+  "paramiko" => "1.14.0",
+  "nose" => "1.3.0",
+  "thrift" => "0.9.1",
+  "PyYAML" => "3.10"
+}
 
-  # Install the python dependencies
-  pydeps.each do |package, vers|
-    python_pip package do
-      version vers
-      options "--no-index --find-links http://s3-us-west-1.amazonaws.com/neon-dependencies/index.html"
-    end
+# Install the python dependencies
+pydeps.each do |package, vers|
+  python_pip package do
+    version vers
+    options "--no-index --find-links http://s3-us-west-1.amazonaws.com/neon-dependencies/index.html"
   end
-
-  # Create a statsmanager user
-  user "statsmanager" do
-    action :create
-    system true
-    shell "/bin/false"
-  end
-
-  # Install the mail client
-  package "mailutils" do
-    :install
-  end
-  
-  # Install maven
-  package "maven" do
-    :install
-  end
-  directory "#{node[:neon][:home]}/.m2" do
-    owner "neon"
-    group "neon"
-    action :create
-    mode "0755"
-    recursive true
-  end
-
-  # Create the log dir
-  directory "#{node[:neon][:log_dir]}/stats_manager" do
-    owner "statsmanager"
-    group "statsmanager"
-    action :create
-    mode "0755"
-    recursive true
-  end
-
 end
 
-if ['config', 'setup'].include? node[:opsworks][:activity] then
-  # Grab the ssh identity file to talk to the cluster with
-  directory "#{node[:neon][:home]}/statsmanager/.ssh" do
-    owner "statsmanager"
-    group "statsmanager"
-    action :create
-    mode "0700"
-    recursive true
-  end
-  s3_file "#{node[:neon][:home]}/statsmanager/.ssh/emr.pem" do
-    source node[:stats_manager][:emr_key]
-    owner "statsmanager"
-    group "statsmanager"
-    action :create
-    mode "0600"
-  end
+# Create a statsmanager user
+user "statsmanager" do
+  action :create
+  system true
+  shell "/bin/false"
+end
+
+# Install the mail client
+package "mailutils" do
+  :install
+end
+  
+# Install maven
+package "maven" do
+  :install
+end
+directory "#{node[:neon][:home]}/.m2" do
+  owner "neon"
+  group "neon"
+  action :create
+  mode "0755"
+  recursive true
+end
+
+# Create the log dir
+directory "#{node[:neon][:log_dir]}/stats_manager" do
+  owner "statsmanager"
+  group "statsmanager"
+  action :create
+  mode "0755"
+  recursive true
+end
+
+
+# Grab the ssh identity file to talk to the cluster with
+directory "#{node[:neon][:home]}/statsmanager/.ssh" do
+  owner "statsmanager"
+  group "statsmanager"
+  action :create
+  mode "0700"
+  recursive true
+end
+s3_file "#{node[:neon][:home]}/statsmanager/.ssh/emr.pem" do
+  source node[:stats_manager][:emr_key]
+  owner "statsmanager"
+  group "statsmanager"
+  action :create
+  mode "0600"
 end
 
 if node[:opsworks][:activity] == 'deploy' then

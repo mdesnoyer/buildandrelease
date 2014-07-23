@@ -11,20 +11,31 @@ if node[:opsworks][:activity] == 'deploy' then
     valid_name = app_name.downcase.tr(' ', '')
     deploy_apps << { 
       :name => valid_name,
-      :code_folder => data[:document_root] || valid_name,
+      :app_name => app_name,
+      :code_folder => get_repo_path(app_name),
       :repo_key => data[:scm][:ssh_key] || node[:neon][:repo_key],
       :repo_url => data[:scm][:repository] || node[:neon][:repo_url],
       :revision => data[:scm][:revision] || node[:neon][:code_revision]
     }
   end
-else
-  deploy_apps << {
-    :name => "core",
-    :code_folder => "core",
-    :repo_key => node[:neon][:repo_key],
-    :repo_url => node[:neon][:repo_url],
-    :revision => node[:neon][:code_revision]
-  }
+end
+
+deploy_apps << {
+  :name => "core",
+  :app_name => nil,
+  :code_folder => get_repo_path(nil),
+  :repo_key => node[:neon][:repo_key],
+  :repo_url => node[:neon][:repo_url],
+  :revision => node[:neon][:code_revision]
+}
+
+# Create the base directory for the repo copies
+directory "#{node[:neon][:code_root]}" do
+  action :create
+  owner "neon"
+  group "neon"
+  mode "1755"
+  recursive true
 end
 
 # Create the ssh directory
@@ -38,12 +49,11 @@ end
 deploy_apps.each do |data|
 
   # Create the code directory
-  directory "#{node[:neon][:code_root]}/#{data[:code_folder]}" do
+  directory "#{data[:code_folder]}" do
     action :create
     owner "neon"
     group "neon"
     mode "1755"
-    recursive true
   end
 
   # Install the ssh deploy key to get the repository
@@ -76,7 +86,7 @@ deploy_apps.each do |data|
   end
 
   # Get the code repository
-  git "#{node[:neon][:code_root]}/#{data[:code_folder]}" do
+  git data[:code_folder] do
     repository data[:repo_url]
     revision data[:code_revision]
     enable_submodules true
