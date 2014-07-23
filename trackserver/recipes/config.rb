@@ -18,7 +18,7 @@ node.default[:neon_logs][:flume_streams][:trackserver_nginx_logs] = \
   get_fileagent_config("#{node[:nginx][:log_dir]}/error.log",
                        "trackserver-nginx")
 
-include_recipe "neon_logs::flume_core"
+include_recipe "neon_logs::flume_core_config"
 
 # Write the configuration file for the trackserver
 template node[:trackserver][:config] do

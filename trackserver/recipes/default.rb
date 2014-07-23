@@ -2,7 +2,6 @@
 
 include_recipe "neon::default"
 
-
 # Install nginx
 include_recipe "nginx::default"
 
@@ -17,6 +16,7 @@ user "trackserver" do
 end
 
 include_recipe "trackserver::config"
+include_recipe "neon_logs::flume_core"
 
 # Install the python dependencies
 

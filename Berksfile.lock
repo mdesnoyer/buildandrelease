@@ -73,7 +73,7 @@ GRAPH
     java (>= 0.0.0)
     neon (>= 0.0.0)
     neon_logs (>= 0.0.0)
-    nginx (= 2.6.2)
+    nginx (>= 0.0.0)
     python (= 1.4.6)
   windows (1.33.1)
     chef_handler (>= 0.0.0)
