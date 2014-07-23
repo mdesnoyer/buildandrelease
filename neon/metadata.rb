@@ -9,7 +9,6 @@ depends 'apt'
 depends 'git'
 depends 'java'
 depends 'neon_logs'
-depends 'nginx', "= 2.6.2"
 depends 'python', "= 1.4.6"
 
 supports 'ubuntu'

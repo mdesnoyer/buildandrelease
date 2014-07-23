@@ -8,7 +8,7 @@ DEPENDENCIES
     path: neon
   neon_logs
     path: neon_logs
-  nginx (= 2.6.2)
+  nginx
   python (= 1.4.6)
   stats_manager
     path: stats_manager
@@ -41,7 +41,6 @@ GRAPH
     git (>= 0.0.0)
     java (>= 0.0.0)
     neon_logs (>= 0.0.0)
-    nginx (= 2.6.2)
     python (= 1.4.6)
   neon_logs (0.9.0)
     apt (>= 0.0.0)

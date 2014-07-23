@@ -2,27 +2,6 @@
 
 include_recipe "neon::default"
 
-# Configure the flume agent that will listen to the click data and
-# will watch the log file.
-node.default[:neon_logs][:flume_streams][:click_data] = \
-  get_thriftagent_config(node[:trackserver][:flume_port],
-                         "tracklog",
-                         "tracklog_collector",
-                         node[:neon_logs][:collector_port])
-
-node.default[:neon_logs][:flume_streams][:trackserver_logs] = 
-  get_jsonagent_config(node[:neon_logs][:json_http_source_port],
-                       "trackserver")
-
-node.default[:neon_logs][:flume_streams][:trackserver_flume_logs] = \
-  get_fileagent_config("#{get_log_dir()}/flume.log",
-                       "trackserver-flume")
-
-node.default[:neon_logs][:flume_streams][:trackserver_nginx_logs] = \
-  get_fileagent_config("#{node[:nginx][:log_dir]}/error.log",
-                       "trackserver-nginx")
-
-include_recipe "neon_logs::flume_core"
 
 # Install nginx
 include_recipe "nginx::default"
@@ -30,15 +9,14 @@ include_recipe "nginx::default"
 # Setup collecting system metrics
 include_recipe "neon::system_metrics"
 
-
-include_recipe "trackserver::config"
-
 # Create a trackserver user
 user "trackserver" do
   action :create
   system true
   shell "/bin/false"
 end
+
+include_recipe "trackserver::config"
 
 # Install the python dependencies
 
@@ -114,7 +92,8 @@ if node[:opsworks][:activity] == 'deploy' then
     cwd "#{trackserver_repo}"
     user "trackserver"
     action :nothing
-    subscribes :run, "git[#{trackserver_repo}]", :immediately
+    subscribes :run, "git[#{trackserver_repo}]"
+    notifies :restart, "service[neon-trackserver]", :delayed
   end
 
   # Write the daemon service wrapper
@@ -149,9 +128,8 @@ if node[:opsworks][:activity] == 'deploy' then
   service "neon-trackserver" do
     provider Chef::Provider::Service::Upstart
     supports :status => true, :restart => true, :start => true, :stop => true
-    action [:enable, :start]
-    subscribes :restart, "git[#{trackserver_repo}]"
-    subscribes :restart, "template[#{node[:trackserver][:config]}]"
+    action :enable
+    subscribes :restart, "template[#{node[:trackserver][:config]}]", :delayed
   end
 end
 
