@@ -9,7 +9,7 @@ depends 'apt'
 depends 'java'
 depends 'neon'
 depends 'neon_logs'
-depends 'nginx', "= 2.7.4"
+depends 'neon-nginx', "= 2.7.4"
 depends 'python', "= 1.4.6"
 
 supports 'ubuntu'

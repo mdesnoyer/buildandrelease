@@ -16,8 +16,8 @@ default[:nginx][:install_method] = "source"
 default[:nginx][:log_dir] = "#{node[:neon][:log_dir]}/nginx"
 default[:nginx][:worker_rlimit_nofile] = 65536
 default[:nginx][:source][:modules] = %w(
-  nginx::http_realip_module
-  nginx::http_geoip_module
+  neon-nginx::http_realip_module
+  neon-nginx::http_geoip_module
 )
 
 # Force_Default is needed because these parameters are set in the nginx recipe

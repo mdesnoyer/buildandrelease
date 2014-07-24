@@ -6,7 +6,7 @@ include_recipe "trackserver::flume_config"
 include_recipe "neon_logs::flume_core"
 
 # Install nginx
-include_recipe "nginx::default"
+include_recipe "neon-nginx::default"
 
 # Setup collecting system metrics
 include_recipe "neon::system_metrics"
