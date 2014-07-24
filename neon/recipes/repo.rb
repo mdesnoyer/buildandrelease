@@ -88,7 +88,7 @@ deploy_apps.each do |data|
   # Get the code repository
   git data[:code_folder] do
     repository data[:repo_url]
-    revision data[:code_revision]
+    revision data[:revision]
     enable_submodules true
     action :sync
     user "neon"

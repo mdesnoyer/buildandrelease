@@ -48,11 +48,24 @@ suites:
   - name: trackserver_deploy
     run_list:
       - recipe[trackserver::default]
-      
     attributes: 
       deploy :
         "Track Server" :
           document_root : "trackserver"
+          scm :
+            scm_type : "git"
+            repository : "git@github.com:neon-lab/neon-codebase.git"
+            revision : "working"      
+      opsworks :
+        activity : "deploy"
+
+  - name: isp_deploy
+    run_list:
+      - recipe[neonisp::default]
+    attributes: 
+      deploy :
+        "Image Serving Platform" :
+          document_root : "neonisp"
           scm :
             scm_type : "git"
             repository : "git@github.com:neon-lab/neon-codebase.git"

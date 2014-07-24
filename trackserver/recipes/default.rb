@@ -2,9 +2,6 @@
 
 include_recipe "neon::default"
 
-include_recipe "trackserver::flume_config"
-include_recipe "neon_logs::flume_core"
-
 # Install nginx
 include_recipe "neon-nginx::default"
 
@@ -46,11 +43,6 @@ pydeps.each do |package, vers|
     version vers
     options "--no-index --find-links http://s3-us-west-1.amazonaws.com/neon-dependencies/index.html"
   end
-end
-
-# Install the mail client
-package "mailutils" do
-  :install
 end
 
 package "python-nose" do

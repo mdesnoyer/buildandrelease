@@ -8,6 +8,7 @@ cookbook "minitest-handler", '~> 1.2.0'
 cookbook "python", "~> 1.4.6"
 
 cookbook "neon", path: "neon"
+cookbook "neonisp", path: "neonisp"
 cookbook "neon_logs", path: "neon_logs"
 cookbook "stats_manager", path: "stats_manager"
 cookbook "trackserver", path: "trackserver"

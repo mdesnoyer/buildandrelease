@@ -4,4 +4,8 @@ node.default[:neon_logs][:flume_streams][:log_collector_log] = \
 node.default[:neon_logs][:flume_streams][:log_collector] = \
   get_logcollector_config()
 
-include_recipe "neon_logs::flume_core"
+if node[:opsworks][:activity] == "config" then
+  include_recipe "neon_logs::flume_core_config"
+else
+  include_recipe "neon_logs::flume_core"
+end

@@ -37,6 +37,7 @@ class Chef
       collector_ips = get_collector_ips(collector_layer)
       ncollectors = collector_ips[:primary].length + collector_ips[:backup].length
       if ncollectors == 0
+        Chef::Log.warn "No collectors found for log_type: #{log_type}"
         return {}
       end
       # Determine all the sinks based on the collector ips
@@ -93,6 +94,7 @@ class Chef
       collector_ips = get_collector_ips(collector_layer)
       ncollectors = collector_ips[:primary].length + collector_ips[:backup].length
       if ncollectors == 0
+        Chef::Log.warn "No collectors found for log_type: #{log_type}"
         return {}
       end
       # Determine all the sinks based on the collector ips
@@ -141,6 +143,7 @@ class Chef
       collector_ips = get_collector_ips(collector_layer)
       ncollectors = collector_ips[:primary].length + collector_ips[:backup].length
       if ncollectors == 0
+        Chef::Log.warn "No collectors found for log_type: #{log_type}"
         return {}
       end
       # Determine all the sinks based on the collector ips
@@ -243,6 +246,7 @@ class Chef
       collector_layer = collector_layer || node[:neon_logs][:collector_layer]
       primary_ips = []
       backup_ips = []
+      Chef::Log.info "Looking for collectors in layer: #{collector_layer}"
       collector_instances = \
         node[:opsworks][:layers][collector_layer][:instances]
       collector_instances.each do |name, collector|

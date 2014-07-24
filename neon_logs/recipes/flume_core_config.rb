@@ -3,6 +3,12 @@ conf_dir = get_config_dir()
 log_dir = get_log_dir()
 run_dir = get_run_dir()
 
+# So that the following recipes can restart the service
+service node[:neon_logs][:flume_service_name] do
+  provider Chef::Provider::Service::Upstart
+  action :nothing
+end
+
 if node[:neon_logs][:monitor_flume] then
   node.default[:neon_logs][:java_opts] = \
   [
