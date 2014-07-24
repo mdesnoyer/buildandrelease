@@ -23,6 +23,15 @@ else
   include_recipe "neon_logs::flume_core"
 end
 
+# Define the services so that they can be restarted/reloaded
+service "neon-trackserver" do
+  provider Chef::Provider::Service::Upstart
+  action :nothing
+end
+service "nginx" do
+  action :nothing
+end
+
 # Write the configuration file for the trackserver
 template node[:trackserver][:config] do
   source "trackserver.conf.erb"
@@ -38,6 +47,7 @@ template node[:trackserver][:config] do
               :carbon_port => node[:neon][:carbon_port],
               :flume_log_port => node[:neon_logs][:json_http_source_port],
             })
+  notifies :restart, 'service[neon-trackserver]', :delayed
 end
 
 # Write the configuration for nginx
@@ -50,5 +60,5 @@ template "#{node[:nginx][:dir]}/conf.d/trackserver.conf" do
               :service_port => node[:trackserver][:port],
               :frontend_port => node[:trackserver][:external_port]
             })
-  notifies :reload, 'service[nginx]'
+  notifies :reload, 'service[nginx]', :delayed
 end

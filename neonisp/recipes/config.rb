@@ -9,6 +9,10 @@ else
   include_recipe "neon_logs::flume_core"
 end
 
+# Write the service so that it can be reloaded
+service "nginx" do
+  action :nothing
+end
 
 # Write the imageservingplatform configuration for nginx
 template "#{node[:nginx][:dir]}/conf.d/neonisp.conf" do
@@ -22,5 +26,5 @@ template "#{node[:nginx][:dir]}/conf.d/neonisp.conf" do
               :mastermind_file_url => node[:neonisp][:mastermind_file_url],
               :client_expires => node[:neonisp][:client_api_expiry]
             })
-  notifies :reload, 'service[nginx]'
+  notifies :reload, 'service[nginx]', :delayed
 end
