@@ -72,5 +72,19 @@ suites:
             revision : "working"      
       opsworks :
         activity : "deploy"
+
+  - name: statsmanager_deploy
+    run_list:
+      - recipe[stats_manager::default]
+    attributes: 
+      deploy :
+        "Stats Manager" :
+          document_root : "statsmanager"
+          scm :
+            scm_type : "git"
+            repository : "git@github.com:neon-lab/neon-codebase.git"
+            revision : "working"      
+      opsworks :
+        activity : "deploy"
         
       

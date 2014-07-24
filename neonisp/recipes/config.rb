@@ -14,6 +14,8 @@ service "nginx" do
   action :nothing
 end
 
+include_recipe "neon-nginx::commons_dir"
+
 # Write the imageservingplatform configuration for nginx
 template "#{node[:nginx][:dir]}/conf.d/neonisp.conf" do
   source "neonisp_nginx.conf.erb"

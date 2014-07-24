@@ -88,15 +88,17 @@ if node[:opsworks][:activity] == 'deploy' then
   # Grab the latest repo
   include_recipe "neon::repo"
 
+  repo_path = get_repo_path("Stats Manager")
+
   execute "get cluster host key" do
-    command "#{node[:neon][:code_root]}/statsmanager/stats/batch_processor.py --master_host_key_file #{node[:neon][:home]}/statsmanager/.ssh/cluster_known_hosts --get_master_host_key 1"
+    command "#{repo_path}/stats/batch_processor.py --master_host_key_file #{node[:neon][:home]}/statsmanager/.ssh/cluster_known_hosts --get_master_host_key 1"
     user "statsmanager"
   end
 
   # Build the job to run
   execute "build stats jar" do
     command "mvn generate-sources package"
-    cwd "#{node[:neon][:code_root]}/statsmanager/stats/java"
+    cwd "#{repo_path}/stats/java"
     user "neon"
   end
 
@@ -107,7 +109,7 @@ if node[:opsworks][:activity] == 'deploy' then
     hour "1-23/3"
     minute "10"
     mailto "ops@neon-lab.com"
-    command "#{node[:neon][:code_root]}/statsmanager/stats/batch_processor.py --mr_jar #{node[:neon][:code_root]}/statsmanager/stats/java/target/neon-stats-1.0-job.jar --utils.monitor.carbon_server #{node[:neon][:carbon_host]} --utils.monitor.carbon_port #{node[:neon][:carbon_port]} --utils.logs.file #{node[:neon][:log_dir]}/stats_manager/stdout.log --utils.logs.do_stderr 0 --master_host_key_file #{node[:neon][:home]}/statsmanager/.ssh/cluster_known_hosts --utils.logs.loggly_tag statsmanager --utils.logs.flume_url http://localhost:#{node[:neon_logs][:json_http_source_port]}" 
+    command "#{repo_path}/stats/batch_processor.py --mr_jar #{repo_path}/stats/java/target/neon-stats-1.0-job.jar --utils.monitor.carbon_server #{node[:neon][:carbon_host]} --utils.monitor.carbon_port #{node[:neon][:carbon_port]} --utils.logs.file #{node[:neon][:log_dir]}/stats_manager/stdout.log --utils.logs.do_stderr 0 --master_host_key_file #{node[:neon][:home]}/statsmanager/.ssh/cluster_known_hosts --utils.logs.loggly_tag statsmanager --utils.logs.flume_url http://localhost:#{node[:neon_logs][:json_http_source_port]}" 
   end
 end
 
