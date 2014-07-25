@@ -90,9 +90,15 @@ if node[:opsworks][:activity] == 'deploy' then
 
   repo_path = get_repo_path("Stats Manager")
 
+  aws_keys = {
+    'AWS_ACCESS_KEY_ID' => node[:aws][:access_key_id],
+    'AWS_SECRET_ACCESS_KEY' => node[:aws][:secret_access_key]
+  }
+
   execute "get cluster host key" do
     command "#{repo_path}/stats/batch_processor.py --master_host_key_file #{node[:neon][:home]}/statsmanager/.ssh/cluster_known_hosts --get_master_host_key 1"
     user "statsmanager"
+    environment aws_keys
   end
 
   # Build the job to run
@@ -110,6 +116,7 @@ if node[:opsworks][:activity] == 'deploy' then
     minute "10"
     mailto "ops@neon-lab.com"
     command "#{repo_path}/stats/batch_processor.py --mr_jar #{repo_path}/stats/java/target/neon-stats-1.0-job.jar --utils.monitor.carbon_server #{node[:neon][:carbon_host]} --utils.monitor.carbon_port #{node[:neon][:carbon_port]} --utils.logs.file #{node[:neon][:log_dir]}/stats_manager/stdout.log --utils.logs.do_stderr 0 --master_host_key_file #{node[:neon][:home]}/statsmanager/.ssh/cluster_known_hosts --utils.logs.loggly_tag statsmanager --utils.logs.flume_url http://localhost:#{node[:neon_logs][:json_http_source_port]}" 
+    environment aws_keys
   end
 end
 
