@@ -50,3 +50,10 @@ template "/home/ubuntu/.ssh/config" do
               :vpc_prefix => node[:opsworks][:instance][:private_ip].split('.')[0,2].join('.')
             })
 end
+
+# Remove the known_hosts file because servers change on config
+if node[:opsworks][:activity] == "config" then
+  file "/home/ubuntu/.ssh/known_hosts" do
+    action :delete
+  end
+end
