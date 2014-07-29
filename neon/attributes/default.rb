@@ -8,6 +8,9 @@ default[:neon][:code_root] = "#{node[:neon][:home]}/neon-codebase"
 # The ssh key for access the neon repo
 default[:neon][:repo_key] = "s3://neon-keys/neon-deploy.pem"
 
+# The ssh key to serving machines
+default[:neon][:serving_key] = "s3://neon-keys/neon-serving.pem"
+
 # The path to the neon repo
 default[:neon][:repo_url] = "git@github.com:neon-lab/neon-codebase.git"
 

@@ -8,13 +8,13 @@ include_recipe "neon::system_metrics"
 
 # Make directories 
 file node[:neonisp][:log_file] do
-  user "#{node[:neonisp][:nginx_user]}"
+  user "#{node[:nginx][:user]}"
   group "neon"
   mode "0644"
 end
   
 file node[:neonisp][:mastermind_download_location] do
-  user "#{node[:neonisp][:nginx_user]}"
+  user "#{node[:nginx][:user]}"
   group "neon"
   mode "0644"
 end
@@ -31,7 +31,7 @@ if node[:opsworks][:activity] == 'deploy' then
   # TODO(Sunil): Add testing for the image serving platform
   #execute "nosetests --exe imageservingplatform" do
   #  cwd "#{node[:neon][:code_root]}/neonisp"
-  #  user "trackserver"
+  #  user "#{node[:nginx][:user]}"
   #  subscribes :run, "git[#{repo_path}]", :immediately
   #end
   

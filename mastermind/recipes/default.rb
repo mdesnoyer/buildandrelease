@@ -5,7 +5,7 @@ include_recipe "neon::default"
 # Setup collecting system metrics
 include_recipe "neon::system_metrics"
 
-# Create a trackserver user
+# Create a mastermind user
 user "mastermind" do
   action :create
   system true
@@ -17,6 +17,11 @@ include_recipe "mastermind::config"
 # Install the python dependencies
 
 # Make directories 
+directory node[:mastermind][:log_dir] do
+  user "mastermind"
+  group "neon"
+  mode "0755"
+end
 file node[:mastermind][:log_file] do
   user "mastermind"
   group "neon"
@@ -28,9 +33,9 @@ if node[:opsworks][:activity] == 'deploy' then
   # Install the neon code
   include_recipe "neon::full_py_repo"
 
-  # Test the trackserver
+  # Test mastermind
   repo_path = get_repo_path("mastermind")
-  execute "nosetests --exe clickTracker" do
+  execute "nosetests --exe mastermind utils" do
     cwd "#{repo_path}"
     user "mastermind"
     action :nothing

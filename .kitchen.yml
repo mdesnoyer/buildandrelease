@@ -86,5 +86,19 @@ suites:
             revision : "working"      
       opsworks :
         activity : "deploy"
+
+  - name: mastermind_deploy
+    run_list:
+      - recipe[mastermind::default]
+    attributes: 
+      deploy :
+        "Mastermind" :
+          document_root : "mastermind"
+          scm :
+            scm_type : "git"
+            repository : "git@github.com:neon-lab/neon-codebase.git"
+            revision : "working"      
+      opsworks :
+        activity : "deploy"
         
       

@@ -13,6 +13,9 @@ else
   include_recipe "neon_logs::flume_core"
 end
 
+# TODO(sunil): set video db host to the layer location when we put the
+# db on opsworks
+
 # Write the configuration file for the mastermind
 template node[:mastermind][:config] do
   source "mastermind.conf.erb"
@@ -26,7 +29,7 @@ template node[:mastermind][:config] do
               :directive_bucket => node[:mastermind][:directive_bucket],
               :directive_filename => node[:mastermind][:directive_filename],
               :publishing_period => node[:mastermind][:publishing_period],
-              :video_db_host =>,
+              :video_db_host => node[:mastermind][:video_db_host],
               :video_db_port => node[:mastermind][:video_db_port],
               :log_file => node[:mastermind][:log_file],
               :carbon_host => node[:neon][:carbon_host],
