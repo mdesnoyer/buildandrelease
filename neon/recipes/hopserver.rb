@@ -33,7 +33,7 @@ hostnames = []
 node[:opsworks][:layers].each do | layer_name, layer|
   layer[:instances].each do |hostname, instance|
     hostnames << hostname
-    if not instance[:ip].empty?
+    if not instance[:ip].nil?
       hostnames << instance[:ip]
     end
   end
