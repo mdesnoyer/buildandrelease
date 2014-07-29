@@ -35,7 +35,7 @@ if node[:opsworks][:activity] == 'deploy' then
 
   # Test mastermind
   repo_path = get_repo_path("mastermind")
-  execute "nosetests --exe mastermind utils" do
+  execute "nosetests --exe mastermind utils supportServices" do
     cwd "#{repo_path}"
     user "mastermind"
     action :run
