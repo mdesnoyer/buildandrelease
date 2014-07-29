@@ -118,13 +118,6 @@ if node[:opsworks][:activity] == 'deploy' then
                 :log_file => node[:trackserver][:log_file]
               })
   end
-
-  service "neon-trackserver" do
-    provider Chef::Provider::Service::Upstart
-    supports :status => true, :restart => true, :start => true, :stop => true
-    action :enable
-    subscribes :restart, "template[#{node[:trackserver][:config]}]", :delayed
-  end
 end
 
 

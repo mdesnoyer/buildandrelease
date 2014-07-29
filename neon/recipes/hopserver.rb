@@ -5,10 +5,13 @@
 #
 # Host hopserver
 #   HostName <Elastic IP of this machine>
+#   User ubuntu
 #   IdentityFile <Location to the ssh key for this machine>
 #
-# Host 10.0.*
+# Host <VPC address space. e.g. 10.0.*>
 #   ProxyCommand ssh -q hopserver nc -q0 %h 22
+#   IdentityFile <Location to the ssh key for the machine behind the hop>
+#   User ubuntu
 
 
 include_recipe "neon::default"
@@ -17,10 +20,22 @@ package "netcat6" do
   action :install
 end
 
-s3_file "/home/ubuntu/.ssh/emr.pem" do
+s3_file "/home/ubuntu/.ssh/neon-serving.pem" do
   source node[:neon][:serving_key]
   owner "ubuntu"
   group "ubuntu"
   action :create
   mode "0600"
+end
+
+template "/home/ubuntu/.ssh/config" do
+  source "hopserver-ssh-config.erb"
+  owner "ubuntu"
+  group "ubuntu"
+  mode "0600"
+  variables({
+              :instances => node[:opsworks][:layers].values.map{|x| x[:instances]}.reduce(:+),
+              :key_file => "/home/ubuntu/.ssh/neon-serving.pem",
+              :vpc_prefix => node[:opsworks][:instance][:private_ip].split('.')[0,2].join('.')
+            })
 end

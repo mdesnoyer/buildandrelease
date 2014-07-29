@@ -26,7 +26,8 @@ end
 # Define the services so that they can be restarted/reloaded
 service "neon-trackserver" do
   provider Chef::Provider::Service::Upstart
-  action :nothing
+  supports :status => true, :restart => true, :start => true, :stop => true
+  action :enable
 end
 service "nginx" do
   action :nothing
