@@ -22,7 +22,7 @@ apps.each do |app|
   execute "py_pre_reqs[#{app}]" do
     command "pip install --no-index --find-links http://s3-us-west-1.amazonaws.com/neon-dependencies/index.html -r #{code_path}/pre_requirements.txt"
     action :nothing
-    subscribes :run, "git[#{code_path}]"
+    subscribes :run, "git[#{code_path}]", :immediately
   end
 
   execute "py_install_reqs[#{app}]" do

@@ -38,8 +38,7 @@ if node[:opsworks][:activity] == 'deploy' then
   execute "nosetests --exe mastermind utils" do
     cwd "#{repo_path}"
     user "mastermind"
-    action :nothing
-    subscribes :run, "execute[py_install_reqs[mastermind]]"
+    action :run
     notifies :restart, "service[mastermind]", :delayed
   end
 
@@ -75,7 +74,7 @@ if node[:opsworks][:activity] == 'deploy' then
   service "mastermind" do
     provider Chef::Provider::Service::Upstart
     supports :status => true, :restart => true, :start => true, :stop => true
-    action :start
+    action [:enabled, :start]
   end
 end
 

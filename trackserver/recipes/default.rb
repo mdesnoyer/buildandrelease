@@ -85,8 +85,7 @@ if node[:opsworks][:activity] == 'deploy' then
   execute "nosetests --exe clickTracker" do
     cwd "#{trackserver_repo}"
     user "trackserver"
-    action :nothing
-    subscribes :run, "git[#{trackserver_repo}]"
+    action :run
     notifies :restart, "service[neon-trackserver]", :delayed
   end
 
@@ -120,7 +119,7 @@ if node[:opsworks][:activity] == 'deploy' then
   end
 
   service "neon-trackserver" do
-    action :enable
+    action [:enable, :start]
   end
 end
 

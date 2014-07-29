@@ -32,7 +32,7 @@ if node[:opsworks][:activity] == 'deploy' then
   #execute "nosetests --exe imageservingplatform" do
   #  cwd "#{node[:neon][:code_root]}/neonisp"
   #  user "#{node[:nginx][:user]}"
-  #  subscribes :run, "git[#{repo_path}]", :immediately
+  #  action :run
   #end
   
   # Install nginx
@@ -75,7 +75,7 @@ if node[:opsworks][:activity] == 'deploy' then
   service "neon-isp-metrics" do
     provider Chef::Provider::Service::Upstart
     supports :status => true, :restart => true, :start => true, :stop => true
-    action :enable
+    action [:enable, :start]
     subscribes :restart, "git[#{repo_path}]", :delayed
   end
 end
