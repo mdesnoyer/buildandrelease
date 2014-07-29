@@ -28,13 +28,24 @@ s3_file "/home/ubuntu/.ssh/neon-serving.pem" do
   mode "0600"
 end
 
+# Find a list of all the hostnames that we can hop to
+hostnames = []
+node[:opsworks][:layers].each do | layer_name, layer|
+  layer[:instances].each do |hostname, instance|
+    hostnames << hostname
+    if not instance[:ip].empty?
+      hostnames << instance[:ip]
+    end
+  end
+end
+
 template "/home/ubuntu/.ssh/config" do
   source "hopserver-ssh-config.erb"
   owner "ubuntu"
   group "ubuntu"
   mode "0600"
   variables({
-              :instances => node[:opsworks][:layers].values.map{|x| x[:instances]}.reduce(:+),
+              :hostnames => hostnames,
               :key_file => "/home/ubuntu/.ssh/neon-serving.pem",
               :vpc_prefix => node[:opsworks][:instance][:private_ip].split('.')[0,2].join('.')
             })

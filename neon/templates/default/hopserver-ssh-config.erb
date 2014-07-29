@@ -1,11 +1,7 @@
 Host <%= @vpc_prefix %>.*
   IdentityFile <%= @key_file %>
 
-<% @instances.each do |name, data| %>
-<% if not data[:ip].empty? %>
-Host <%= data[:ip] %>
-  IdentityFile <%= @key_file %>
-<% end %>
-Host <%= name %>
+<% @hostnames.each do |hostname| %>
+Host <%= hostname %>
   IdentityFile <%= @key_file %>
 <% end %>
