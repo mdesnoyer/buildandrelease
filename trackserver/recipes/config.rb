@@ -27,7 +27,7 @@ end
 service "neon-trackserver" do
   provider Chef::Provider::Service::Upstart
   supports :status => true, :restart => true, :start => true, :stop => true
-  action :enable
+  action :nothing
 end
 service "nginx" do
   action :nothing

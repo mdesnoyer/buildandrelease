@@ -118,6 +118,10 @@ if node[:opsworks][:activity] == 'deploy' then
                 :log_file => node[:trackserver][:log_file]
               })
   end
+
+  service "neon-trackserver" do
+    action :enable
+  end
 end
 
 
