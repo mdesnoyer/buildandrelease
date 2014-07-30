@@ -90,10 +90,11 @@ if node[:opsworks][:activity] == 'deploy' then
 
   repo_path = get_repo_path("Stats Manager")
 
-  aws_keys = {
-    'AWS_ACCESS_KEY_ID' => node[:aws][:access_key_id],
-    'AWS_SECRET_ACCESS_KEY' => node[:aws][:secret_access_key]
-  }
+  aws_keys = {}
+  if not node[:aws][:access_key_id].nil? then
+    aws_keys['AWS_ACCESS_KEY_ID'] = node[:aws][:access_key_id]
+    aws_keys['AWS_SECRET_ACCESS_KEY'] = node[:aws][:secret_access_key]
+  end
 
   execute "get cluster host key" do
     command "#{repo_path}/stats/batch_processor.py --master_host_key_file #{node[:neon][:home]}/statsmanager/.ssh/cluster_known_hosts --get_master_host_key 1"

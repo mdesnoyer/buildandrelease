@@ -12,8 +12,14 @@ if node[:opsworks][:activity] == 'deploy' then
 end
 
 # Install packages that are needed
-package "libfreetype6-dev" do
-  action :install
+package_deps = [
+  "libfreetype6-dev",
+  "libatlas-base-dev"
+]
+package_deps.each do |pkg|
+  package pkg do
+    action :install
+  end
 end
 
 # Install all the python dependencies
