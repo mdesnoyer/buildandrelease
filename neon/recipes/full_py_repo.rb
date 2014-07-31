@@ -18,7 +18,8 @@ package_deps = [
                 "libyaml-0-2",
                 "libcurl4-openssl-dev",
                 "libboost1.46-dev",
-                "libboost1.46-dbg"
+                "libboost1.46-dbg",
+                "fftw3-dev"
                ]
 package_deps.each do |pkg|
   package pkg do
