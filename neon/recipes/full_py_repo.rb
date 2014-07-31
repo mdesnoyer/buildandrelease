@@ -35,7 +35,7 @@ if platform?("ubuntu") then
   ['libgflags-dev', 'libgflags0'].each do | pkg |
     cur_file = "#{pkg}_#{node[:gflags][:version]}_amd64.deb"
     remote_file "#{Chef::Config[:file_cache_path]}/#{cur_file}" do
-      source "#{default[:gflags][:package][:url_base]}#{cur_file}"
+      source "#{node[:gflags][:package][:url_base]}#{cur_file}"
     end
     package pkg do
       action :install
