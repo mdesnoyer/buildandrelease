@@ -33,7 +33,7 @@ include_recipe "neon-opencv"
 # Install gflags
 if platform?("ubuntu") then
   ['libgflags-dev', 'libgflags0'].each do | pkg |
-    cur_file = "#{pkg}_#{node[:gflags][:version]}_#{Chef::Extensions::Platform.arch()}.deb"
+    cur_file = "#{pkg}_#{node[:gflags][:version]}_amd64.deb"
     remote_file "#{Chef::Config[:file_cache_path]}/#{cur_file}" do
       source "#{default[:gflags][:package][:url_base]}#{cur_file}"
     end
