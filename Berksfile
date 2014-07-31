@@ -1,11 +1,14 @@
 source "https://api.berkshelf.com"
 
 cookbook "apt", "~> 2.4.0"
+cookbook "cmake", "~> 0.3"
+cookbook "ffmpeg", "~> 0.3"
 cookbook "git", "~> 4.0.2"
 cookbook "hadoop", "~> 1.1"
 cookbook "java", "~> 1.22"
 cookbook "minitest-handler", '~> 1.2.0'
 cookbook "python", "~> 1.4.6"
+cookbook "x264", git: 'git://github.com/escapestudios-cookbooks/x264.git', tag: "0.4.3"
 
 cookbook "neon", path: "neon"
 cookbook "neonisp", path: "neonisp"
@@ -14,3 +17,4 @@ cookbook "mastermind", path: "mastermind"
 cookbook "stats_manager", path: "stats_manager"
 cookbook "trackserver", path: "trackserver"
 cookbook "neon-nginx", path: "neon-nginx"
+cookbook "neon-opencv", path: "neon-opencv"

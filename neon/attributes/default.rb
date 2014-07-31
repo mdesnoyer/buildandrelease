@@ -34,5 +34,5 @@ default[:java][:jdk_version] = '7'
 default[:java][:oracle][:accept_oracle_download_terms] = true
 
 # Aws access keys
-default[:aws][:access_key_id] = nil
-default[:aws][:secret_access_key] = nil
+default[:aws][:access_key_id] = ENV['AWS_ACCESS_KEY_ID']
+default[:aws][:secret_access_key] = ENV['AWS_SECRET_ACCESS_KEY']

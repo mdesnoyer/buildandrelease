@@ -100,5 +100,10 @@ suites:
             revision : "working"      
       opsworks :
         activity : "deploy"
+
+  - name: opencv
+    run_list:
+      - recipe[neon-opencv::default]
+    attributes:
         
       

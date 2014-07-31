@@ -13,14 +13,19 @@ end
 
 # Install packages that are needed
 package_deps = [
-  "libfreetype6-dev",
-  "libatlas-base-dev"
-]
+                "libfreetype6-dev",
+                "libatlas-base-dev",
+                "libyaml-0-2",
+                "libcurl4-openssl-dev"
+               ]
 package_deps.each do |pkg|
   package pkg do
     action :install
   end
 end
+
+# Install opencv
+include_recipe "neon-opencv"
 
 # Install all the python dependencies
 apps.each do |app|
