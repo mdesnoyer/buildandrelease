@@ -105,5 +105,9 @@ suites:
     run_list:
       - recipe[neon-opencv::default]
     attributes:
+
+  - name: dev_setup
+    run_list:
+      - recipe[neon::full_py_repo]
         
       
