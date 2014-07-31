@@ -9,6 +9,7 @@ cookbook "java", "~> 1.22"
 cookbook "minitest-handler", '~> 1.2.0'
 cookbook "python", "~> 1.4.6"
 cookbook "x264", git: 'git://github.com/escapestudios-cookbooks/x264.git', tag: "0.4.3"
+cookbook "libvpx", path: "libvpx"
 
 cookbook "neon", path: "neon"
 cookbook "neonisp", path: "neonisp"

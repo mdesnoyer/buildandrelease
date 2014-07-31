@@ -78,29 +78,32 @@ node.default[:yasm][:install_method] = "source"
 
 # Pin the x264 version
 node.default[:x264][:git_revision] = "af8e768e2bd3b4398bca033998f83b0eb8874914"
-node.default[:x264][:compile_flags] = ["--enable-shared"]
+node.default[:x264][:compile_flags] = ["--enable-shared", "--enable-pic"]
 
 # Pin the libvpx version
 node.default[:libvpx][:git_revision] = "v1.3.0"
+node.default[:libvpx][:compile_flags] = ["--enable-shared", "--enable-pic"]
 
 # Install ffmpeg
 node.default[:ffmpeg][:git_repository] = 'https://github.com/FFmpeg/FFmpeg.git'
 node.default[:ffmpeg][:git_revision] = 'n2.3'
 node.default[:ffmpeg][:compile_flags] = [
-                                           "--enable-pthreads",
-                                           "--enable-nonfree",
-                                           "--enable-gpl",
-                                           "--disable-indev=jack",
-                                           "--enable-libx264",
-                                           "--enable-libfaac",
-                                           "--enable-libmp3lame",
-                                           "--enable-libtheora",
-                                           "--enable-libvorbis",
-                                           "--enable-libvpx",
-                                           "--enable-libxvid",
-                                           "--enable-libopencore-amrnb",
-                                           "--enable-libopencore-amrwb",
-                                           "--enable-version3"
+                                         "--enable-pthreads",
+                                         "--enable-nonfree",
+                                         "--enable-gpl",
+                                         "--disable-indev=jack",
+                                         "--enable-libx264",
+                                         "--enable-libfaac",
+                                         "--enable-libmp3lame",
+                                         "--enable-libtheora",
+                                         "--enable-libvorbis",
+                                         "--enable-libvpx",
+                                         "--enable-libxvid",
+                                         "--enable-libopencore-amrnb",
+                                         "--enable-libopencore-amrwb",
+                                         "--enable-version3",
+                                         "--enable-shared",
+                                         "--enable-pic"
                                           ]
 include_recipe "ffmpeg::source"
 
@@ -127,7 +130,7 @@ bash "compile_opencv" do
   cwd "#{build_path}/build"
   code <<-EOH
        cmake #{cmake_args} ..
-       make clean && make install
+       make clean && make -j#{node[:cpu][:total]} && make install
   EOH
   creates opencv_lib
 end

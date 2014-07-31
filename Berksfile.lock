@@ -5,6 +5,8 @@ DEPENDENCIES
   git (~> 4.0.2)
   hadoop (~> 1.1)
   java (~> 1.22)
+  libvpx
+    path: libvpx
   mastermind
     path: mastermind
   minitest-handler (~> 1.2.0)
@@ -53,9 +55,10 @@ GRAPH
     java (>= 1.21.2)
     yum (>= 3.0)
   java (1.22.0)
-  libvpx (0.3.2)
+  libvpx (0.3.3)
     build-essential (>= 0.0.0)
     git (>= 0.0.0)
+    yasm (>= 0.0.0)
   mastermind (0.9.0)
     apt (>= 0.0.0)
     java (>= 0.0.0)
@@ -68,6 +71,7 @@ GRAPH
     apt (>= 0.0.0)
     git (>= 0.0.0)
     java (>= 0.0.0)
+    neon-opencv (>= 0.0.0)
     neon_logs (>= 0.0.0)
     python (= 1.4.6)
   neon-nginx (2.7.4)
