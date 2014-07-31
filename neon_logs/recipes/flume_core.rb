@@ -60,7 +60,7 @@ service node[:neon_logs][:flume_service_name] do
 end
 
 
-if ['undeploy', 'shutdown'].include? node[:opsworks][:activity] then
+if ['shutdown'].include? node[:opsworks][:activity] then
   service node[:neon_logs][:flume_service_name] do
     action :stop
   end
