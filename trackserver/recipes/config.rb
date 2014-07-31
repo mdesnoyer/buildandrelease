@@ -18,6 +18,7 @@ node.default[:neon_logs][:flume_streams][:trackserver_nginx_logs] = \
                        "trackserver-nginx")
 
 if node[:opsworks][:activity] == "config" then
+  include_recipe "neonisp::config"
   include_recipe "neon_logs::flume_core_config"
 else
   include_recipe "neon_logs::flume_core"

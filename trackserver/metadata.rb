@@ -9,6 +9,7 @@ depends 'apt'
 depends 'java'
 depends 'neon'
 depends 'neon_logs'
+depends 'neonisp'
 depends 'neon-nginx', "= 2.7.4"
 depends 'python', "= 1.4.6"
 

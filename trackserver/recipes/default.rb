@@ -2,9 +2,6 @@
 
 include_recipe "neon::default"
 
-# Install nginx
-include_recipe "neon-nginx::default"
-
 # Setup collecting system metrics
 include_recipe "neon::system_metrics"
 
@@ -75,6 +72,9 @@ template "/etc/init/nginx-email.conf" do
               :log_file => "#{node[:nginx][:log_dir]}/error.log"
             })
 end
+
+# Add the image serving platform
+include_recipe "neonisp"
 
 if node[:opsworks][:activity] == 'deploy' then
   # Install the neon code

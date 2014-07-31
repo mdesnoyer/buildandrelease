@@ -27,7 +27,9 @@ package_deps = [ 'libjpeg-dev',
                  'libopencore-amrwb-dev',
                  'libtheora-dev',
                  'libvorbis-dev',
-                 'libxvidcore-dev'
+                 'libxvidcore-dev',
+                 'libtiff4-dev',
+                 'libpng-dev'
                ]
 
 cmake_params = {
@@ -110,6 +112,23 @@ include_recipe "ffmpeg::source"
 opencv_lib = "#{node[:opencv][:install_prefix]}/lib/libopencv_core.so"
 file opencv_lib do
   action :nothing
+  subscribes :delete, "bash[compile_ffmpeg]", :immediately
+  subscribes :delete, "bash[compile_x264]", :immediately
+  subscribes :delete, "bash[compile_yasm]", :immediately
+  subscribes :delete, "bash[compile_libvpx]", :immediately
+end
+
+# Write the build configuration to a file - if it changes, we recompile
+template "#{Chef::Config[:file_cache_path]}/opencv-build-configuration" do
+    source "build-configuration.erb"
+    owner "root"
+    group "root"
+    mode 0600
+    variables(
+        :package_deps => package_deps,
+        :cmake_params => cmake_params
+    )
+    notifies :delete, "file[#{opencv_lib}]", :immediately
 end
 
 # Create the build directory

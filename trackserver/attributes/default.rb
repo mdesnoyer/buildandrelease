@@ -1,4 +1,5 @@
 include_attribute "neon::default"
+include_attribute "neonisp"
 
 # Parameters for the trackserver
 default[:trackserver][:config] = "#{node[:neon][:config_dir]}/trackserver.conf"
@@ -18,6 +19,7 @@ default[:nginx][:worker_rlimit_nofile] = 65536
 default[:nginx][:source][:modules] = %w(
   neon-nginx::http_realip_module
   neon-nginx::http_geoip_module
+  neonisp::nginx_ispmodule
 )
 
 # Force_Default is needed because these parameters are set in the nginx recipe
@@ -25,6 +27,9 @@ force_default[:nginx][:realip][:header] = "X-Forwarded-For"
 force_default[:nginx][:realip][:addresses] = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
 force_default[:nginx][:realip][:real_ip_recursive] = "on"
 
+# Put the image serving platform as a sub app of the trackserver
+default[:neonisp][:port] = 8089
+default[:neonisp][:app_name] = "trackserver"
 
 # Parameters for the clicklog_collector
 default[:trackserver][:collector][:s3_path] = "s3n://neon-tracker-logs-v2/v%{track_vers}/%{tai}/%Y/%m/%d"

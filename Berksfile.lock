@@ -117,6 +117,7 @@ GRAPH
     neon (>= 0.0.0)
     neon-nginx (= 2.7.4)
     neon_logs (>= 0.0.0)
+    neonisp (>= 0.0.0)
     python (= 1.4.6)
   windows (1.33.1)
     chef_handler (>= 0.0.0)

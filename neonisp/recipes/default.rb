@@ -25,7 +25,7 @@ if node[:opsworks][:activity] == 'deploy' then
   # Install the neon code (Make sure to install before nginx setup)
   include_recipe "neon::repo"
 
-  repo_path = get_repo_path("Image Serving Platform")
+  repo_path = get_repo_path(node[:neonisp][:app_name])
 
   # Test the imageservingplatform 
   # TODO(Sunil): Add testing for the image serving platform
@@ -82,9 +82,10 @@ end
 
 # Opsworks UNDEPLOY or SHUTDOWN stage
 if ['undeploy', 'shutdown'].include? node[:opsworks][:activity] then
-  # Turn off nginx
-  service "nginx" do
-    action :stop
+  # Delete the nginx config, which turns off the image serving platform
+  file "#{node[:nginx][:dir]}/conf.d/neonisp.conf" do
+    action :delete
+    notifies :reload, 'service[nginx]'
   end
 
   # Turn off the isp metrics daemon
