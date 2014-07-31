@@ -119,6 +119,8 @@ if node[:opsworks][:activity] == 'deploy' then
   end
 
   service "neon-trackserver" do
+    provider Chef::Provider::Service::Upstart
+    supports :status => true, :restart => true, :start => true, :stop => true
     action [:enable, :start]
   end
 end
@@ -128,5 +130,9 @@ if ['undeploy', 'shutdown'].include? node[:opsworks][:activity] then
   # Turn off the trackserver
   service "neon-trackserver" do
     action :stop
+  end
+
+  file "/etc/init/neon-trackserver.conf" do
+    action :delete
   end
 end
