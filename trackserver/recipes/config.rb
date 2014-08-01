@@ -50,7 +50,7 @@ include_recipe "neon-nginx::commons_dir"
 
 # Write the configuration for nginx
 if (node[:opsworks][:activity] == "deploy" or 
-    File.exists?("#{node[:nginx][:dir]}/conf.d/neonisp.conf")) then
+    File.exists?("#{node[:nginx][:dir]}/conf.d/trackserver.conf")) then
   template "#{node[:nginx][:dir]}/conf.d/trackserver.conf" do
     source "trackserver_nginx.conf.erb"
     owner node['nginx']['user']
