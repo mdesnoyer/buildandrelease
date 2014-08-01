@@ -37,7 +37,7 @@ if platform?("ubuntu") then
     remote_file "#{Chef::Config[:file_cache_path]}/#{cur_file}" do
       source "#{node[:gflags][:package][:url_base]}#{cur_file}"
     end
-    package pkg do
+    deb_package pkg do
       action :install
       source "#{Chef::Config[:file_cache_path]}/#{cur_file}"
     end
