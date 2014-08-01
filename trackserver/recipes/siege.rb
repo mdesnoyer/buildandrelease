@@ -16,7 +16,7 @@ template "/home/ubuntu/urls.txt" do
   variables({:host => node[:neon][:siege][:trackserver_host]})
 end
 
-directory "/home/ubuntu/var" do
+directory "/home/ubuntu/log" do
   :create
   owner "ubuntu"
   group "ubuntu"
