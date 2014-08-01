@@ -13,7 +13,7 @@ template "/home/ubuntu/urls.txt" do
   owner "ubuntu"
   group "ubuntu"
   mode "0644"
-  variables({:host => node[:neon][:siege][:trackserver_host]})
+  variables({:host => node[:trackserver][:siege][:trackserver_host]})
 end
 
 directory "/home/ubuntu/log" do
