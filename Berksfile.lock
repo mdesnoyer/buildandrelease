@@ -30,6 +30,8 @@ DEPENDENCIES
     git: git://github.com/escapestudios-cookbooks/x264.git
     revision: 549c7e8a08516f80dc2f63abfaf5c6f2bbc36f73
     tag: 0.4.3
+  yasm
+    path: yasm
 
 GRAPH
   apt (2.4.0)
@@ -90,8 +92,10 @@ GRAPH
   neon-opencv (0.1.0)
     apt (>= 0.0.0)
     build-essential (>= 0.0.0)
-    ffmpeg (~> 0.3)
-    yasm (~> 1.0)
+    ffmpeg (>= 0.0.0)
+    libvpx (>= 0.0.0)
+    x264 (>= 0.0.0)
+    yasm (>= 0.0.0)
   neon_logs (0.9.0)
     apt (>= 0.0.0)
     hadoop (>= 1.0.4)

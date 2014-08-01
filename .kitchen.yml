@@ -109,5 +109,8 @@ suites:
   - name: dev_setup
     run_list:
       - recipe[neon::full_py_repo]
+    attributes:
+      neon:
+        code_revision: "working"
         
       

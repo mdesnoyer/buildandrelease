@@ -8,7 +8,9 @@ version          '0.1.0'
 
 depends 'apt'
 depends 'build-essential'
-depends 'ffmpeg', "~> 0.3"
-depends 'yasm', "~> 1.0"
+depends 'ffmpeg'
+depends 'libvpx'
+depends 'x264'
+depends 'yasm'
 
 supports 'ubuntu'

@@ -109,13 +109,10 @@ node.default[:ffmpeg][:compile_flags] = [
                                           ]
 include_recipe "ffmpeg::source"
 
-opencv_lib = "#{node[:opencv][:install_prefix]}/lib/libopencv_core.so"
-file opencv_lib do
+opencv_include = "#{node[:opencv][:install_prefix]}/include/opencv2/core/core.hpp"
+file opencv_include do
   action :nothing
   subscribes :delete, "bash[compile_ffmpeg]", :immediately
-  subscribes :delete, "bash[compile_x264]", :immediately
-  subscribes :delete, "bash[compile_yasm]", :immediately
-  subscribes :delete, "bash[compile_libvpx]", :immediately
 end
 
 # Write the build configuration to a file - if it changes, we recompile
@@ -128,7 +125,7 @@ template "#{Chef::Config[:file_cache_path]}/opencv-build-configuration" do
         :package_deps => package_deps,
         :cmake_params => cmake_params
     )
-    notifies :delete, "file[#{opencv_lib}]", :immediately
+    notifies :delete, "file[#{opencv_include}]", :immediately
 end
 
 # Create the build directory
@@ -137,7 +134,7 @@ git build_path do
   repository node[:opencv][:repo]
   revision node[:opencv][:version]
   action :sync
-  notifies :delete, "file[#{opencv_lib}]", :immediately
+  notifies :delete, "file[#{opencv_include}]", :immediately
 end
 directory "#{build_path}/build" do
   action :create
@@ -151,5 +148,5 @@ bash "compile_opencv" do
        cmake #{cmake_args} ..
        make clean && make -j#{node[:cpu][:total]} && make install
   EOH
-  creates opencv_lib
+  not_if {  ::File.exists?(opencv_include) }
 end

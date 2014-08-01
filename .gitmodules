@@ -1,3 +1,12 @@
 [submodule "libvpx"]
 	path = libvpx
 	url = https://github.com/mdesnoyer-neon/libvpx.git
+[submodule "ffmpeg"]
+	path = ffmpeg
+	url = https://github.com/neon-lab/ffmpeg.git
+[submodule "yasm"]
+	path = yasm
+	url = https://github.com/neon-lab/yasm.git
+[submodule "x264"]
+	path = x264
+	url = https://github.com/neon-lab/x264.git
