@@ -32,7 +32,8 @@ end
 # Install the FindNumpy.cmake file
 cookbook_file "FindNumpy.cmake" do
   path "#{`cmake --system-information | grep CMAKE_ROOT | perl -nle 'm/\"(.*)\"/; print $1'`.strip}/Modules/FindNumpy.cmake"
-  action :create_if_missing
+  action :nothing
+  subscribes :create_if_missing, "package[cmake]"
 end
 
 # Install opencv
