@@ -20,12 +20,19 @@ package_deps = [
                 "libboost1.46-dev",
                 "libboost1.46-dbg",
                 "fftw3-dev",
-                "gfortran"
+                "gfortran",
+                "cmake"
                ]
 package_deps.each do |pkg|
   package pkg do
     action :install
   end
+end
+
+# Install the FindNumpy.cmake file
+cookbook_file "FindNumpy.cmake" do
+  path "#{`cmake --system-information | grep CMAKE_ROOT | perl -nle 'm/\"(.*)\"/; print $1'`.strip}/Modules/FindNumpy.cmake"
+  action :create_if_missing
 end
 
 # Install opencv
