@@ -31,7 +31,7 @@ end
 
 # Install the FindNumpy.cmake file
 cookbook_file "FindNumpy.cmake" do
-  path "#{`cmake --system-information | grep CMAKE_ROOT | perl -nle 'm/\"(.*)\"/; print $1'`.strip}/Modules/FindNumpy.cmake"
+  path { "#{`cmake --system-information | grep CMAKE_ROOT | perl -nle 'm/\"(.*)\"/; print $1'`.strip}/Modules/FindNumpy.cmake" }
   action :nothing
   subscribes :create_if_missing, "package[cmake]"
 end
