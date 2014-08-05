@@ -23,7 +23,8 @@ package_deps = [
                 "gfortran",
                 "cmake",
                 "libpcre3",
-                "libpcre3-dev"
+                "libpcre3-dev",
+                "redis-server"
                ]
 package_deps.each do |pkg|
   package pkg do
