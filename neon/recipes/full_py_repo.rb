@@ -27,7 +27,8 @@ package_deps = [
                 "cmake",
                 "libpcre3",
                 "libpcre3-dev",
-                "redis-server"
+                "redis-server",
+                "libgtest-dev"
                ]
 package_deps.each do |pkg|
   package pkg do
