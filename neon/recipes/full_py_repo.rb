@@ -11,6 +11,9 @@ if node[:opsworks][:activity] == 'deploy' then
   end
 end
 
+# Install virtualenv
+include_recipe "python::virtualenv"
+
 # Install packages that are needed
 package_deps = [
                 "libfreetype6-dev",
@@ -23,7 +26,10 @@ package_deps = [
                 "gfortran",
                 "cmake",
                 "libpcre3",
-                "libpcre3-dev"
+                "libpcre3-dev",
+                "redis-server",
+                "libgtest-dev",
+                "cython"
                ]
 package_deps.each do |pkg|
   package pkg do
@@ -43,22 +49,6 @@ end
 
 # Install opencv
 include_recipe "neon-opencv"
-
-# Install gflags
-if platform?("ubuntu") then
-  ['libgflags-dev', 'libgflags0'].each do | pkg |
-    cur_file = "#{pkg}_#{node[:gflags][:version]}-1_amd64.deb"
-    remote_file "#{Chef::Config[:file_cache_path]}/#{cur_file}" do
-      source "#{node[:gflags][:package][:url_base]}#{cur_file}"
-    end
-    dpkg_package pkg do
-      action :install
-      source "#{Chef::Config[:file_cache_path]}/#{cur_file}"
-    end
-  end
-else
-  include_recipe "gflags"
-end
 
 # Install perftools and libunwind
 code_path = get_repo_path(nil)
@@ -85,6 +75,35 @@ bash "install_perftools" do
          make -j#{node[:cpu][:total]} install
     EOH
     creates "/usr/local/bin/pprof"
+end
+
+# Install gflags
+if platform?("ubuntu") then
+
+# TODO(mdesnoyer): Create a gflags cookbook that builds from
+# source. For now, we just grab the gflags deb from the externalLibs
+# directory.
+#  ['libgflags-dev', 'libgflags0'].each do | pkg |
+#    cur_file = "#{pkg}_#{node[:gflags][:version]}-1_amd64.deb"
+#    remote_file "#{Chef::Config[:file_cache_path]}/#{cur_file}" do
+#      source "#{node[:gflags][:package][:url_base]}#{cur_file}"
+#    end
+#    dpkg_package pkg do
+#      action :install
+#      source "#{Chef::Config[:file_cache_path]}/#{cur_file}"
+#    end
+#  end
+  dpkg_package "libgflags0" do
+    action :install
+    source "#{code_path}/externalLibs/libgflags0_2.0-1_amd64.deb"
+  end
+  dpkg_package "libgflags-dev" do
+    action :install
+    source "#{code_path}/externalLibs/libgflags-dev_2.0-1_amd64.deb"
+  end
+
+else
+  include_recipe "gflags"
 end
     
 

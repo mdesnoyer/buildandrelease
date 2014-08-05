@@ -18,9 +18,6 @@ end
 # List the dependencies
 package_deps = [ 'libjpeg-dev',
                  'libjasper-dev',
-                 'libavcodec-dev',
-                 'libavformat-dev',
-                 'libswscale-dev',
                  'libfaac-dev',
                  'libmp3lame-dev',
                  'libopencore-amrnb-dev',
@@ -85,6 +82,13 @@ node.default[:x264][:compile_flags] = ["--enable-shared", "--enable-pic"]
 # Pin the libvpx version
 node.default[:libvpx][:git_revision] = "v1.3.0"
 node.default[:libvpx][:compile_flags] = ["--enable-shared", "--enable-pic"]
+
+# Install the depdencencies
+package_deps.each do | pkg |
+  package pkg do
+    action :install
+  end
+end
 
 # Install ffmpeg
 node.default[:ffmpeg][:git_repository] = 'https://github.com/FFmpeg/FFmpeg.git'

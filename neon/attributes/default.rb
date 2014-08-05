@@ -1,3 +1,6 @@
+include_attribute "python"
+include_attribute "java"
+
 # Which revision of the codebase to grab. Can also use tags
 default[:neon][:code_revision] = "HEAD"
 
@@ -36,3 +39,6 @@ default[:java][:oracle][:accept_oracle_download_terms] = true
 # Aws access keys
 default[:aws][:access_key_id] = ENV['AWS_ACCESS_KEY_ID']
 default[:aws][:secret_access_key] = ENV['AWS_SECRET_ACCESS_KEY']
+
+# Set desired python settings
+default[:python][:virtualenv_version] = "1.11.6"
