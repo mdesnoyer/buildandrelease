@@ -87,13 +87,13 @@ if platform?("ubuntu") then
 #      source "#{Chef::Config[:file_cache_path]}/#{cur_file}"
 #    end
 #  end
-  dpkg_package "libgflags-dev" do
-    action :install
-    source "#{code_path}/externalLibs/libgflags-dev_2.0-1_amd64.deb"
-  end
   dpkg_package "libgflags0" do
     action :install
     source "#{code_path}/externalLibs/libgflags0_2.0-1_amd64.deb"
+  end
+  dpkg_package "libgflags-dev" do
+    action :install
+    source "#{code_path}/externalLibs/libgflags-dev_2.0-1_amd64.deb"
   end
 
 else
