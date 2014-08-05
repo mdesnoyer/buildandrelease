@@ -21,7 +21,9 @@ package_deps = [
                 "libboost1.46-dbg",
                 "fftw3-dev",
                 "gfortran",
-                "cmake"
+                "cmake",
+                "libpcre3",
+                "libpcre3-dev"
                ]
 package_deps.each do |pkg|
   package pkg do
