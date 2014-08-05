@@ -18,9 +18,6 @@ end
 # List the dependencies
 package_deps = [ 'libjpeg-dev',
                  'libjasper-dev',
-                 'libavcodec-dev',
-                 'libavformat-dev',
-                 'libswscale-dev',
                  'libfaac-dev',
                  'libmp3lame-dev',
                  'libopencore-amrnb-dev',
