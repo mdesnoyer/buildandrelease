@@ -86,6 +86,13 @@ node.default[:x264][:compile_flags] = ["--enable-shared", "--enable-pic"]
 node.default[:libvpx][:git_revision] = "v1.3.0"
 node.default[:libvpx][:compile_flags] = ["--enable-shared", "--enable-pic"]
 
+# Install the depdencencies
+package_deps.each do | pkg |
+  package pkg do
+    action :install
+  end
+end
+
 # Install ffmpeg
 node.default[:ffmpeg][:git_repository] = 'https://github.com/FFmpeg/FFmpeg.git'
 node.default[:ffmpeg][:git_revision] = 'n2.3'
