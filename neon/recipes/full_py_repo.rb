@@ -28,7 +28,8 @@ package_deps = [
                 "libpcre3",
                 "libpcre3-dev",
                 "redis-server",
-                "libgtest-dev"
+                "libgtest-dev",
+                "cython"
                ]
 package_deps.each do |pkg|
   package pkg do
