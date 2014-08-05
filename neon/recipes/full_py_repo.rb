@@ -31,9 +31,11 @@ end
 
 # Install the FindNumpy.cmake file
 cookbook_file "FindNumpy.cmake" do
-  path { "#{`cmake --system-information | grep CMAKE_ROOT | perl -nle 'm/\"(.*)\"/; print $1'`.strip}/Modules/FindNumpy.cmake" }
+  path lazy { "#{`cmake --system-information | grep CMAKE_ROOT | perl -nle 'm/\"(.*)\"/; print $1'`.strip}/Modules/FindNumpy.cmake" }
+  source "FindNumpy.cmake"
   action :create
   owner "root"
+  group "root"
   mode "0644"
 end
 
