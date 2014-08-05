@@ -11,6 +11,9 @@ if node[:opsworks][:activity] == 'deploy' then
   end
 end
 
+# Install virtualenv
+include_recipe "python::virtualenv"
+
 # Install packages that are needed
 package_deps = [
                 "libfreetype6-dev",
