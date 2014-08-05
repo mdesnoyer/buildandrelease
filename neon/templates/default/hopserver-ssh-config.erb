@@ -1,0 +1,9 @@
+StrictHostKeyChecking no
+
+Host <%= @vpc_prefix %>.*
+  IdentityFile <%= @key_file %>
+
+<% @hostnames.each do |hostname| %>
+Host <%= hostname %>
+  IdentityFile <%= @key_file %>
+<% end %>

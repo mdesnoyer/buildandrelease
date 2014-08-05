@@ -1,0 +1,12 @@
+# Generated automatically by Chef
+# Removing or modifying this file will cause opencv to recompile during the next Chef run.
+
+# Packages installed
+<% @package_deps.each do |pkg| %>
+<%= pkg %>
+<% end %>
+
+# CMake build parameters
+<% @cmake_params.each do |k,v| %>
+<%= k %> = <%= v %>
+<% end %>

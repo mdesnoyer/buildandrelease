@@ -1,0 +1,143 @@
+DEPENDENCIES
+  apt (~> 2.4.0)
+  cmake (~> 0.3)
+  ffmpeg (~> 0.3)
+  gflags (~> 1.0)
+  git (~> 4.0.2)
+  hadoop (~> 1.1)
+  java (~> 1.22)
+  libvpx
+    path: libvpx
+  mastermind
+    path: mastermind
+  minitest-handler (~> 1.2.0)
+  neon
+    path: neon
+  neon-nginx
+    path: neon-nginx
+  neon-opencv
+    path: neon-opencv
+  neon_logs
+    path: neon_logs
+  neonisp
+    path: neonisp
+  python (~> 1.4.6)
+  stats_manager
+    path: stats_manager
+  trackserver
+    path: trackserver
+  x264
+    git: git://github.com/escapestudios-cookbooks/x264.git
+    revision: 549c7e8a08516f80dc2f63abfaf5c6f2bbc36f73
+    tag: 0.4.3
+  yasm
+    path: yasm
+
+GRAPH
+  apt (2.4.0)
+  bluepill (2.3.1)
+    rsyslog (>= 0.0.0)
+  build-essential (2.0.4)
+  chef_handler (1.1.6)
+  cmake (0.3.0)
+  dmg (2.2.0)
+  ffmpeg (0.3.1)
+    build-essential (>= 0.0.0)
+    git (>= 0.0.0)
+    libvpx (>= 0.0.0)
+    x264 (>= 0.0.0)
+  gflags (1.0.1)
+    apt (>= 0.0.0)
+    build-essential (>= 0.0.0)
+    yum (>= 0.0.0)
+  git (4.0.2)
+    build-essential (>= 0.0.0)
+    dmg (>= 0.0.0)
+    runit (>= 1.0.0)
+    windows (>= 0.0.0)
+    yum (~> 3.0)
+    yum-epel (>= 0.0.0)
+  hadoop (1.1.1)
+    apt (>= 0.0.0)
+    java (>= 1.21.2)
+    yum (>= 3.0)
+  java (1.22.0)
+  libvpx (0.3.3)
+    build-essential (>= 0.0.0)
+    git (>= 0.0.0)
+    yasm (>= 0.0.0)
+  mastermind (0.9.0)
+    apt (>= 0.0.0)
+    java (>= 0.0.0)
+    neon (>= 0.0.0)
+    neon_logs (>= 0.0.0)
+    python (= 1.4.6)
+  minitest-handler (1.2.0)
+    chef_handler (>= 0.0.0)
+  neon (0.9.0)
+    apt (>= 0.0.0)
+    gflags (~> 1.0)
+    git (>= 0.0.0)
+    java (>= 0.0.0)
+    neon-opencv (>= 0.0.0)
+    neon_logs (>= 0.0.0)
+    python (= 1.4.6)
+  neon-nginx (2.7.4)
+    apt (~> 2.2)
+    bluepill (~> 2.3)
+    build-essential (~> 2.0)
+    ohai (~> 2.0)
+    runit (~> 1.2)
+    yum-epel (~> 0.3)
+  neon-opencv (0.1.0)
+    apt (>= 0.0.0)
+    build-essential (>= 0.0.0)
+    ffmpeg (>= 0.0.0)
+    libvpx (>= 0.0.0)
+    x264 (>= 0.0.0)
+    yasm (>= 0.0.0)
+  neon_logs (0.9.0)
+    apt (>= 0.0.0)
+    hadoop (>= 1.0.4)
+    java (>= 0.0.0)
+  neonisp (0.9.0)
+    apt (>= 0.0.0)
+    neon (>= 0.0.0)
+    neon-nginx (= 2.7.4)
+    neon_logs (>= 0.0.0)
+    python (= 1.4.6)
+  ohai (2.0.1)
+  python (1.4.6)
+    build-essential (>= 0.0.0)
+    yum-epel (>= 0.0.0)
+  rsyslog (1.12.2)
+  runit (1.5.10)
+    build-essential (>= 0.0.0)
+    yum (~> 3.0)
+    yum-epel (>= 0.0.0)
+  stats_manager (0.9.0)
+    apt (>= 0.0.0)
+    java (>= 0.0.0)
+    neon (>= 0.0.0)
+    neon_logs (>= 0.0.0)
+    python (= 1.4.6)
+  trackserver (0.9.0)
+    apt (>= 0.0.0)
+    java (>= 0.0.0)
+    neon (>= 0.0.0)
+    neon-nginx (= 2.7.4)
+    neon_logs (>= 0.0.0)
+    neonisp (>= 0.0.0)
+    python (= 1.4.6)
+  windows (1.33.1)
+    chef_handler (>= 0.0.0)
+  x264 (0.4.3)
+    build-essential (>= 0.0.0)
+    git (>= 0.0.0)
+    yasm (>= 0.0.0)
+  yasm (1.0.0)
+    build-essential (>= 0.0.0)
+    git (>= 0.0.0)
+  yum (3.2.2)
+  yum-epel (0.3.6)
+    yum (~> 3.0)

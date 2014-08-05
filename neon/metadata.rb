@@ -6,9 +6,11 @@ license          'Proprietary - All Rights Reserved'
 version          '0.9.0'
 
 depends 'apt'
+depends 'gflags', '~> 1.0'
+depends 'git'
 depends 'java'
 depends 'neon_logs'
-depends 'nginx', "= 2.6.2"
+depends 'neon-opencv'
 depends 'python', "= 1.4.6"
 
 supports 'ubuntu'

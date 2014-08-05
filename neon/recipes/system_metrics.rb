@@ -21,11 +21,12 @@ pydeps.each do |package, vers|
 end
 
 # Collect system metrics
+repo_path = get_repo_path("system_metrics")
 service "neon-system-metrics" do
   provider Chef::Provider::Service::Upstart
   supports :status => true, :restart => true, :start => true, :stop => true
   action :nothing
-  subscribes :restart, "git[#{node[:neon][:code_root]}]"
+  subscribes :restart, "git[#{repo_path}]"
 end
   
 # Write the daemon service wrapper for collecting system metrics
@@ -35,9 +36,11 @@ template "/etc/init/neon-system-metrics.conf" do
   group "root"
   mode "0644"
   variables({
-                :neon_root_dir => node[:neon][:code_root],
-                :user => "neon",
-                :group => "neon",
+              :neon_root_dir => repo_path,
+              :user => "neon",
+              :group => "neon",
+              :carbon_host => node[:neon][:carbon_host],
+              :carbon_port => node[:neon][:carbon_port]
             })
 end
 

@@ -1,0 +1,25 @@
+stats_host: <%= @stats_host %>
+stats_db_polling_delay: <%= @stats_polling_delay %>
+video_db_polling_delay: <%= @video_polling_delay %>
+s3_bucket: <%= @directive_bucket %>
+directive_filename: <%= @directive_filename %>
+publishing_period: <%= @publishing_period %>
+
+supportServices:
+  neondata:
+    accountDB: <%= @video_db_host %>
+    videoDB: <%= @video_db_host %>
+    thumbnailDB: <%= @video_db_host %>
+    dbPort: <%= @video_db_port %>
+
+utils:
+  logs:
+    file: <%= @log_file %>
+    do_stderr: 0
+    do_stdout: 1
+    level: info
+    flume_url: http://localhost:<%= @flume_log_port %>
+    loggly_tag: mastermind
+  monitor:
+    carbon_server: <%= @carbon_host %>
+    carbon_port: <%= @carbon_port %>
