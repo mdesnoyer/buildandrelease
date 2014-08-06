@@ -26,6 +26,19 @@ end
 
 trackserver_exists = File.exists?("/etc/init/neon-trackserver.conf")
 
+if trackserver_exists then
+  # Specify the service for chef so that they can be restarted.
+  service "neon-trackserver" do
+    provider Chef::Provider::Service::Upstart
+    supports :status => true, :restart => true, :start => true, :stop => true
+    action :nothing
+  end
+
+  service "nginx" do
+    action :nothing
+  end
+end
+
 # Write the configuration file for the trackserver
 template node[:trackserver][:config] do
   source "trackserver.conf.erb"

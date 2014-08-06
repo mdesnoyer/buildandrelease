@@ -19,6 +19,10 @@ include_recipe "neon-nginx::commons_dir"
 # Write the imageservingplatform configuration for nginx
 if (node[:opsworks][:activity] == "deploy" or 
     File.exists?("#{node[:nginx][:dir]}/conf.d/neonisp.conf")) then
+  service "nginx" do
+    action :nothing
+  end
+
   template "#{node[:nginx][:dir]}/conf.d/neonisp.conf" do
     source "neonisp_nginx.conf.erb"
     owner node['nginx']['user']
