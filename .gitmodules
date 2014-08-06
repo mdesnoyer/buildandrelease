@@ -10,3 +10,6 @@
 [submodule "x264"]
 	path = x264
 	url = https://github.com/neon-lab/x264.git
+[submodule "s3cmd"]
+	path = s3cmd
+	url = git@github.com:freerobby/s3cmd.git

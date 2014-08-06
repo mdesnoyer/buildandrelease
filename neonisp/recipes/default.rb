@@ -21,6 +21,9 @@ end
 
 include_recipe "neonisp::config"
 
+# install s3cmd
+include_reciep "s3cmd::default"
+
 if node[:opsworks][:activity] == 'deploy' then
   # Install the neon code (Make sure to install before nginx setup)
   include_recipe "neon::repo"
