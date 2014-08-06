@@ -133,7 +133,7 @@ template "#{Chef::Config[:file_cache_path]}/opencv-build-configuration" do
 end
 
 # Create the build directory
-build_path = "/tmp/opencv"
+build_path = node[:opencv][:build_path]
 git build_path do
   repository node[:opencv][:repo]
   revision node[:opencv][:version]
