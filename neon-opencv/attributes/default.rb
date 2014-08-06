@@ -24,3 +24,6 @@ default[:opencv][:with_qt] = true
 default[:opencv][:with_gstreamer] = false
 default[:opencv][:with_v4l] = false
 default[:opencv][:with_tbb] = true
+
+# Options for where to build OpenCV
+default[:opencv][:build_path] = "/tmp/opencv"
