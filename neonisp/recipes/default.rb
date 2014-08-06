@@ -67,7 +67,7 @@ if node[:opsworks][:activity] == 'deploy' then
   end
   
   # Write the crossdomain xml file
-  template "#{node[:neonisp][:crossdomain_root]}" do
+  template "#{node[:neonisp][:crossdomain_root]/crossdomain.xml}" do
     source "crossdomain.xml.erb"
     owner "root"
     group "root"

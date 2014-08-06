@@ -8,7 +8,7 @@ default[:trackserver][:port] = 7214 # Port being listened to internally
 default[:trackserver][:external_port] = 80 # External port being listened to
 default[:trackserver][:flume_port] = 6360
 default[:trackserver][:backup_dir] = "/mnt/neon/trackserver/backlog"
-default[:trackserver][:crossdomain_root] = "/opt/neon/crossdomain.xml"
+default[:trackserver][:crossdomain_root] = "/opt/neon"
 
 # Nginx parameters
 default[:nginx][:init_style] = "upstart"

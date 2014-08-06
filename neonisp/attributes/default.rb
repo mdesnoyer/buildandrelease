@@ -8,7 +8,7 @@ default[:neonisp][:mastermind_file_url] = "http://neon-test.s3.amazonaws.com/mas
 default[:neonisp][:mastermind_download_location] = "/tmp/mastermind"
 default[:neonisp][:client_api_expiry] = "10m" #10 mins
 default[:neonisp][:app_name] = "Image Serving Platform"
-default[:neonisp][:crossdomain_root] = "/opt/neon/crossdomain.xml"
+default[:neonisp][:crossdomain_root] = "/opt/neon"
 
 # Nginx parameters
 #default['nginx']['source']['version'] = '1.4.7'
