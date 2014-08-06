@@ -6,6 +6,11 @@ server {
   listen <%= @frontend_port %>;
   large_client_header_buffers <%= node[:nginx][:large_client_header_buffers] %>;
   location / {
+    
+    # CORS header
+    add_header 'Access-Control-Allow-Origin' '*';
+    add_header 'Access-Control-Allow-Credentials' 'true';
+    
     proxy_redirect off;
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $remote_addr;
@@ -17,5 +22,9 @@ server {
     proxy_set_header GEOIP_LATITUDE $geoip_latitude;
     proxy_set_header GEOIP_LONGITUDE $geoip_longitude;
     proxy_pass http://tornado_servers;
+  }
+  
+  location = /crossdomain.xml{
+    root <%= node[:trackserver][:crossdomain_root] %>; 
   }
 }

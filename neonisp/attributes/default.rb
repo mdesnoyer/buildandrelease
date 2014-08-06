@@ -8,6 +8,7 @@ default[:neonisp][:mastermind_file_url] = "http://neon-test.s3.amazonaws.com/mas
 default[:neonisp][:mastermind_download_location] = "/tmp/mastermind"
 default[:neonisp][:client_api_expiry] = "10m" #10 mins
 default[:neonisp][:app_name] = "Image Serving Platform"
+default[:neonisp][:crossdomain_root] = "/opt/neon/crossdomain.xml"
 
 # Nginx parameters
 #default['nginx']['source']['version'] = '1.4.7'
@@ -32,7 +33,6 @@ force_default[:nginx]['worker_connections'] = 12000
 force_default[:nginx]['worker_rlimit_nofile'] = 200000
 
 # System configs
-
 force_default[:opsworks_initial_setup][:sysctl]['net.core.somaxconn'] = 10240     
 force_default[:opsworks_initial_setup][:sysctl]['net.core.netdev_max_backlog'] = 10240
 force_default[:opsworks_initial_setup][:sysctl]['net.ipv4.tcp_max_syn_backlog'] = 2048 # 1024

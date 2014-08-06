@@ -65,12 +65,20 @@ if node[:opsworks][:activity] == 'deploy' then
                 :group => "neon",
               })
   end
+  
+  # Write the crossdomain xml file
+  template "#{node[:neonisp][:crossdomain_root]}" do
+    source "crossdomain.xml.erb"
+    owner "root"
+    group "root"
+    mode "0644"
+    variables({})
+  end
 
   service "nginx" do
     action [:enable, :start]
   end
 
-  
   # start collecting the nginx/isp metrics
   service "neon-isp-metrics" do
     provider Chef::Provider::Service::Upstart
