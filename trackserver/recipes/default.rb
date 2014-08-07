@@ -61,6 +61,7 @@ end
 
 node[:deploy].each do |app_name, deploy|
   if app_name != "Track Server" then
+    Chef::Log.info "Skipping deployment of app #{app_name}"
     next
   end
   
