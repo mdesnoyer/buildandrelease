@@ -15,5 +15,5 @@ default[:mastermind][:publishing_period] = 300
 
 
 # Specify the repos to user
-default[:neon][:repos]["Mastermind"] = true
+default[:neon][:repos]["mastermind"] = true
 default[:neon][:repos]["core"] = true

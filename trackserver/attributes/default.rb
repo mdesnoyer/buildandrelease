@@ -3,7 +3,7 @@ include_attribute "neon::repo"
 include_attribute "neonisp"
 
 # Which repos to install
-default[:neon][:repos]["Track Server"] = true
+default[:neon][:repos]["track_server"] = true
 default[:neon][:repos]["core"] = true
 
 # Parameters for the trackserver

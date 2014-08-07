@@ -92,11 +92,11 @@ if not node[:aws][:access_key_id].nil? then
 end
 
 node[:deploy].each do |app_name, deploy|
-  if app_name != "Stats Manager" then
+  if app_name != "stats_manager" then
     next
   end
 
-  repo_path = get_repo_path("Stats Manager")
+  repo_path = get_repo_path("stats_manager")
   Chef::Log.info("Deploying app #{app_name} using code path #{repo_path}")
 
   # Grab the latest repo

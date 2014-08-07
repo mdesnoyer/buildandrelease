@@ -60,17 +60,12 @@ directory node[:trackserver][:backup_dir] do
 end
 
 node[:deploy].each do |app_name, deploy|
-  Chef::Log.info ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> #{app_name}"
-  Chef::Log.info ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> #{deploy[:deploy_to]}"
-end
-
-node[:deploy].each do |app_name, deploy|
-  if app_name != "Track Server" then
+  if app_name != "track_server" then
     Chef::Log.info "Skipping deployment of app #{app_name}"
     next
   end
   
-  trackserver_repo = get_repo_path("Track Server")
+  trackserver_repo = get_repo_path("track_server")
   Chef::Log.info "Deploying app #{app_name} using code path #{trackserver_repo}"
   # Install the neon code
   include_recipe "neon::repo"
@@ -79,7 +74,6 @@ node[:deploy].each do |app_name, deploy|
   include_recipe "neonisp"
 
   # Test the trackserver
-  trackserver_repo = get_repo_path("trackserver")
   execute "nosetests --exe clickTracker" do
     cwd "#{trackserver_repo}"
     user "trackserver"

@@ -50,14 +50,14 @@ suites:
       - recipe[trackserver::default]
     attributes: 
       deploy :
-        "Track Server" :
+        "track_server" :
           document_root : "trackserver"
           scm :
             scm_type : "git"
             repository : "git@github.com:neon-lab/neon-codebase.git"
             revision : "working"
 
-        "Image Serving Platform" :
+        "image_serving_platform" :
           document_root : "neonisp"
           scm :
             scm_type : "git"
@@ -71,7 +71,7 @@ suites:
       - recipe[neonisp::default]
     attributes: 
       deploy :
-        "Image Serving Platform" :
+        "image_serving_platform" :
           document_root : "neonisp"
           scm :
             scm_type : "git"
@@ -85,7 +85,7 @@ suites:
       - recipe[stats_manager::default]
     attributes: 
       deploy :
-        "Stats Manager" :
+        "stats_manager" :
           document_root : "statsmanager"
           scm :
             scm_type : "git"
@@ -99,7 +99,7 @@ suites:
       - recipe[mastermind::default]
     attributes: 
       deploy :
-        "Mastermind" :
+        "mastermind" :
           document_root : "mastermind"
           scm :
             scm_type : "git"

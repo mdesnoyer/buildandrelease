@@ -7,7 +7,7 @@ default[:neonisp][:mastermind_validated_filepath] = "/opt/neon/mastermind.valida
 default[:neonisp][:mastermind_file_url] = "http://neon-test.s3.amazonaws.com/mastermind"
 default[:neonisp][:mastermind_download_location] = "/tmp/mastermind"
 default[:neonisp][:client_api_expiry] = "10m" #10 mins
-default[:neonisp][:app_name] = "Image Serving Platform"
+default[:neonisp][:app_name] = "image_serving_platform"
 default[:neonisp][:crossdomain_root] = "/opt/neon"
 
 # Which repos to install

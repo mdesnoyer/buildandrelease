@@ -29,11 +29,11 @@ file node[:mastermind][:log_file] do
 end
 
 node[:deploy].each do |app_name, deploy|
-  if app_name != "Mastermind" then
+  if app_name != "mastermind" then
     next
   end
 
-  repo_path = get_repo_path("Mastermind")
+  repo_path = get_repo_path("mastermind")
   Chef::Log.info("Deploying app #{app_name} using code path #{repo_path}")
 
   # Install the neon code
