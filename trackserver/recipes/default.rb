@@ -76,6 +76,11 @@ end
 # Add the image serving platform
 include_recipe "neonisp"
 
+node[:deploy].each do |app_name, deploy|
+  Chef::Log.info ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> #{app_name}"
+  Chef::Log.info ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> #{deploy[:deploy_to]}"
+end
+
 if node[:opsworks][:activity] == 'deploy' then
   # Install the neon code
   include_recipe "neon::repo"
