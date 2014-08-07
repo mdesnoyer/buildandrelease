@@ -1,7 +1,5 @@
 # Imageserving platform 
-
 include_recipe "neon::default"
-
   
 # Setup collecting system metrics
 include_recipe "neon::system_metrics"
@@ -21,14 +19,16 @@ end
 
 include_recipe "neonisp::config"
 
-# install s3cmd
-include_recipe "s3cmd::default"
-
-if node[:opsworks][:activity] == 'deploy' then
-  # Install the neon code (Make sure to install before nginx setup)
-  include_recipe "neon::repo"
+node[:deploy].each do |app_name, deploy|
+  if app_name != node[:neonisp][:app_name] then
+    next
+  end
 
   repo_path = get_repo_path(node[:neonisp][:app_name])
+  Chef::Log.info("Deploying app #{app_name} using code path #{repo_path}")
+
+  # Install the neon code (Make sure to install before nginx setup)
+  include_recipe "neon::repo"
 
   # Test the imageservingplatform 
   # TODO(Sunil): Add testing for the image serving platform

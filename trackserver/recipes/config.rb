@@ -62,19 +62,16 @@ end
 include_recipe "neon-nginx::commons_dir"
 
 # Write the configuration for nginx
-if (node[:opsworks][:activity] == "deploy" or 
-    File.exists?("#{node[:nginx][:dir]}/conf.d/trackserver.conf")) then
-  template "#{node[:nginx][:dir]}/conf.d/trackserver.conf" do
-    source "trackserver_nginx.conf.erb"
-    owner node['nginx']['user']
-    group node['nginx']['group']
-    mode "0644"
-    variables({
-                :service_port => node[:trackserver][:port],
-                :frontend_port => node[:trackserver][:external_port]
-              })
-    if trackserver_exists
-      notifies :reload, 'service[nginx]', :delayed
-    end
+template "#{node[:nginx][:dir]}/conf.d/trackserver.conf" do
+  source "trackserver_nginx.conf.erb"
+  owner node['nginx']['user']
+  group node['nginx']['group']
+  mode "0644"
+  variables({
+              :service_port => node[:trackserver][:port],
+              :frontend_port => node[:trackserver][:external_port]
+            })
+  if trackserver_exists
+    notifies :reload, 'service[nginx]', :delayed
   end
 end

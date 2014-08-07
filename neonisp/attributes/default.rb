@@ -1,4 +1,4 @@
-include_attribute "neon::default"
+include_attribute "neon::repo"
 
 # Parameters for imageservingplatform (neonisp)
 default[:neonisp][:log_file] = "#{node[:neon][:log_dir]}/neonisp.log"
@@ -9,6 +9,10 @@ default[:neonisp][:mastermind_download_location] = "/tmp/mastermind"
 default[:neonisp][:client_api_expiry] = "10m" #10 mins
 default[:neonisp][:app_name] = "Image Serving Platform"
 default[:neonisp][:crossdomain_root] = "/opt/neon"
+
+# Which repos to install
+default[:neon][:repos]["#{node[:neonisp][:app_name]}"] = true
+default[:neon][:repos]["core"] = true
 
 # Nginx parameters
 #default['nginx']['source']['version'] = '1.4.7'

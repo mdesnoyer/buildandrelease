@@ -55,9 +55,16 @@ suites:
           scm :
             scm_type : "git"
             repository : "git@github.com:neon-lab/neon-codebase.git"
-            revision : "working"      
+            revision : "working"
+
+        "Image Serving Platform" :
+          document_root : "neonisp"
+          scm :
+            scm_type : "git"
+            repository : "git@github.com:neon-lab/neon-codebase.git"
+            revision : "working"
       opsworks :
-        activity : "deploy"
+        activity : "setup"
 
   - name: isp_deploy
     run_list:
@@ -71,7 +78,7 @@ suites:
             repository : "git@github.com:neon-lab/neon-codebase.git"
             revision : "working"      
       opsworks :
-        activity : "deploy"
+        activity : "setup"
 
   - name: statsmanager_deploy
     run_list:
@@ -85,7 +92,7 @@ suites:
             repository : "git@github.com:neon-lab/neon-codebase.git"
             revision : "working"      
       opsworks :
-        activity : "deploy"
+        activity : "setup"
 
   - name: mastermind_deploy
     run_list:
@@ -99,7 +106,7 @@ suites:
             repository : "git@github.com:neon-lab/neon-codebase.git"
             revision : "working"      
       opsworks :
-        activity : "deploy"
+        activity : "setup"
 
   - name: opencv
     run_list:

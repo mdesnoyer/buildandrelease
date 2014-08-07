@@ -59,31 +59,18 @@ directory node[:trackserver][:backup_dir] do
   recursive true
 end
 
-template "/etc/init/nginx-email.conf" do
-  source "mail-on-restart.conf.erb"
-  cookbook "neon"
-  owner "root"
-  group "root"
-  mode "0644"
-  variables({
-              :service => "nginx",
-              :host => node[:hostname],
-              :email => node[:neon][:ops_email],
-              :log_file => "#{node[:nginx][:log_dir]}/error.log"
-            })
-end
-
-# Add the image serving platform
-include_recipe "neonisp"
-
 node[:deploy].each do |app_name, deploy|
-  Chef::Log.info ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> #{app_name}"
-  Chef::Log.info ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> #{deploy[:deploy_to]}"
-end
-
-if node[:opsworks][:activity] == 'deploy' then
+  if app_name != "Track Server" then
+    next
+  end
+  
+  trackserver_repo = get_repo_path("Track Server")
+  Chef::Log.info "Deploying app #{app_name} using code path #{trackserver_repo}"
   # Install the neon code
   include_recipe "neon::repo"
+
+  # Add the image serving platform
+  include_recipe "neonisp"
 
   # Test the trackserver
   trackserver_repo = get_repo_path("trackserver")
@@ -120,6 +107,20 @@ if node[:opsworks][:activity] == 'deploy' then
                 :host => node[:hostname],
                 :email => node[:neon][:ops_email],
                 :log_file => node[:trackserver][:log_file]
+              })
+  end
+
+  template "/etc/init/nginx-email.conf" do
+    source "mail-on-restart.conf.erb"
+    cookbook "neon"
+    owner "root"
+    group "root"
+    mode "0644"
+    variables({
+                :service => "nginx",
+                :host => node[:hostname],
+                :email => node[:neon][:ops_email],
+                :log_file => "#{node[:nginx][:log_dir]}/error.log"
               })
   end
 

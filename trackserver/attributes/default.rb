@@ -1,5 +1,10 @@
 include_attribute "neon::default"
+include_attribute "neon::repo"
 include_attribute "neonisp"
+
+# Which repos to install
+default[:neon][:repos]["Track Server"] = true
+default[:neon][:repos]["core"] = true
 
 # Parameters for the trackserver
 default[:trackserver][:config] = "#{node[:neon][:config_dir]}/trackserver.conf"
@@ -30,7 +35,6 @@ force_default[:nginx][:realip][:real_ip_recursive] = "on"
 
 # Put the image serving platform as a sub app of the trackserver
 default[:neonisp][:port] = 8089
-default[:neonisp][:app_name] = "Track Server"
 
 # Parameters for the clicklog_collector
 default[:trackserver][:collector][:s3_path] = "s3n://neon-tracker-logs-v2/v%{track_vers}/%{tai}/%Y/%m/%d"
