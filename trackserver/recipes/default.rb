@@ -60,6 +60,11 @@ directory node[:trackserver][:backup_dir] do
 end
 
 node[:deploy].each do |app_name, deploy|
+  Chef::Log.info ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> #{app_name}"
+  Chef::Log.info ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> #{deploy[:deploy_to]}"
+end
+
+node[:deploy].each do |app_name, deploy|
   if app_name != "Track Server" then
     Chef::Log.info "Skipping deployment of app #{app_name}"
     next
