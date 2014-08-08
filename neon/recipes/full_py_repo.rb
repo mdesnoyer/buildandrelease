@@ -101,16 +101,18 @@ end
     
 
 # Install all the python dependencies
-node[:deploy].each do |app, data|
-  code_path = get_repo_path(app)
-  execute "py_pre_reqs[#{app}]" do
-    command "pip install --no-index --find-links http://s3-us-west-1.amazonaws.com/neon-dependencies/index.html -r #{code_path}/pre_requirements.txt"
-    action :run
-  end
+if not node[:deploy].nil? then
+  node[:deploy].each do |app, data|
+    code_path = get_repo_path(app)
+    execute "py_pre_reqs[#{app}]" do
+      command "pip install --no-index --find-links http://s3-us-west-1.amazonaws.com/neon-dependencies/index.html -r #{code_path}/pre_requirements.txt"
+      action :run
+    end
 
-  execute "py_install_reqs[#{app}]" do
-    command "pip install --no-index --find-links http://s3-us-west-1.amazonaws.com/neon-dependencies/index.html -r #{code_path}/requirements.txt"
-    action :run
+    execute "py_install_reqs[#{app}]" do
+      command "pip install --no-index --find-links http://s3-us-west-1.amazonaws.com/neon-dependencies/index.html -r #{code_path}/requirements.txt"
+      action :run
+    end
   end
 end
 
