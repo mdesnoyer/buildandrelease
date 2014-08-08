@@ -7,5 +7,9 @@ default[:gflags][:archive][:version] = node[:gflags][:version]
 default[:gflags][:archive][:url] = "https://github.com/schuhschuh/gflags/archive/v#{node[:gflags][:archive][:version]}.tar.gz"
 default[:gflags][:package][:url_base] = "https://github.com/schuhschuh/gflags/releases/download/v#{node[:gflags][:version]}/"
 
-# Build opencv near the main repo
+# Build opencv and its depdencies near the main repo
 default[:opencv][:build_path] = "#{node[:neon][:home]}/opencv"
+default[:yasm][:build_path] = "#{node[:neon][:home]}/yasm"
+default[:x264][:build_path] = "#{node[:neon][:home]}/x264"
+default[:libvpx][:build_path] = "#{node[:neon][:home]}/libvpx"
+default[:ffmpeg][:build_path] = "#{node[:neon][:home]}/ffmpeg"
