@@ -27,7 +27,16 @@ node[:neon][:repos].each do |app_name, do_deploy|
   end
 
   valid_name = app_name.downcase.tr(' ', '')
-  if not node[:deploy][app_name].nil? then
+  if app_name == "core" then
+    data = {
+      :name => "core",
+      :app_name => nil,
+      :code_folder => get_repo_path(nil),
+      :repo_key => node[:neon][:repo_key],
+      :repo_url => node[:neon][:repo_url],
+      :revision => node[:neon][:code_revision]
+    }
+  elsif not node[:deploy].nil? and not node[:deploy][app_name].nil? then
     scm_data = node[:deploy][app_name][:scm]
     data = {
       :name => valid_name,
@@ -36,15 +45,6 @@ node[:neon][:repos].each do |app_name, do_deploy|
       :repo_key => scm_data[:ssh_key] || node[:neon][:repo_key],
       :repo_url => scm_data[:repository] || node[:neon][:repo_url],
       :revision => scm_data[:revision] || node[:neon][:code_revision]
-    }
-  elsif app_name == "core" then
-    data = {
-      :name => "core",
-      :app_name => nil,
-      :code_folder => get_repo_path(nil),
-      :repo_key => node[:neon][:repo_key],
-      :repo_url => node[:neon][:repo_url],
-      :revision => node[:neon][:code_revision]
     }
   else
     Chef::Log.warn("Asked for a deploy of app #{app_name}, but it's not known. Ignoring")
