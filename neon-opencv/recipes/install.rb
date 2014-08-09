@@ -74,7 +74,6 @@ end
 # Install yasm from source
 node.default[:yasm][:git_revision] = "v1.2.0"
 node.default[:yasm][:install_method] = "source"
-node.default[:yasm][:build_dir]
 
 # Pin the x264 version
 node.default[:x264][:git_revision] = "af8e768e2bd3b4398bca033998f83b0eb8874914"

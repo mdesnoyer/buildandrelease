@@ -1,5 +1,9 @@
 include_attribute "neon::default"
 include_attribute "neon-opencv"
+include_attribute "yasm"
+include_attribute "libvpx"
+include_attribute "x264"
+include_attribute "ffmpeg"
 
 # Pin the gflags version
 default[:gflags][:version] = "2.1.0"
