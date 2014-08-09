@@ -105,7 +105,9 @@ end
 apps = ['core']
 if not node[:deploy].nil? then
   node[:deploy].each do |app, data|
-    apps << app
+    if not node[:neon][:repos][app].nil? and node[:neon][:repos][app] then
+      apps << app
+    end
   end
 end
 
