@@ -3,12 +3,14 @@ include_attribute "neon::default"
 # Parameters for imageservingplatform (neonisp)
 default[:neonisp][:log_file] = "#{node[:neon][:log_dir]}/neonisp.log"
 default[:neonisp][:port] = 80 #port for isp to listen on
-default[:neonisp][:mastermind_validated_filepath] = "/opt/neon/mastermind.validated"
+default[:neonisp][:mastermind_validated_filepath] = "#{node[:neon][:home]}/mastermind.validated"
 default[:neonisp][:mastermind_file_url] = "http://neon-test.s3.amazonaws.com/mastermind"
 default[:neonisp][:mastermind_download_location] = "/tmp/mastermind"
 default[:neonisp][:client_api_expiry] = "10m" #10 mins
 default[:neonisp][:app_name] = "Image Serving Platform"
 default[:neonisp][:crossdomain_root] = "/opt/neon"
+default[:neonisp][:s3downloader_src] = "imageservingplatform/neon_isp/isp_s3downloader.py"
+default[:neonisp][:s3downloader_exec_loc] = "/usr/local/bin/isp_s3downloader"
 
 # Nginx parameters
 #default['nginx']['source']['version'] = '1.4.7'

@@ -28,6 +28,11 @@ if node[:opsworks][:activity] == 'deploy' then
   # Install the neon code (Make sure to install before nginx setup)
   include_recipe "neon::repo"
 
+  # symlink the s3downloader script 
+  link "#{get_repo_path(node[:neonisp][:app_name])}/#{node[:neonisp][:s3downloader_src]}" do
+      to "#{node[:neonisp][:s3downloader_exec_loc]}"
+  end
+    
   repo_path = get_repo_path(node[:neonisp][:app_name])
 
   # Test the imageservingplatform 
