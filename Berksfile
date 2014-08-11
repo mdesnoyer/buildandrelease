@@ -16,6 +16,7 @@ cookbook "yasm", path: "yasm"
 cookbook "ffmpeg", path: "ffmpeg"
 cookbook "x264", path: "x264"
 cookbook "libvpx", path: "libvpx"
+cookbook "redis", path: "redis"
 
 cookbook "neon", path: "neon"
 cookbook "neonisp", path: "neonisp"

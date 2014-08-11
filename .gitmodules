@@ -13,3 +13,6 @@
 [submodule "s3cmd"]
 	path = s3cmd
 	url = git@github.com:freerobby/s3cmd.git
+[submodule "redis"]
+	path = redis
+	url = git@github.com:neon-lab/redis.git
