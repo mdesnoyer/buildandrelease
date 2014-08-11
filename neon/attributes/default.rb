@@ -1,21 +1,10 @@
 include_attribute "python"
 include_attribute "java"
 
-# Which revision of the codebase to grab. Can also use tags
-default[:neon][:code_revision] = "HEAD"
-
-# The neon codebase root
 default[:neon][:home] = "/opt/neon"
-default[:neon][:code_root] = "#{node[:neon][:home]}/neon-codebase"
-
-# The ssh key for access the neon repo
-default[:neon][:repo_key] = "s3://neon-keys/neon-deploy.pem"
 
 # The ssh key to serving machines
 default[:neon][:serving_key] = "s3://neon-keys/neon-serving.pem"
-
-# The path to the neon repo
-default[:neon][:repo_url] = "git@github.com:neon-lab/neon-codebase.git"
 
 # The python virtualenv
 default[:neon][:pyenv] = "#{node[:neon][:code_root]}/.pyenv"

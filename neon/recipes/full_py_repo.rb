@@ -2,14 +2,8 @@
 # requirements.txt file.
 
 # Install the repo
+node.default[:neon][:repos]['core'] = true
 include_recipe "neon::repo"
-
-apps = [nil]
-if node[:opsworks][:activity] == 'deploy' then
-  node[:deploy].each do |app, data|
-    apps << app
-  end
-end
 
 # Install virtualenv
 include_recipe "python::virtualenv"
@@ -108,7 +102,16 @@ end
     
 
 # Install all the python dependencies
-apps.each do |app|
+apps = ['core']
+if not node[:deploy].nil? then
+  node[:deploy].each do |app, data|
+    if not node[:neon][:repos][app].nil? and node[:neon][:repos][app] then
+      apps << app
+    end
+  end
+end
+
+apps.each do |app, data|
   code_path = get_repo_path(app)
   execute "py_pre_reqs[#{app}]" do
     command "pip install --no-index --find-links http://s3-us-west-1.amazonaws.com/neon-dependencies/index.html -r #{code_path}/pre_requirements.txt"

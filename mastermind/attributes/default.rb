@@ -12,3 +12,8 @@ default[:mastermind][:video_db_host] = "10.249.34.227"
 default[:mastermind][:directive_bucket] = "neon-image-serving-directives"
 default[:mastermind][:directive_filename] = "mastermind"
 default[:mastermind][:publishing_period] = 300
+
+
+# Specify the repos to user
+default[:neon][:repos]["mastermind"] = true
+default[:neon][:repos]["core"] = true

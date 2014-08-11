@@ -10,6 +10,5 @@ depends 'neon'
 depends 'neon_logs'
 depends 'neon-nginx', "= 2.7.4"
 depends 'python', "= 1.4.6"
-depends 's3cmd'
 
 supports 'ubuntu'

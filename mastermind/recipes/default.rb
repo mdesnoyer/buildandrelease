@@ -28,13 +28,18 @@ file node[:mastermind][:log_file] do
   mode "0644"
 end
 
+node[:deploy].each do |app_name, deploy|
+  if app_name != "mastermind" then
+    next
+  end
 
-if node[:opsworks][:activity] == 'deploy' then
+  repo_path = get_repo_path("mastermind")
+  Chef::Log.info("Deploying app #{app_name} using code path #{repo_path}")
+
   # Install the neon code
   include_recipe "neon::full_py_repo"
 
   # Test mastermind
-  repo_path = get_repo_path("mastermind")
   execute "nosetests --exe mastermind utils supportServices" do
     cwd "#{repo_path}"
     user "mastermind"

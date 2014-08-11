@@ -26,6 +26,19 @@ end
 
 trackserver_exists = File.exists?("/etc/init/neon-trackserver.conf")
 
+if trackserver_exists then
+  # Specify the service for chef so that they can be restarted.
+  service "neon-trackserver" do
+    provider Chef::Provider::Service::Upstart
+    supports :status => true, :restart => true, :start => true, :stop => true
+    action :nothing
+  end
+
+  service "nginx" do
+    action :nothing
+  end
+end
+
 # Write the configuration file for the trackserver
 template node[:trackserver][:config] do
   source "trackserver.conf.erb"
@@ -49,19 +62,16 @@ end
 include_recipe "neon-nginx::commons_dir"
 
 # Write the configuration for nginx
-if (node[:opsworks][:activity] == "deploy" or 
-    File.exists?("#{node[:nginx][:dir]}/conf.d/trackserver.conf")) then
-  template "#{node[:nginx][:dir]}/conf.d/trackserver.conf" do
-    source "trackserver_nginx.conf.erb"
-    owner node['nginx']['user']
-    group node['nginx']['group']
-    mode "0644"
-    variables({
-                :service_port => node[:trackserver][:port],
-                :frontend_port => node[:trackserver][:external_port]
-              })
-    if trackserver_exists
-      notifies :reload, 'service[nginx]', :delayed
-    end
+template "#{node[:nginx][:dir]}/conf.d/trackserver.conf" do
+  source "trackserver_nginx.conf.erb"
+  owner node['nginx']['user']
+  group node['nginx']['group']
+  mode "0644"
+  variables({
+              :service_port => node[:trackserver][:port],
+              :frontend_port => node[:trackserver][:external_port]
+            })
+  if trackserver_exists
+    notifies :reload, 'service[nginx]', :delayed
   end
 end

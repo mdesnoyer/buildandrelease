@@ -1,4 +1,5 @@
 # System metrics collecter recipe
+node.default[:neon][:repos][:core] = true
 
 # Install the neon code
 include_recipe "neon::repo"
@@ -21,7 +22,7 @@ pydeps.each do |package, vers|
 end
 
 # Collect system metrics
-repo_path = get_repo_path("system_metrics")
+repo_path = get_repo_path("core")
 service "neon-system-metrics" do
   provider Chef::Provider::Service::Upstart
   supports :status => true, :restart => true, :start => true, :stop => true

@@ -84,7 +84,6 @@ s3_file "#{node[:neon][:home]}/statsmanager/.ssh/emr.pem" do
   mode "0600"
 end
 
-repo_path = get_repo_path("Stats Manager")
 
 aws_keys = {}
 if not node[:aws][:access_key_id].nil? then
@@ -92,17 +91,22 @@ if not node[:aws][:access_key_id].nil? then
   aws_keys['AWS_SECRET_ACCESS_KEY'] = node[:aws][:secret_access_key]
 end
 
-if ::File.exists?("#{repo_path}/stats/batch_processor.py") then
+node[:deploy].each do |app_name, deploy|
+  if app_name != "stats_manager" then
+    next
+  end
+
+  repo_path = get_repo_path("stats_manager")
+  Chef::Log.info("Deploying app #{app_name} using code path #{repo_path}")
+
+  # Grab the latest repo
+  include_recipe "neon::repo"
+
   execute "get cluster host key" do
     command "#{repo_path}/stats/batch_processor.py --master_host_key_file #{node[:neon][:home]}/statsmanager/.ssh/cluster_known_hosts --get_master_host_key 1"
     user "statsmanager"
     environment aws_keys
   end
-end
-
-if node[:opsworks][:activity] == 'deploy' then
-  # Grab the latest repo
-  include_recipe "neon::repo"
 
   # Build the job to run
   execute "build stats jar" do
