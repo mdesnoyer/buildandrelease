@@ -120,11 +120,15 @@ apps.each do |app, data|
 
   app_built = "#{code_path}/BUILD_DONE"
   file app_built do
+    user "neon"
+    group "neon"
     action :nothing
     subscribes :delete, "git[#{code_path}]", :immediately
   end
   bash "compile_#{app}" do
     cwd code_path
+    user "neon"
+    group "neon"
     code <<-EOH
        . enable_env
        make clean && make
