@@ -41,11 +41,25 @@ node[:deploy].each do |app_name, deploy|
 
 
   # Test mastermind
-  execute "nosetests --exe mastermind utils supportServices" do
+  app_tested = "#{repo_path}/TEST_DONE"
+  file app_tested do
+    user "neon"
+    group "neon"
+    action :nothing
+    subscribes :delete, "bash[compile_mastermind]", :immediately
+  end
+  bash "test_mastermind" do
+    action :nothing
     cwd repo_path
     user "neon"
-    action :run
+    group "neon"
+    code <<-EOH
+       . enable_env
+       nosetests --exe mastermind utils supportServices
+    EOH
+    not_if {  ::File.exists?(app_tested) }
     notifies :restart, "service[mastermind]", :delayed
+    notifies :create, "file[#{app_tested}]"
   end
 
   # Write the daemon service wrapper
