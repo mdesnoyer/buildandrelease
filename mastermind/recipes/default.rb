@@ -18,12 +18,12 @@ include_recipe "mastermind::config"
 
 # Make directories 
 directory node[:mastermind][:log_dir] do
-  user "mastermind"
+  user "neon"
   group "neon"
   mode "0755"
 end
 file node[:mastermind][:log_file] do
-  user "mastermind"
+  user "neon"
   group "neon"
   mode "0644"
 end
@@ -39,12 +39,27 @@ node[:deploy].each do |app_name, deploy|
   # Install the neon code
   include_recipe "neon::full_py_repo"
 
+
   # Test mastermind
-  execute "nosetests --exe mastermind utils supportServices" do
-    cwd "#{repo_path}"
-    user "mastermind"
-    action :run
+  app_tested = "#{repo_path}/TEST_DONE"
+  file app_tested do
+    user "neon"
+    group "neon"
+    action :nothing
+    subscribes :delete, "bash[compile_mastermind]", :immediately
+  end
+  bash "test_mastermind" do
+    action :nothing
+    cwd repo_path
+    user "neon"
+    group "neon"
+    code <<-EOH
+       . enable_env
+       nosetests --exe mastermind utils supportServices
+    EOH
+    not_if {  ::File.exists?(app_tested) }
     notifies :restart, "service[mastermind]", :delayed
+    notifies :create, "file[#{app_tested}]"
   end
 
   # Write the daemon service wrapper
@@ -56,8 +71,8 @@ node[:deploy].each do |app_name, deploy|
     variables({
                 :neon_root_dir => "#{repo_path}",
                 :config_file => node[:mastermind][:config],
-                :user => "mastermind",
-                :group => "mastermind",
+                :user => "neon",
+                :group => "neon",
               })
   end
 
