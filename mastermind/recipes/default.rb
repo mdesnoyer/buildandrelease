@@ -39,9 +39,11 @@ node[:deploy].each do |app_name, deploy|
   # Install the neon code
   include_recipe "neon::full_py_repo"
 
+  
+
   # Test mastermind
   execute "nosetests --exe mastermind utils supportServices" do
-    cwd "#{repo_path}"
+    cwd repo_path
     user "mastermind"
     action :run
     notifies :restart, "service[mastermind]", :delayed

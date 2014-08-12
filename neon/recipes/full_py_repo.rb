@@ -112,15 +112,25 @@ if not node[:deploy].nil? then
 end
 
 apps.each do |app, data|
-  code_path = get_repo_path(app)
-  execute "py_pre_reqs[#{app}]" do
-    command "pip install --no-index --find-links http://s3-us-west-1.amazonaws.com/neon-dependencies/index.html -r #{code_path}/pre_requirements.txt"
-    action :run
-  end
 
-  execute "py_install_reqs[#{app}]" do
-    command "pip install --no-index --find-links http://s3-us-west-1.amazonaws.com/neon-dependencies/index.html -r #{code_path}/requirements.txt"
-    action :run
+  # Run make in the directory, which installs all the python
+  # depdencies in a virtual environment and builds the c++ code.
+  code_path = get_repo_path(app)
+  Chef::Log.info("Making app #{app} using code path #{code_path}")
+
+  app_built = "#{code_path}/BUILD_DONE"
+  file app_built do
+    action :nothing
+    subscribes :delete, "git[#{code_path}]", :immediately
+  end
+  bash "compile_#{app}" do
+    cwd code_path
+    code <<-EOH
+       . enable_env
+       make clean && make
+    EOH
+    not_if {  ::File.exists?(app_built) }
+    notifies :create, "file[#{app_built}]"
   end
 end
 

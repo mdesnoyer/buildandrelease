@@ -11,5 +11,9 @@ setuid <%= @user %>
 setgid <%= @group %>
 
 chdir <%= @neon_root_dir %>
-exec <%= @neon_root_dir %>/mastermind/server.py -c <%= @config_file%>
+script
+  source <%= @neon_root_dir %>/enable_env
+  <%= @neon_root_dir %>/mastermind/server.py -c <%= @config_file%>
+end script
+
 respawn
