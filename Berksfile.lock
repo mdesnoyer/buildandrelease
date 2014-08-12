@@ -1,7 +1,8 @@
 DEPENDENCIES
   apt (~> 2.4.0)
   cmake (~> 0.3)
-  ffmpeg (~> 0.3)
+  ffmpeg
+    path: ffmpeg
   gflags (~> 1.0)
   git (~> 4.0.2)
   hadoop (~> 1.1)
@@ -22,14 +23,14 @@ DEPENDENCIES
   neonisp
     path: neonisp
   python (~> 1.4.6)
+  redis
+    path: redis
   stats_manager
     path: stats_manager
   trackserver
     path: trackserver
   x264
-    git: git://github.com/escapestudios-cookbooks/x264.git
-    revision: 549c7e8a08516f80dc2f63abfaf5c6f2bbc36f73
-    tag: 0.4.3
+    path: x264
   yasm
     path: yasm
 
@@ -41,11 +42,12 @@ GRAPH
   chef_handler (1.1.6)
   cmake (0.3.0)
   dmg (2.2.0)
-  ffmpeg (0.3.1)
+  ffmpeg (0.3.2)
     build-essential (>= 0.0.0)
     git (>= 0.0.0)
     libvpx (>= 0.0.0)
     x264 (>= 0.0.0)
+    yasm (>= 0.0.0)
   gflags (1.0.1)
     apt (>= 0.0.0)
     build-essential (>= 0.0.0)
@@ -57,11 +59,11 @@ GRAPH
     windows (>= 0.0.0)
     yum (~> 3.0)
     yum-epel (>= 0.0.0)
-  hadoop (1.1.1)
+  hadoop (1.2.0)
     apt (>= 0.0.0)
     java (>= 1.21.2)
     yum (>= 3.0)
-  java (1.22.0)
+  java (1.25.0)
   libvpx (0.3.3)
     build-essential (>= 0.0.0)
     git (>= 0.0.0)
@@ -110,6 +112,8 @@ GRAPH
   python (1.4.6)
     build-essential (>= 0.0.0)
     yum-epel (>= 0.0.0)
+  redis (0.1.0)
+    build-essential (>= 1.4.0)
   rsyslog (1.12.2)
   runit (1.5.10)
     build-essential (>= 0.0.0)
@@ -129,7 +133,7 @@ GRAPH
     neon_logs (>= 0.0.0)
     neonisp (>= 0.0.0)
     python (= 1.4.6)
-  windows (1.33.1)
+  windows (1.34.0)
     chef_handler (>= 0.0.0)
   x264 (0.4.3)
     build-essential (>= 0.0.0)
@@ -139,5 +143,5 @@ GRAPH
     build-essential (>= 0.0.0)
     git (>= 0.0.0)
   yum (3.2.2)
-  yum-epel (0.3.6)
+  yum-epel (0.4.0)
     yum (~> 3.0)

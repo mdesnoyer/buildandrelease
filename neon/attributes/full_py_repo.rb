@@ -12,8 +12,8 @@ default[:gflags][:archive][:url] = "https://github.com/schuhschuh/gflags/archive
 default[:gflags][:package][:url_base] = "https://github.com/schuhschuh/gflags/releases/download/v#{node[:gflags][:version]}/"
 
 # Build opencv and its depdencies near the main repo
-default[:opencv][:build_path] = "#{node[:neon][:home]}/opencv"
-default[:yasm][:build_path] = "#{node[:neon][:home]}/yasm"
-default[:x264][:build_path] = "#{node[:neon][:home]}/x264"
-default[:libvpx][:build_path] = "#{node[:neon][:home]}/libvpx"
-default[:ffmpeg][:build_path] = "#{node[:neon][:home]}/ffmpeg"
+default[:opencv][:build_dir] = "#{node[:neon][:home]}/opencv"
+default[:yasm][:build_dir] = "#{node[:neon][:home]}/yasm"
+default[:x264][:build_dir] = "#{node[:neon][:home]}/x264"
+default[:libvpx][:build_dir] = "#{node[:neon][:home]}/libvpx"
+default[:ffmpeg][:build_dir] = "#{node[:neon][:home]}/ffmpeg"

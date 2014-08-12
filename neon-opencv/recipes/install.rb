@@ -119,8 +119,19 @@ file opencv_include do
   subscribes :delete, "bash[compile_ffmpeg]", :immediately
 end
 
+# Create the build directory
+git node[:opencv][:build_dir] do
+  repository node[:opencv][:repo]
+  revision node[:opencv][:version]
+  action :sync
+  notifies :delete, "file[#{opencv_include}]", :immediately
+end
+directory "#{node[:opencv][:build_dir]}/build" do
+  action :create
+end
+
 # Write the build configuration to a file - if it changes, we recompile
-template "#{Chef::Config[:file_cache_path]}/opencv-build-configuration" do
+template "#{node[:opencv][:build_dir]}/opencv-build-configuration" do
     source "build-configuration.erb"
     owner "root"
     group "root"
@@ -132,22 +143,10 @@ template "#{Chef::Config[:file_cache_path]}/opencv-build-configuration" do
     notifies :delete, "file[#{opencv_include}]", :immediately
 end
 
-# Create the build directory
-build_path = node[:opencv][:build_path]
-git build_path do
-  repository node[:opencv][:repo]
-  revision node[:opencv][:version]
-  action :sync
-  notifies :delete, "file[#{opencv_include}]", :immediately
-end
-directory "#{build_path}/build" do
-  action :create
-end
-
 # Compile OpenCV
 cmake_args = cmake_params.each.map{|k,v| "-D #{k}=#{v}"}.join(" ")
 bash "compile_opencv" do
-  cwd "#{build_path}/build"
+  cwd "#{node[:opencv][:build_dir]}/build"
   code <<-EOH
        cmake #{cmake_args} ..
        make clean && make -j#{node[:cpu][:total]} && make install
