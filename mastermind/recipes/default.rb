@@ -18,12 +18,12 @@ include_recipe "mastermind::config"
 
 # Make directories 
 directory node[:mastermind][:log_dir] do
-  user "mastermind"
+  user "neon"
   group "neon"
   mode "0755"
 end
 file node[:mastermind][:log_file] do
-  user "mastermind"
+  user "neon"
   group "neon"
   mode "0644"
 end
@@ -39,12 +39,11 @@ node[:deploy].each do |app_name, deploy|
   # Install the neon code
   include_recipe "neon::full_py_repo"
 
-  
 
   # Test mastermind
   execute "nosetests --exe mastermind utils supportServices" do
     cwd repo_path
-    user "mastermind"
+    user "neon"
     action :run
     notifies :restart, "service[mastermind]", :delayed
   end
@@ -58,8 +57,8 @@ node[:deploy].each do |app_name, deploy|
     variables({
                 :neon_root_dir => "#{repo_path}",
                 :config_file => node[:mastermind][:config],
-                :user => "mastermind",
-                :group => "mastermind",
+                :user => "neon",
+                :group => "neon",
               })
   end
 
