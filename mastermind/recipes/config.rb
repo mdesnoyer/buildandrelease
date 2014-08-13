@@ -15,7 +15,7 @@ end
 
 # Find the video db
 Chef::Log.info "Looking for the video database in layer: #{node[:mastermind][:video_db_layer]}"
-video_db_nost = nil
+video_db_host = nil
 video_db_layer = node[:opsworks][:layers][node[:mastermind][:video_db_layer]]
 if video_db_layer.nil?
   Chef::Log.warn "No video db instances available. Falling back to host #{node[:mastermind][:video_db_fallbackhost]}"
