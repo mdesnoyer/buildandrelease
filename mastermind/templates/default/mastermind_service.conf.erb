@@ -11,9 +11,8 @@ setuid <%= @user %>
 setgid <%= @group %>
 
 chdir <%= @neon_root_dir %>
-script
-  source <%= @neon_root_dir %>/enable_env
-  <%= @neon_root_dir %>/mastermind/server.py -c <%= @config_file%>
-end script
+env VIRTUAL_ENV=<%= @neon_root_dir %>/.pyenv
+env PATH="${VIRTUAL_ENV}/bin:$PATH"
+exec ${VIRTUAL_ENV}/bin/python <%= @neon_root_dir %>/mastermind/server.py -c <%= @config_file%>
 
 respawn
