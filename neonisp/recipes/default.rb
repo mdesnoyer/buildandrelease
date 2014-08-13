@@ -31,8 +31,8 @@ node[:deploy].each do |app_name, deploy|
   include_recipe "neon::repo"
 
   # symlink the s3downloader script 
-  link "#{get_repo_path(node[:neonisp][:app_name])}/#{node[:neonisp][:s3downloader_src]}" do
-      to "#{node[:neonisp][:s3downloader_exec_loc]}"
+  link "#{node[:neonisp][:s3downloader_exec_loc]}" do
+    to "#{get_repo_path(node[:neonisp][:app_name])}/#{node[:neonisp][:s3downloader_src]}" 
   end
     
   repo_path = get_repo_path(node[:neonisp][:app_name])
