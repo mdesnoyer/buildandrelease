@@ -17,6 +17,13 @@ file node[:neonisp][:mastermind_download_location] do
   mode "0644"
 end
 
+# own the default root directory for nginx 
+directory node[:nginx][:default_root] do
+  user "#{node[:nginx][:user]}"
+  group "neon"
+  mode "1755"
+end
+
 include_recipe "neonisp::config"
 
 node[:deploy].each do |app_name, deploy|
