@@ -10,8 +10,15 @@ file node[:neonisp][:log_file] do
   group "neon"
   mode "0644"
 end
+
+# own the default root directory for nginx 
+directory node[:nginx][:default_root] do
+  user "#{node[:nginx][:user]}"
+  group "neon"
+  mode "1755"
+end
   
-file node[:neonisp][:mastermind_download_location] do
+file node[:neonisp][:mastermind_download_filepath] do
   user "#{node[:nginx][:user]}"
   group "neon"
   mode "0644"
@@ -30,12 +37,12 @@ node[:deploy].each do |app_name, deploy|
   # Install the neon code (Make sure to install before nginx setup)
   include_recipe "neon::repo"
 
-  # symlink the s3downloader script 
-  link "#{get_repo_path(node[:neonisp][:app_name])}/#{node[:neonisp][:s3downloader_src]}" do
-      to "#{node[:neonisp][:s3downloader_exec_loc]}"
-  end
-    
   repo_path = get_repo_path(node[:neonisp][:app_name])
+  
+  # symlink the s3downloader script 
+  link "#{node[:neonisp][:s3downloader_exec_loc]}" do
+    to "#{repo_path}/#{node[:neonisp][:s3downloader_src]}" 
+  end
 
   # Test the imageservingplatform 
   # TODO(Sunil): Add testing for the image serving platform

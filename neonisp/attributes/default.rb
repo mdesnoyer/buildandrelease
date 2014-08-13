@@ -3,9 +3,9 @@ include_attribute "neon::repo"
 # Parameters for imageservingplatform (neonisp)
 default[:neonisp][:log_file] = "#{node[:neon][:log_dir]}/neonisp.log"
 default[:neonisp][:port] = 80 #port for isp to listen on
-default[:neonisp][:mastermind_validated_filepath] = "#{node[:neon][:home]}/mastermind.validated"
-default[:neonisp][:mastermind_file_url] = "http://neon-test.s3.amazonaws.com/mastermind"
-default[:neonisp][:mastermind_download_location] = "/tmp/mastermind"
+default[:neonisp][:mastermind_validated_filepath] = "#{node[:nginx][:default_root]}/mastermind.validated"
+default[:neonisp][:mastermind_file_url] = "s3://neon-image-serving-directives/mastermind"
+default[:neonisp][:mastermind_download_filepath] = "#{node[:nginx][:default_root]}/mastermind"
 default[:neonisp][:client_api_expiry] = "10m" #10 mins
 default[:neonisp][:app_name] = "image_serving_platform"
 default[:neonisp][:crossdomain_root] = "/opt/neon"
