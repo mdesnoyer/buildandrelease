@@ -29,7 +29,7 @@ else
     end
   end
 end
-Chef::Log.info("Connecting mastermind to video db at #{video_db_host}"
+Chef::Log.info("Connecting mastermind to video db at #{video_db_host}")
 
 # Write the configuration file for the mastermind
 template node[:mastermind][:config] do
