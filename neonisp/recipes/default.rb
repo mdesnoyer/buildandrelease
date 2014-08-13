@@ -30,12 +30,12 @@ node[:deploy].each do |app_name, deploy|
   # Install the neon code (Make sure to install before nginx setup)
   include_recipe "neon::repo"
 
+  repo_path = get_repo_path(node[:neonisp][:app_name])
+  
   # symlink the s3downloader script 
   link "#{node[:neonisp][:s3downloader_exec_loc]}" do
-    to "#{get_repo_path(node[:neonisp][:app_name])}/#{node[:neonisp][:s3downloader_src]}" 
+    to "#{repo_path}/#{node[:neonisp][:s3downloader_src]}" 
   end
-    
-  repo_path = get_repo_path(node[:neonisp][:app_name])
 
   # Test the imageservingplatform 
   # TODO(Sunil): Add testing for the image serving platform
