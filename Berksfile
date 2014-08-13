@@ -17,6 +17,7 @@ cookbook "ffmpeg", path: "ffmpeg"
 cookbook "x264", path: "x264"
 cookbook "libvpx", path: "libvpx"
 cookbook "redis", path: "redis"
+cookbook "s3cmd", path: "s3cmd"
 
 cookbook "neon", path: "neon"
 cookbook "neonisp", path: "neonisp"
