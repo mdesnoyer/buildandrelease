@@ -1,6 +1,6 @@
 mastermind_file_url <%= @mastermind_file_url %>;
 mastermind_validated_filepath <%= @mastermind_validated_filepath %>;
-mastermind_download_filepath <%= @mastermind_download_filepath %>;
+mastermind_download_filepath <%= node[:neonisp][:mastermind_download_filepath] %>;
 
 server {
   listen <%= @port%>;
