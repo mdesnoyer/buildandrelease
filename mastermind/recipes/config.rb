@@ -15,13 +15,13 @@ end
 
 # Find the video db
 Chef::Log.info "Looking for the video database in layer: #{node[:mastermind][:video_db_layer]}"
-video_db_nost = nil
+video_db_host = nil
 video_db_layer = node[:opsworks][:layers][node[:mastermind][:video_db_layer]]
 if video_db_layer.nil?
   Chef::Log.warn "No video db instances available. Falling back to host #{node[:mastermind][:video_db_fallbackhost]}"
   video_db_host = node[:mastermind][:video_db_fallbackhost]
 else
-  video_db_layer.each do |name, instance|
+  video_db_layer[:instances].each do |name, instance|
     if (instance[:availability_zone] == 
         node[:opsworks][:instance][:availability_zone] or 
         video_db_host.nil?) then
@@ -29,7 +29,7 @@ else
     end
   end
 end
-Chef::Log.info("Connecting mastermind to video db at #{video_db_host}"
+Chef::Log.info("Connecting mastermind to video db at #{video_db_host}")
 
 # Write the configuration file for the mastermind
 template node[:mastermind][:config] do
