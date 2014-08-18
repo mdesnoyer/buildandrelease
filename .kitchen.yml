@@ -90,7 +90,7 @@ suites:
           scm :
             scm_type : "git"
             repository : "git@github.com:neon-lab/neon-codebase.git"
-            revision : "working"      
+            revision : "statsmanager_service"      
       opsworks :
         activity : "setup"
 

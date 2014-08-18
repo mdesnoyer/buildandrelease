@@ -1,4 +1,4 @@
-description "Neon Click Trackserver"
+description "Neon Stats Manager"
 author  "Mark Desnoyer <desnoyer@neon-lab.com>"
 
 start on runlevel [234]
@@ -11,5 +11,5 @@ setuid <%= @user %>
 setgid <%= @group %>
 
 chdir <%= @neon_root_dir %>
-exec <%= @neon_root_dir %>/clickTracker/trackserver.py -c <%= @config_file%>
+exec <%= @neon_root_dir %>/stats/cluster_manager.py -c <%= @config_file%> --stats.batch_processor.mr_jar <%= @mr_jar %>
 respawn
