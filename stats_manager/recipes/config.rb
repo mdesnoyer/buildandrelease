@@ -18,6 +18,7 @@ template node[:stats_manager][:config] do
   mode "0644"
   variables({ 
               :batch_period => node[:stats_manager][:batch_period],
+              :cluster_type => node[:stats_manager][:cluster_type],
               :emr_key => node[:stats_manager][:emr_key],
               :log_file => node[:stats_manager][:log_file],
               :carbon_host => node[:neon][:carbon_host],

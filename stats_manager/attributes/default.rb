@@ -15,3 +15,4 @@ default[:stats_manager][:log_file] = "#{node[:stats_manager][:log_dir]}/statsman
 
 # Pramaters for the process
 default[:stats_manager][:batch_period] = 10800 # 3h for now
+default[:stats_manager][:cluster_type] = "video_click_stats"
