@@ -1,0 +1,18 @@
+supportServices:
+  neondata:
+    accountDB: <%= @video_db_host %>
+    videoDB: <%= @video_db_host %>
+    thumbnailDB: <%= @video_db_host %>
+    dbPort: <%= @video_db_port %>
+
+utils:
+  logs:
+    file: <%= @log_file %>
+    do_stderr: 0
+    do_stdout: 1
+    level: info
+    flume_url: http://localhost:<%= @flume_log_port %>
+    loggly_tag: video_client 
+  monitor:
+    carbon_server: <%= @carbon_host %>
+    carbon_port: <%= @carbon_port %>
