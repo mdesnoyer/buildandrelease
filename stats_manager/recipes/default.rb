@@ -24,7 +24,8 @@ pydeps = {
   "paramiko" => "1.14.0",
   "nose" => "1.3.0",
   "thrift" => "0.9.1",
-  "PyYAML" => "3.10"
+  "PyYAML" => "3.10",
+  "dateutils" => "0.6.6",
 }
 
 # Install the python dependencies
