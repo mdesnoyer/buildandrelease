@@ -34,8 +34,8 @@ Chef::Log.info("Connecting to video db at #{video_db_host}")
 # Write the configuration file for the video server 
 template node[:video_server][:config] do
   source "video_server.conf.erb"
-  owner "video_server"
-  group "video_server"
+  owner "videoserver"
+  group "videoserver"
   mode "0644"
   variables({
               :video_server_port => node[:video_server][:port],
