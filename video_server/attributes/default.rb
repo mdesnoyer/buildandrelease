@@ -10,5 +10,5 @@ default[:video_server][:video_db_fallbackhost] = "redis1"
 default[:video_server][:video_db_layer] = "redis"
 
 # Specify the repos to user
-default[:neon][:repos]["video_client"] = true
+default[:neon][:repos]["video_server"] = true
 default[:neon][:repos]["core"] = true
