@@ -38,7 +38,7 @@ template node[:cmsapi][:config] do
   group "cmsapi"
   mode "0644"
   variables({
-              :cmsapi_port => node[:video_server][:port],
+              :cmsapi_port => node[:cmsapi][:port],
               :video_db_host => video_db_host,
               :video_db_port => node[:cmsapi][:video_db_port],
               :log_file => node[:cmsapi][:log_file],
