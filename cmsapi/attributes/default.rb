@@ -1,6 +1,6 @@
 include_attribute "neon::default"
 
-# Parameters for cmsapi
+# Parameters for cmsapi/ supportServices
 default[:cmsapi][:log_dir] = "#{node[:neon][:log_dir]}/cmsapi"
 default[:cmsapi][:config] = "#{node[:neon][:config_dir]}/cmsapi.conf"
 default[:cmsapi][:log_file] = "#{node[:cmsapi][:log_dir]}/cmsapi.log"
