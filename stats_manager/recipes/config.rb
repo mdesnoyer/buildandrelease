@@ -19,6 +19,7 @@ template node[:stats_manager][:config] do
   variables({ 
               :batch_period => node[:stats_manager][:batch_period],
               :cluster_type => node[:stats_manager][:cluster_type],
+              :cluster_ip => node[:stats_manager][:cluster_public_ip],
               :emr_key => node[:stats_manager][:emr_key],
               :log_file => node[:stats_manager][:log_file],
               :carbon_host => node[:neon][:carbon_host],
