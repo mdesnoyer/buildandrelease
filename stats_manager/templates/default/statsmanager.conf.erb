@@ -4,13 +4,14 @@ stats:
     input_path: "s3://neon-tracker-logs-v2/v2.2/*/*/*/*"
     cleaned_output_path: "s3://neon-tracker-logs-v2/cleaned/"
     batch_period: <%= @batch_period %>
+    cluster_ip: <%= @cluster_ip %>
 
   batch_processor:
     schema_bucket: neon-avro-schema
 
   cluster:
     ssh_key: <%= @emr_key %>    
-    cluster_name: "Event Stats Server"
+    cluster_name: "Neon Event Cluster"
 
 utils:
   logs:
