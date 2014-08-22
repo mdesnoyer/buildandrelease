@@ -33,7 +33,7 @@ node[:deploy].each do |app_name, deploy|
     next
   end
 
-  repo_path = get_repo_path("api")
+  repo_path = get_repo_path("supportServices")
   Chef::Log.info("Deploying app #{app_name} using code path #{repo_path}")
 
   # Install the neon code
