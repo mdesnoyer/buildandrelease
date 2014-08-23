@@ -33,12 +33,11 @@ node[:deploy].each do |app_name, deploy|
     next
   end
 
-  repo_path = get_repo_path("supportServices")
+  repo_path = get_repo_path(app_name)
   Chef::Log.info("Deploying app #{app_name} using code path #{repo_path}")
 
   # Install the neon code
   include_recipe "neon::full_py_repo"
-
 
   # Test cmsapi
   app_tested = "#{repo_path}/TEST_DONE"
@@ -55,7 +54,7 @@ node[:deploy].each do |app_name, deploy|
     group "neon"
     code <<-EOH
        . enable_env
-       nosetests --exe api utils supportServices
+       nosetests --exe utils supportServices
     EOH
     not_if {  ::File.exists?(app_tested) }
     notifies :restart, "service[cmsapi]", :delayed
