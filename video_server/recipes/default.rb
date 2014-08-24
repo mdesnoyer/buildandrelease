@@ -96,6 +96,22 @@ node[:deploy].each do |app_name, deploy|
     supports :status => true, :restart => true, :start => true, :stop => true
     action [:enable, :start]
   end
+
+  # create video request script
+  template '/etc/init.d/create_video_requests' do
+    source 'create_requests.erb'
+    mode '0755'
+  end
+
+  #CRON to create video requests
+  cron "createvideorequests" do
+    action :create
+    user "videoserver"
+    hour "*"
+    day "*"
+    minute "5"
+    command "/etc/init.d/create_video_requests"
+  end
 end
 
 

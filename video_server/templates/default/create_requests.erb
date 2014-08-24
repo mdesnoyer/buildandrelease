@@ -1,0 +1,7 @@
+#!/bin/bash
+#description "Create requests for Neon Video Server"
+
+cd <%= @neon_root_dir %>
+VIRTUAL_ENV=<%= @neon_root_dir %>/.pyenv
+PATH="${VIRTUAL_ENV}/bin:$PATH"
+${VIRTUAL_ENV}/bin/python <%= @neon_root_dir %>/api/create_brightcove_requests.py -c <%= @config_file%>
