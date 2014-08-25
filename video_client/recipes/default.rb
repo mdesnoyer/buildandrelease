@@ -12,13 +12,6 @@ user "video_client" do
   shell "/bin/false"
 end
 
-# own the home directory
-directory "/home/video_client" do
-  user "video_client"
-  group "neon"
-  mode "1755"
-end
-  
 include_recipe "video_client::config"
 
 # Configure model data

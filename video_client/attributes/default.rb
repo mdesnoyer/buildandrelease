@@ -8,7 +8,7 @@ default[:video_client][:gitannex_pkg_link] = "https://neon-dependencies.s3.amazo
 default[:video_client][:gitannex_key] = "s3://neon-test/git-annex.pem"
 default[:video_client][:model_data_host] = "184.169.132.151"
 default[:video_client][:model_data_loc] = "#{node[:video_client][:model_data_host]}:/backup/repos/model_data.git" 
-
+default[:video_client][:model_file] = "model_data/20130924.model"
 
 # Specify the repos to user
 default[:neon][:repos]["video_client"] = true
