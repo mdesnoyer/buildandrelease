@@ -1,5 +1,11 @@
 # Install Git Annex & setup model data
 
+directory "/home/video_client/.ssh" do  
+  user "video_client"
+  group "neon"
+  mode "0700"
+end
+
 s3_file "/home/video_client/.ssh/git-annex.pem" do
   source node[:video_client][:gitannex_key]
   owner "video_client"
