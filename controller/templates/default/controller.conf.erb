@@ -6,7 +6,13 @@ api:
     max_write_connections: 1
     max_read_connections: 50
     max_retries: 5
- 
+
+controllers:
+  brightcove_controller:
+    port: <%= @controller_port %>
+    service_url: http://<%= @cmsapi_host %>:<%= @cmsapi_port %>/
+    mastermind_url: http://<%= @mastermind_host %>:<%= @mastermind_port %>/get_directives
+    
 supportServices:
   neondata:
     accountDB: <%= @video_db_host %>

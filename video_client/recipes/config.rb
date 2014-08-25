@@ -22,7 +22,7 @@ template node[:video_client][:config] do
   group "video_client"
   mode "0644"
   variables({
-              :model_file=> "#{repo_path}/node[:video_client][:model_file]", 
+              :model_file=> "#{repo_path}/#{node[:video_client][:model_file]}", 
               :log_file => node[:video_client][:log_file],
               :carbon_host => node[:neon][:carbon_host],
               :carbon_port => node[:neon][:carbon_port],
