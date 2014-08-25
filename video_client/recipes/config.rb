@@ -16,8 +16,8 @@ end
 # Write the configuration file for the video client 
 template node[:video_client][:config] do
   source "video_client.conf.erb"
-  owner "videoclient"
-  group "videoclient"
+  owner "video_client"
+  group "video_client"
   mode "0644"
   variables({
               :log_file => node[:video_client][:log_file],
