@@ -30,10 +30,9 @@ template "/root/.ssh/config" do
   })
 end
  
-repo_path = get_repo_path("video_client")
 bash 'root' do
   user "root" 
-  cwd "#{repo_path}"
+  cwd "#{[:neon][:home]}"
   code <<-EOH
   git clone git@#{node[:video_client][:model_data_loc]} model_data
   cd model_data

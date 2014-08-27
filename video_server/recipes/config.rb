@@ -31,6 +31,7 @@ else
 end
 Chef::Log.info("Connecting to video db at #{video_db_host}")
 
+repo_path = get_repo_path("video_client")
 # Write the configuration file for the video server 
 template node[:video_server][:config] do
   source "video_server.conf.erb"
@@ -38,7 +39,7 @@ template node[:video_server][:config] do
   group "videoserver"
   mode "0644"
   variables({
-              :neon_root_dir => get_repo_path("video_server"), 
+              :neon_root_dir => repo_path 
               :video_server_port => node[:video_server][:port],
               :video_db_host => video_db_host,
               :video_db_port => node[:video_server][:video_db_port],
