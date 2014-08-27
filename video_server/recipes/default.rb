@@ -104,7 +104,7 @@ node[:deploy].each do |app_name, deploy|
     variables({
                 :neon_root_dir => "#{repo_path}",
                 :config_file => node[:video_server][:config]
-             )}
+             })
   end
 
   #CRON to create video requests
