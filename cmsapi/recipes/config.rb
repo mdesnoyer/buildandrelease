@@ -31,13 +31,14 @@ else
 end
 Chef::Log.info("Connecting to video db at #{video_db_host}")
 
-# Write the configuration file for the video server 
+# Write the configuration file for CMS API 
 template node[:cmsapi][:config] do
   source "cmsapi.conf.erb"
   owner "cmsapi"
   group "cmsapi"
   mode "0644"
   variables({
+              :video_server_port => node[:cmsapi][:video_server_port],
               :cmsapi_port => node[:cmsapi][:port],
               :video_db_host => video_db_host,
               :video_db_port => node[:cmsapi][:video_db_port],

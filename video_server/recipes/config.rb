@@ -38,6 +38,7 @@ template node[:video_server][:config] do
   group "videoserver"
   mode "0644"
   variables({
+              :neon_root_dir => get_repo_path("video_server"), 
               :video_server_port => node[:video_server][:port],
               :video_db_host => video_db_host,
               :video_db_port => node[:video_server][:video_db_port],

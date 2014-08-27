@@ -101,15 +101,17 @@ node[:deploy].each do |app_name, deploy|
   template '/etc/init.d/create_video_requests' do
     source 'create_requests.erb'
     mode '0755'
+    variables({
+                :neon_root_dir => "#{repo_path}",
+                :config_file => node[:video_server][:config]
+             )}
   end
 
   #CRON to create video requests
   cron "createvideorequests" do
     action :create
     user "videoserver"
-    hour "*"
-    day "*"
-    minute "5"
+    minute "*/5"
     command "/etc/init.d/create_video_requests"
   end
 end
