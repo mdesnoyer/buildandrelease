@@ -3,7 +3,7 @@ api:
     local: 0
     model_file: <%= @model_file %>
     sync: 0
-    server_url: <%= @video_server_url %>
+    video_server: http://<%= @video_server_host %>:<%= @video_server_port %>
 
   server:
     port: 8081

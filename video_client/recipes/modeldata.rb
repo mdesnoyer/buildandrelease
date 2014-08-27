@@ -32,7 +32,7 @@ end
  
 bash 'root' do
   user "root" 
-  cwd "#{[:neon][:home]}"
+  cwd "#{node[:neon][:home]}"
   code <<-EOH
   git clone git@#{node[:video_client][:model_data_loc]} model_data
   cd model_data
