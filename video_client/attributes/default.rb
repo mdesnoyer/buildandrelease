@@ -13,7 +13,7 @@ default[:video_client][:video_db_fallbackhost] = "redis1"
 default[:video_client][:video_db_layer] = "redis"
 default[:video_client][:video_server_fallbackhost] = "video-server1"
 default[:video_client][:video_server_layer] = "video_server"
-default[:video_client][:video_server_port] = 6379
+default[:video_client][:video_server_port] = 8081 
 
 # Specify the repos to user
 default[:neon][:repos]["video_client"] = true
