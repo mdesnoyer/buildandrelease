@@ -98,6 +98,7 @@ node[:deploy].each do |app_name, deploy|
     provider Chef::Provider::Service::Upstart
     supports :status => true, :restart => true, :start => true, :stop => true
     action [:enable, :start]
+    subscribes :restart, "git[#{repo_path}]", :delayed
   end
 end
 
