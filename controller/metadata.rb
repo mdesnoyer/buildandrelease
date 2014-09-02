@@ -1,7 +1,7 @@
 name             'Controller'
 maintainer       'Neon'
 maintainer_email 'ops@neon-lab.com'
-description      'video processing server'
+description      'AB Controller'
 license          'Proprietary - All Rights Reserved'
 version          '0.9.0'
 

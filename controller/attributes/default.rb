@@ -1,6 +1,6 @@
 include_attribute "neon::default"
 
-# Parameters for controller/ supportServices
+# Parameters for controller
 default[:controller][:log_dir] = "#{node[:neon][:log_dir]}/controller"
 default[:controller][:config] = "#{node[:neon][:config_dir]}/controller.conf"
 default[:controller][:log_file] = "#{node[:controller][:log_dir]}/controller.log"
