@@ -1,9 +1,13 @@
-stats_host: <%= @stats_host %>
+stats_cluster_type: <%= @stats_cluster_type %>
 stats_db_polling_delay: <%= @stats_polling_delay %>
 video_db_polling_delay: <%= @video_polling_delay %>
 s3_bucket: <%= @directive_bucket %>
 directive_filename: <%= @directive_filename %>
 publishing_period: <%= @publishing_period %>
+
+stats:
+  cluster:
+    cluster_name: <%= @stats_cluster_name %>
 
 supportServices:
   neondata:
