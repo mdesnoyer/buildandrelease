@@ -16,5 +16,5 @@ default[:bc_controller][:cmsapi_layer] = "cmsapi"
 default[:bc_controller][:cmsapi_port] = 8083 
 
 # Specify the repos to user
-default[:neon][:repos]["bc_controller"] = true
+default[:neon][:repos]["brightcove_controller"] = true
 default[:neon][:repos]["core"] = true
