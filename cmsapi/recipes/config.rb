@@ -65,3 +65,21 @@ template node[:cmsapi][:config] do
               :flume_log_port => node[:neon_logs][:json_http_source_port],
             })
 end
+
+cmsapi = File.exists?("/etc/init/cmsapi.conf")
+include_recipe "neon-nginx::commons_dir"
+
+# Write the configuration for nginx
+template "#{node[:nginx][:dir]}/conf.d/cmsapi.conf" do
+  source "cmsapi_nginx.conf.erb"
+  owner node['nginx']['user']
+  group node['nginx']['group']
+  mode "0644"
+  variables({
+              :service_port => node[:cmsapi][:port], 
+              :frontend_port => 80 
+            })
+  if cmsapi_exists
+    notifies :reload, 'service[nginx]', :delayed
+  end
+end
