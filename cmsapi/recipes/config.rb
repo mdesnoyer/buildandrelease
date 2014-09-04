@@ -67,6 +67,20 @@ template node[:cmsapi][:config] do
 end
 
 cmsapi_exists = File.exists?("/etc/init/cmsapi.conf")
+
+if cmsapi_exists then
+  # Specify the service for chef so that they can be restarted.
+  service "cmsapi" do
+    provider Chef::Provider::Service::Upstart
+    supports :status => true, :restart => true, :start => true, :stop => true
+    action :nothing
+  end
+
+  service "nginx" do
+    action :nothing
+  end
+end
+
 include_recipe "neon-nginx::commons_dir"
 
 # Write the configuration for nginx
