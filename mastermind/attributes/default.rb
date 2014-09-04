@@ -4,7 +4,8 @@ include_attribute "neon::default"
 default[:mastermind][:log_dir] = "#{node[:neon][:log_dir]}/mastermind"
 default[:mastermind][:config] = "#{node[:neon][:config_dir]}/mastermind.conf"
 default[:mastermind][:log_file] = "#{node[:mastermind][:log_dir]}/mastermind.log"
-default[:mastermind][:stats_host] = "54.210.126.245"
+default[:mastermind][:stats_cluster_type] = "video_click_stats"
+default[:mastermind][:stats_cluster_name] = "Neon Events Cluster"
 default[:mastermind][:stats_polling_delay] = 247
 default[:mastermind][:video_polling_delay] = 261
 default[:mastermind][:video_db_port] = 6379

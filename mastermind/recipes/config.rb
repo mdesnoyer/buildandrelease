@@ -38,7 +38,8 @@ template node[:mastermind][:config] do
   group "mastermind"
   mode "0644"
   variables({
-              :stats_host => node[:mastermind][:stats_host],
+              :stats_cluster_type => node[:mastermind][:stats_cluster_type],
+              :stats_cluster_name => node[:mastermind][:stats_cluster_name],
               :stats_polling_delay => node[:mastermind][:stats_polling_delay],
               :video_polling_delay => node[:mastermind][:video_polling_delay],
               :directive_bucket => node[:mastermind][:directive_bucket],
