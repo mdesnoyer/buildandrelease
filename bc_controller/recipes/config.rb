@@ -80,7 +80,7 @@ template node[:bc_controller][:config] do
               :mastermind_host => mastermind_host,
               :mastermind_port => node[:bc_controller][:mastermind_port],
               :cmsapi_host => cmsapi_host, 
-              :cmsapi_host => node[:bc_controller][:cmsapi_port], 
+              :cmsapi_port => node[:bc_controller][:cmsapi_port], 
               :log_file => node[:bc_controller][:log_file],
               :carbon_host => node[:neon][:carbon_host],
               :carbon_port => node[:neon][:carbon_port],

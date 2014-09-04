@@ -14,8 +14,6 @@ end
 
 include_recipe "bc_controller::config"
 
-# Install the python dependencies
-
 # Make directories 
 directory node[:bc_controller][:log_dir] do
   user "neon"
@@ -29,7 +27,9 @@ file node[:bc_controller][:log_file] do
 end
 
 node[:deploy].each do |app_name, deploy|
-  if app_name != "bc_controller" then
+  Chef::Log.info("Start Deploying app #{app_name}") 
+
+  if app_name != "brightcove_controller" then
     next
   end
 
@@ -38,7 +38,6 @@ node[:deploy].each do |app_name, deploy|
 
   # Install the neon code
   include_recipe "neon::full_py_repo"
-
 
   # Test bc_controller
   app_tested = "#{repo_path}/TEST_DONE"
