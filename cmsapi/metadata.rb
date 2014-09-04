@@ -9,5 +9,6 @@ depends 'apt'
 depends 'neon'
 depends 'neon_logs'
 depends 'python', "= 1.4.6"
+depends 'neon-nginx', "= 2.7.4"
 
 supports 'ubuntu'
