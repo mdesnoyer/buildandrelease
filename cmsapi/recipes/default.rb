@@ -60,6 +60,27 @@ node[:deploy].each do |app_name, deploy|
     notifies :restart, "service[cmsapi]", :delayed
     notifies :create, "file[#{app_tested}]"
   end
+  
+  # Install nginx
+  include_recipe "neon-nginx::default"
+
+  template "/etc/init/nginx-email.conf" do
+    source "mail-on-restart.conf.erb"
+    cookbook "neon"
+    owner "root"
+    group "root"
+    mode "0644"
+    variables({
+                :service => "nginx",
+                :host => node[:hostname],
+                :email => node[:neon][:ops_email],
+                :log_file => "#{node[:nginx][:log_dir]}/error.log"
+              })
+  end
+  
+  service "nginx" do
+    action [:enable, :start]
+  end
 
   # Write the daemon service wrapper
   template "/etc/init/cmsapi.conf" do
