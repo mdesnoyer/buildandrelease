@@ -66,7 +66,7 @@ template node[:cmsapi][:config] do
             })
 end
 
-cmsapi = File.exists?("/etc/init/cmsapi.conf")
+cmsapi_exists = File.exists?("/etc/init/cmsapi.conf")
 include_recipe "neon-nginx::commons_dir"
 
 # Write the configuration for nginx
