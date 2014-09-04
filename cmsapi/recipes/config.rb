@@ -31,6 +31,22 @@ else
 end
 Chef::Log.info("Connecting to video db at #{video_db_host}")
 
+# Find the video server 
+Chef::Log.info "Looking for the video server in layer: #{node[:cmsapi][:video_server_layer]}"
+video_server_host = nil
+video_server_layer = node[:opsworks][:layers][node[:cmsapi][:video_server_layer]]
+if video_server_layer.nil?
+  video_server_host = node[:cmsapi][:video_server_fallbackhost]
+else
+  video_server_layer[:instances].each do |name, instance|
+    if (instance[:availability_zone] == 
+        node[:opsworks][:instance][:availability_zone] or 
+        video_server_host.nil?) then
+      video_server_host = instance[:private_ip]
+    end
+  end
+end
+
 # Write the configuration file for CMS API 
 template node[:cmsapi][:config] do
   source "cmsapi.conf.erb"
@@ -39,6 +55,7 @@ template node[:cmsapi][:config] do
   mode "0644"
   variables({
               :video_server_port => node[:cmsapi][:video_server_port],
+              :video_server_host => video_server_host, 
               :cmsapi_port => node[:cmsapi][:port],
               :video_db_host => video_db_host,
               :video_db_port => node[:cmsapi][:video_db_port],
