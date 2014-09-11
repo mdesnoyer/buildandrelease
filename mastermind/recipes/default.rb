@@ -49,7 +49,6 @@ node[:deploy].each do |app_name, deploy|
     subscribes :delete, "bash[compile_mastermind]", :immediately
   end
   bash "test_mastermind" do
-    action :nothing
     cwd repo_path
     user "neon"
     group "neon"

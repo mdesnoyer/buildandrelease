@@ -101,7 +101,7 @@ else
 end
     
 
-# Install all the python dependencies
+# Get the list of apps to install
 apps = ['core']
 if not node[:deploy].nil? then
   node[:deploy].each do |app, data|
