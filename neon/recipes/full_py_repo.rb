@@ -101,7 +101,7 @@ else
 end
     
 
-# Install all the python dependencies
+# Get the list of apps to install
 apps = ['core']
 if not node[:deploy].nil? then
   node[:deploy].each do |app, data|
@@ -131,7 +131,7 @@ apps.each do |app, data|
     group "neon"
     code <<-EOH
        . enable_env
-       make clean && make
+       make clean && make release
     EOH
     not_if {  ::File.exists?(app_built) }
     notifies :create, "file[#{app_built}]"
