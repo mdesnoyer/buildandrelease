@@ -104,7 +104,9 @@ node[:deploy].each do |app_name, deploy|
     mode '0755'
     variables({
                 :neon_root_dir => "#{repo_path}",
+                :cron_user => "neon",
                 :config_file => node[:video_server][:config]
+
              })
   end
 
