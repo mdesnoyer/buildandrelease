@@ -113,7 +113,7 @@ node[:deploy].each do |app_name, deploy|
   #CRON to create video requests
   cron "createvideorequests" do
     action :create
-    user "neon"
+    user "root"
     minute "*/5"
     command "/etc/init.d/create_video_requests"
   end
