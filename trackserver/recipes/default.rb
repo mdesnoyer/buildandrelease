@@ -33,6 +33,7 @@ pydeps = {
   "avro" => "1.7.6",
   "thrift" => "0.9.1",
   "psutil" => "1.2.1",
+  "winpdb" => "1.4.8"
 }
 
 pydeps.each do |package, vers|
