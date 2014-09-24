@@ -131,7 +131,7 @@ apps.each do |app, data|
     group "neon"
     code <<-EOH
        . enable_env
-       make clean && make release
+       make clean BUILD_TYPE=Release && make release
     EOH
     not_if {  ::File.exists?(app_built) }
     notifies :create, "file[#{app_built}]"
