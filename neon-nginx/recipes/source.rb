@@ -62,7 +62,9 @@ remote_file nginx_url do
   backup   false
 end
 
-node.run_state['nginx_force_recompile'] = false
+# Force recompile for now, try setting this in the recipe only if source 
+# has changed
+node.run_state['nginx_force_recompile'] = true 
 node.run_state['nginx_configure_flags'] =
   node['nginx']['source']['default_configure_flags'] | node['nginx']['configure_flags']
 
