@@ -130,6 +130,15 @@ node[:deploy].each do |app_name, deploy|
     supports :status => true, :restart => true, :start => true, :stop => true
     action [:enable, :start]
   end
+
+  cron "restart_flume" do
+    action :create
+    hour '5'
+    minute '13'
+    command "/sbin/restart flume-ng-agent"
+    user "root"
+    mailto "ops@neon-lab.com"
+  end
 end
 
 
