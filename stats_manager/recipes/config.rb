@@ -25,6 +25,7 @@ template node[:stats_manager][:config] do
               :carbon_host => node[:neon][:carbon_host],
               :carbon_port => node[:neon][:carbon_port],
               :flume_log_port => node[:neon_logs][:json_http_source_port],
+              :max_task_instances => node[:stats_manager][:max_task_instances],
             })
 end
 

@@ -7,10 +7,9 @@ stop on runlevel [0156]
 kill timeout 600
 limit nofile 65536 65536
 
-setuid <%= @flume_user %>
-setgid <%= @flume_group %>
+pre-start script
+    [ -d /var/run/flume-ng/flume-ng-agent ] || mkdir -p /var/run/flume-ng/flume-ng-agent 
+end script
 
-chdir <%= @flume_run_dir %>
-
-exec <%= @flume_bin %> agent --conf <%= @flume_conf_dir %> --conf-file <%= @flume_conf_dir %>/flume.conf --name agent
+exec cd <%= @flume_run_dir %> && sudo -u <%= @flume_user %> <%= @flume_bin %> agent --conf <%= @flume_conf_dir %> --conf-file <%= @flume_conf_dir %>/flume.conf --name agent
 respawn
