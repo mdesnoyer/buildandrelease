@@ -17,3 +17,4 @@ default[:stats_manager][:log_file] = "#{node[:stats_manager][:log_dir]}/statsman
 default[:stats_manager][:batch_period] = 10800 # 3h for now
 default[:stats_manager][:cluster_type] = "video_click_stats"
 default[:stats_manager][:cluster_public_ip] = "54.210.126.245"
+default[:stats_manager][:max_task_instances] = 10
