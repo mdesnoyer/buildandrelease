@@ -9,7 +9,12 @@ limit nofile 65536 65536
 
 pre-start script
     [ -d /var/run/flume-ng/flume-ng-agent ] || mkdir -p /var/run/flume-ng/flume-ng-agent 
+    chown -R <%= @flume_user %>:<%= @flume_user %> /var/run/flume-ng/    
+    chdir /var/run/flume-ng/flume-ng-agent
 end script
 
-exec cd <%= @flume_run_dir %> && sudo -u <%= @flume_user %> <%= @flume_bin %> agent --conf <%= @flume_conf_dir %> --conf-file <%= @flume_conf_dir %>/flume.conf --name agent
+script
+    cd /var/run/flume-ng/flume-ng-agent
+    exec sudo -u <%= @flume_user %> <%= @flume_bin %> agent --conf <%= @flume_conf_dir %> --conf-file <%= @flume_conf_dir %>/flume.conf --name agent
+end script
 respawn
