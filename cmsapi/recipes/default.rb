@@ -48,7 +48,6 @@ node[:deploy].each do |app_name, deploy|
     subscribes :delete, "bash[compile_cmsapi]", :immediately
   end
   bash "test_cmsapi" do
-    action :nothing
     cwd repo_path
     user "neon"
     group "neon"

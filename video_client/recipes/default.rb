@@ -52,13 +52,13 @@ node[:deploy].each do |app_name, deploy|
     subscribes :delete, "bash[compile_video_client]", :immediately
   end
   bash "test_video_client" do
-    action :nothing
     cwd repo_path
     user "neon"
     group "neon"
     code <<-EOH
        . enable_env
-       nosetests --exe api utils supportServices
+       nosetests --exe api utils supportServices model
+       model/bin/TextDetectionTest
     EOH
     not_if {  ::File.exists?(app_tested) }
     notifies :restart, "service[video_client]", :delayed
