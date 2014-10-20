@@ -14,9 +14,6 @@ end
 
 include_recipe "video_client::config"
 
-# Configure model data
-include_recipe "video_client::modeldata"
-
 # Install the python dependencies
 
 # Make directories 
@@ -37,11 +34,14 @@ node[:deploy].each do |app_name, deploy|
   end
 
   repo_path = get_repo_path("video_client")
+
   Chef::Log.info("Deploying app #{app_name} using code path #{repo_path}")
+  
+  # Configure model data
+  include_recipe "video_client::modeldata"
 
   # Install the neon code
   include_recipe "neon::full_py_repo"
-
 
   # Test video_client
   app_tested = "#{repo_path}/TEST_DONE"
