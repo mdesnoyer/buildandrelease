@@ -48,7 +48,6 @@ node[:deploy].each do |app_name, deploy|
     subscribes :delete, "bash[compile_bc_controller]", :immediately
   end
   bash "test_bc_controller" do
-    action :nothing
     cwd repo_path
     user "neon"
     group "neon"
