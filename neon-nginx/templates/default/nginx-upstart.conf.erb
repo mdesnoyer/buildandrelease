@@ -9,6 +9,9 @@ env DAEMON=<%= node['nginx']['binary'] %>
 env PID=<%= node['nginx']['pid'] %>
 env CONFIG=<%= node['nginx']['source']['conf_path'] %>
 
+# enable core dumps for now
+limit core unlimited unlimited
+
 respawn
 <% if node['nginx']['upstart']['respawn_limit'] %>
 respawn limit <%= node['nginx']['upstart']['respawn_limit'] %>
