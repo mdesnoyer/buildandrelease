@@ -7,6 +7,8 @@ daemon off;
 worker_rlimit_nofile <%= node['nginx']['worker_rlimit_nofile'] %>;
 <% end -%>
 
+worker_rlimit_core  1000M;
+
 error_log  <%= node['nginx']['log_dir'] %>/error.log<% if node['nginx']['error_log_options'] %> <%= node['nginx']['error_log_options'] %><% end %>;
 pid        <%= node['nginx']['pid'] %>;
 
