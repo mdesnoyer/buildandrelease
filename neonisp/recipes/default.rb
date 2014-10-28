@@ -80,7 +80,7 @@ node[:deploy].each do |app_name, deploy|
                 :neon_root_dir => "#{repo_path}",
                 :user => "neon",
                 :group => "neon",
-                :isp_port => "#{node[:nginx][:port]}"
+                :isp_port => "#{node[:neonisp][:port]}"
               })
   end
   

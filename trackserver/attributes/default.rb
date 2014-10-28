@@ -35,6 +35,7 @@ force_default[:nginx][:realip][:real_ip_recursive] = "on"
 
 # Put the image serving platform as a sub app of the trackserver
 default[:neonisp][:port] = 8089
+default[:neonisp][:app_name] = "track_server" 
 
 # Parameters for the clicklog_collector
 default[:trackserver][:collector][:s3_path] = "s3n://neon-tracker-logs-v2/v%{track_vers}/%{tai}/%Y/%m/%d"
