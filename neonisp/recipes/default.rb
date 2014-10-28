@@ -16,6 +16,7 @@ directory node[:nginx][:default_root] do
   user "#{node[:nginx][:user]}"
   group "neon"
   mode "1755"
+  recursive true
 end
   
 file node[:neonisp][:mastermind_download_filepath] do
