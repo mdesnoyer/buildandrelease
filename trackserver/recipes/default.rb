@@ -131,10 +131,12 @@ node[:deploy].each do |app_name, deploy|
     action [:enable, :start]
   end
 
+  rng = Random.new
+
   cron "restart_flume" do
     action :create
     hour '5'
-    minute '13'
+    minute rng.rand(3...57).to_s
     command "/sbin/restart flume-ng-agent"
     user "root"
     mailto "ops@neon-lab.com"

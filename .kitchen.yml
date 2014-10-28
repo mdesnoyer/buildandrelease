@@ -56,13 +56,6 @@ suites:
             scm_type : "git"
             repository : "git@github.com:neon-lab/neon-codebase.git"
             revision : "working"
-
-        "image_serving_platform" :
-          document_root : "neonisp"
-          scm :
-            scm_type : "git"
-            repository : "git@github.com:neon-lab/neon-codebase.git"
-            revision : "working"
       opsworks :
         activity : "setup"
 
