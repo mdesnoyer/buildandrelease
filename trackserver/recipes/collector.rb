@@ -13,8 +13,8 @@ node.default[:neon_logs][:flume_streams][:clicklog_collector] = \
 
 node.default[:neon_logs][:flume_streams][:clicklog_hbase] = \
   get_hbasesink_config(node[:neon_logs][:collector_port],
-                          "hdfs://:8020/hbase", # may not required ?  
                           "hbasesink",
+                          "hdfs://:8020/hbase", # may not required ?  
                           1,
                           "THUMBNAIL_TIMESTAMP_EVENTS",
                           "THUMBNAIL_EVENTS_TYPES",
