@@ -236,6 +236,40 @@ class Chef
         }
       }
     end
+    
+    # HBase config
+    def get_hbasesink_config(listen_port=nil,
+                                log_type="hbasesink",
+                                hdfs_path=nil,
+                                flush_batch_size=nil,
+                                table_name=nil,
+                                c_family=nil,
+                                columns=nil,
+                                serializer=nil)
+      
+      #TODO: give default values  
+
+      namespace = "lc_#{log_type}"
+      return {
+        :sources => ["#{namespace}_s"],
+        :channels => ["#{namespace}_c"],
+        :sinks => ["#{namespace}_k"],
+        :sinkgroups => [],
+        :template => 'hbase_sink.conf.erb',
+        :variables => {
+          :s => "#{namespace}_s",
+          :c => "#{namespace}_c",
+          :k => "#{namespace}_k",
+          :collector_port => listen_port,
+          :collector_host => node[:opsworks][:instance][:private_ip],
+          :batch_size => flush_batch_size,
+          :table => table_name,
+          :cf => c_family,
+          :columns => columns,
+          :serializer => serializer,
+        }
+      }
+    end
 
     # Returns a hash of collector ips based on the OpsWorks config.
     # The hash has two lists one [:primary] lists the ips in the

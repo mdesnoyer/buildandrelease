@@ -41,6 +41,10 @@ default[:neonisp][:app_name] = "track_server"
 default[:trackserver][:collector][:s3_path] = "s3n://neon-tracker-logs-v2/v%{track_vers}/%{tai}/%Y/%m/%d"
 default[:trackserver][:collector][:channel_dir] = "/mnt/neon/channels/clicklog"
 
+# Hbase sink configurations
+default[:flume][:master][:external_zookeeper] = false
+default[:flume][:master][:zookeeper_port]     = 2181
+
 # Parameters for siege
 default[:trackserver][:siege][:trackserver_host] = nil
 

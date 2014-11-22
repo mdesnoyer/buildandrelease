@@ -1,0 +1,10 @@
+agent.channels.<%= @c %>.type = memory
+
+# The sink goes to Hbase
+agent.sinks.<%= @k %>.type = org.apache.flume.sink.hbase.AsyncHBaseSink 
+agent.sinks.<%= @k %>.channel = <%= @c %>
+agent.sinks.<%= @k %>.batchSize = <%= @batch_size %>
+agent.sinks.<%= @k %>.table = <%= @table %>
+agent.sinks.<%= @k %>.columnFamily = <%= @cf %>
+agent.sinks.<%= @k %>.columns = <%= @columns %>
+agent.sinks.<%= @k %>.serializer = <%= @serializer %>
