@@ -240,7 +240,7 @@ class Chef
     # HBase config
     def get_hbasesink_config(listen_port=nil,
                                 log_type="hbasesink",
-                                hdfs_path=nil,
+                                channel=nil,
                                 flush_batch_size=nil,
                                 table_name=nil,
                                 c_family=nil,
@@ -260,6 +260,7 @@ class Chef
           :s => "#{namespace}_s",
           :c => "#{namespace}_c",
           :k => "#{namespace}_k",
+          :sink_channel => channel,
           :collector_port => listen_port,
           :collector_host => node[:opsworks][:instance][:private_ip],
           :batch_size => flush_batch_size,

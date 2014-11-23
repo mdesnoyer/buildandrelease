@@ -42,8 +42,14 @@ default[:trackserver][:collector][:s3_path] = "s3n://neon-tracker-logs-v2/v%{tra
 default[:trackserver][:collector][:channel_dir] = "/mnt/neon/channels/clicklog"
 
 # Hbase sink configurations
+default[:trackserver][:hbase_layer] = "hbase"
 default[:flume][:master][:external_zookeeper] = false
 default[:flume][:master][:zookeeper_port]     = 2181
+default[:hbase][:hbase_site]['hbase.rootdir'] = "hdfs://hbase1:8020"
+default[:hbase][:hbase_site]['hbase.zookeeper.quorum'] = "hbase1"
+default[:hbase][:hbase_site]['hbase.cluster.distributed'] = true 
+default[:hbase][:hbase_site]['zookeeper.znode.parent'] = "/tmp/hbase" 
+
 
 # Parameters for siege
 default[:trackserver][:siege][:trackserver_host] = nil
