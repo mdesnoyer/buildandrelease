@@ -26,7 +26,26 @@ node.default[:neon_logs][:flume_streams][:clicklog_hbase] = \
                           'com.neon.flume.NeonSerializer')
 
 if node[:opsworks][:activity] == "config" then
-  include_recipe "neon_logs::flume_core_config"
+    include_recipe "neon_logs::flume_core_config"
+    
+    # Setup Hbase xml config
+    Chef::Log.info "Looking for HBase in layer: #{node[:trackserver][:collector][:hbase_layer]}"
+    hbase_server = nil
+    hbase_layer = node[:opsworks][:layers][[:trackserver][:collector][:hbase_layer]]
+    if hbase_layer.nil?
+      Chef::Log.warn "No Hbase in the layer"
+    else
+      hbase_layer[:instances].each do |name, instance|
+        if (instance[:availability_zone] == 
+            node[:opsworks][:instance][:availability_zone] or 
+            hbase_server.nil?) then
+          hbase_server = instance[:private_ip]
+          node[:hbase][:hbase_site]['hbase.rootdir'] = "hdfs://#{hbase_server}:8020"
+          node[:hbase][:hbase_site]['hbase.zookeeper.quorum'] = "#{hbase_server}"
+        end
+      end
+    end
+
 else
   include_recipe "neon_logs::flume_core"
   # install hbase 
@@ -37,4 +56,3 @@ else
 
   # include a deploy stage, check for app   
 end
-  
