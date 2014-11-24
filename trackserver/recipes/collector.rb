@@ -12,7 +12,9 @@ node.default[:neon_logs][:flume_streams][:clicklog_collector] = \
                           'org.apache.flume.sink.hdfs.AvroEventSerializer$Builder')
 
 
-# Add the right collector channel
+# NOTE: Add the right collector channel to the hbase sink, currently 
+# it is set as lc_clicklog_c channel, if you modify the namspace, please update
+# the channel name below
 node.default[:neon_logs][:flume_streams][:clicklog_hbase] = \
   get_hbasesink_config(node[:neon_logs][:collector_port],
                           "hbasesink",
@@ -28,9 +30,11 @@ if node[:opsworks][:activity] == "config" then
 else
   include_recipe "neon_logs::flume_core"
   # install hbase 
-  include recipe "hadoop::hbase"
+  include_recipe "hadoop::hbase"
 
   # install maven
+  include_recipe "maven::default"
+
   # include a deploy stage, check for app   
 end
   
