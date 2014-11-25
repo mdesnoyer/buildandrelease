@@ -5,7 +5,7 @@ node.default[:neon_logs][:flume_streams][:clicklog_hbase] = \
                           10800, # 3 hours
                           1000, # flush size
                           "bzip2",
-                          'org.apache.flume.sink.hdfs.AvroEventSerializer$Builder')
+                          'org.apache.flume.sink.hdfs.AvroEventSerializer$Builder',
                           1,
                           "THUMBNAIL_TIMESTAMP_EVENTS",
                           "THUMBNAIL_EVENTS_TYPES",
