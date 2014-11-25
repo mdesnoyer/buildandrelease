@@ -237,37 +237,60 @@ class Chef
       }
     end
     
-    # HBase config
-    def get_hbasesink_config(listen_port=nil,
-                                log_type="hbasesink",
-                                channel=nil,
-                                flush_batch_size=nil,
-                                table_name=nil,
-                                c_family=nil,
-                                columns=nil,
-                                serializer=nil)
+    # Flume config necessary to setup log collector  with HBase
+    # It has a single source, 2 channels, 2 sinks
+    def get_collector_with_hbasesink_config(listen_port=nil,
+                                log_type=nil,
+                                max_log_size=nil,
+                                max_log_rolltime=nil,
+                                s3_flush_batch_size=nil,
+                                compression=nil,
+                                s3_output_serializer=nil,
+                                hbase_flush_batch_size=nil,
+                                hbase_table_name=nil,
+                                hbase_c_family=nil,
+                                hbase_columns=nil,
+                                hbase_serializer=nil)
       
-      #TODO: give default values  
+      listen_port = listen_port || node[:neon_logs][:collector_port]
+      s3_log_path = s3_log_path || node[:neon_logs][:s3_log_path]
+      max_log_size = max_log_size || node[:neon_logs][:max_log_size]
+      max_log_rolltime = max_log_rolltime || node[:neon_logs][:max_log_rolltime]
+      s3_flush_batch_size = s3_flush_batch_size || node[:neon_logs][:s3_flush_batch_size]
+      compression = compression || node[:neon_logs][:s3_log_compression]
+      s3_output_serializer = s3_output_serializer || node[:neon_logs][:s3_output_serializer]
+      log_type = log_type || node[:neon_logs][:log_type]
 
-      namespace = "lc_#{log_type}"
+      collector_namespace = "lc_#{log_type}" 
+      hbase_namespace = "lc_hbasesink" 
+      
       return {
-        :sources => ["#{namespace}_s"],
-        :channels => ["#{namespace}_c"],
-        :sinks => ["#{namespace}_k"],
+        :sources => ["#{collector_namespace}_s"],
+        :channels => ["#{collector_namespace}_c", "#{hbase_namespace}_c"],
+        :sinks => ["#{collector_namespace}_k", "#{hbase_namespace}_k"],
         :sinkgroups => [],
         :template => 'hbase_sink.conf.erb',
         :variables => {
-          :s => "#{namespace}_s",
-          :c => "#{namespace}_c",
-          :k => "#{namespace}_k",
-          :sink_channel => channel,
+          :cs => "#{collector_namespace}_s",
+          :cc => "#{collector_namespace}_c",
+          :ck => "#{collector_namespace}_k",
+          :hs => "#{hbase_namespace}_s",
+          :hc => "#{hbase_namespace}_c",
+          :hk => "#{hbase_namespace}_k",
           :collector_port => listen_port,
           :collector_host => node[:opsworks][:instance][:private_ip],
-          :batch_size => flush_batch_size,
-          :table => table_name,
-          :cf => c_family,
-          :columns => columns,
-          :serializer => serializer,
+          :s3_log_path => s3_log_path,
+          :max_log_size => max_log_size,
+          :max_log_rolltime => max_log_rolltime,
+          :s3_flush_batch_size => s3_flush_batch_size,
+          :compression => compression,
+          :log_type => log_type,
+          :s3_output_serializer => s3_output_serializer,
+          :hbase_flush_batch_size => hbase_flush_batch_size,
+          :hbase_table => hbase_table_name,
+          :hbase_cf => hbase_c_family,
+          :hbase_columns => hbase_columns,
+          :hbase_serializer => hbase_serializer,
         }
       }
     end
