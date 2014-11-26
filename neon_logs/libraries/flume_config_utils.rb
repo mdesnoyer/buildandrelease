@@ -239,6 +239,13 @@ class Chef
     
     # Flume config necessary to setup log collector  with HBase
     # It has a single source, 2 channels, 2 sinks
+    # hbase_flush_batch_size : 
+    # hbase_table_name : The table name for the sink
+    # hbase_c_family : The column family for the sink operations
+    # hbase_columns : Individual columns in the column family
+    # hbase_serialize : The java pkg name for the hbase sink serializer
+    # other inputs are same as above in get_logcollector_config
+    # 
     def get_collector_with_hbasesink_config(listen_port=nil,
                                 log_type=nil,
                                 max_log_size=nil,
