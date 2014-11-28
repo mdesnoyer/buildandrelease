@@ -7,7 +7,8 @@ agent.sources.<%= @cs %>.interceptors =  addtime
 agent.sources.<%= @cs %>.interceptors.addtime.type = timestamp
 agent.sources.<%= @cs %>.interceptors.addtime.preserveExisting = true
 
-# The channel is in memory because it will be buffered on disk before going to S3
+# The first channel is in memory because it will be buffered on disk before 
+# going to S3
 agent.channels.<%= @cc %>.type = memory
 agent.channels.<%= @cc %>.capacity = 100000
 agent.channels.<%= @cc %>.transactionCapacity = 1000
@@ -36,15 +37,16 @@ agent.sinks.<%= @ck %>.hdfs.codeC = <%= @compression %>
 agent.sinks.<%= @ck %>.hdfs.fileType = CompressedStream
 <% end %>
 
-# hbase channel
+# second channel is to go to hbase
 agent.channels.<%= @hc %>.type = memory
 agent.channels.<%= @hc %>.capacity = 100000
+agent.channels.<%= @hc %>.transactionCapacity = 1000
 
 # The sink goes to Hbase
 agent.sinks.<%= @hk %>.type = org.apache.flume.sink.hbase.AsyncHBaseSink 
 agent.sinks.<%= @hk %>.channel = <%= @hc %>
 agent.sinks.<%= @hk %>.batchSize = <%= @hbase_flush_batch_size%>
+agent.sinks.<%= @hk %>.coalesceIncrements = true
 agent.sinks.<%= @hk %>.table = <%= @hbase_table %>
 agent.sinks.<%= @hk %>.columnFamily = <%= @hbase_cf %>
-agent.sinks.<%= @hk %>.columns = <%= @hbase_columns %>
 agent.sinks.<%= @hk %>.serializer = <%= @hbase_serializer %>
