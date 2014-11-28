@@ -32,7 +32,7 @@ node.default[:neon_logs][:flume_streams][:clicklog_hbase] = {\
 
 if node[:opsworks][:activity] == "configure" then
   # Setup Hbase xml config
-  Chef::Log.info("Looking for HBase in layer: "
+  Chef::Log.info("Looking for HBase in layer: "\
                  "#{node[:trackserver][:collector][:hbase_layer]}")
   hbase_server = nil
   hbase_layer = node[:opsworks][:layers][
