@@ -28,6 +28,8 @@ default[:neon_logs][:flume_user] = "flume"
 #   :sinks => [sink_names],
 #   :sinkgroups => [sinkgroup_names],
 #   :template => template_file,
+#   :template_cookbook => cookbook containing the template_file 
+#                         [defaults to neon_logs]
 #   :variables => {hash of variables for the template}
 #
 # The partial template file contains all the lines in the flume config

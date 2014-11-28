@@ -8,6 +8,7 @@ node.default[:neon_logs][:flume_streams][:clicklog_hbase] = {\
   :sinks => ["s3_k", "hbase_k"],
   :sinkgroups => [],
   :template => 'collector_flume.conf.erb',
+  :template_cookbook => 'trackserver',
   :variables => {
     :cs => "clicklog_s",
     :cc => "s3_c",
