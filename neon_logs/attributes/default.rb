@@ -6,6 +6,9 @@ default["neon_logs"]["java_opts"] = []
 # Service name
 default["neon_logs"]["flume_service_name"] = "flume-ng-agent"
 
+# Flume version to install
+default["neon_logs"]["flume_version"] = "1.5.0+cdh5.2.0+49-1.cdh5.2.0.p0.33~precise-cdh5.2.0"
+
 ## Locations for flume ##
 default["neon_logs"]["flume_conf_dir"] = "/etc/flume-ng/conf"
 default["neon_logs"]["flume_bin"] = "/usr/bin/flume-ng"
