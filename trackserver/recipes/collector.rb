@@ -1,6 +1,9 @@
 include_recipe "java"
 include_recipe "trackserver::collector_config"
 
+node.default[:hadoop][:distribution] = 'cdh'
+node.default[:hadoop][:distribution_version] = '5'
+
 # Specify which repos will be installed
 node.default[:neon][:repos]["tracklog_collector"] = true
 node.default[:neon][:repos]["core"] = false
