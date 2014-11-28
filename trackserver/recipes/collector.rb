@@ -73,6 +73,7 @@ node[:deploy].each do |app_name, deploy|
 
   if ['undeploy'].include? node[:opsworks][:activity] then
     service node[:neon_logs][:flume_service_name] do
-    action :stop
+      action :stop
+    end
   end
 end
