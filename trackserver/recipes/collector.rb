@@ -1,10 +1,11 @@
-
+include_recipe "java"
 include_recipe "trackserver::collector_config"
 
 # Specify which repos will be installed
 node.default[:neon][:repos]["tracklog_collector"] = true
 node.default[:neon][:repos]["core"] = false
 node.default[:neon][:repos]["track_server"] = false
+node.default[:neon][:repos]["neonisp"] = false
  
 node[:deploy].each do |app_name, deploy|
   if app_name != "tracklog_collector" then
