@@ -58,4 +58,9 @@ if node[:opsworks][:activity] == "configure" then
   include_recipe "hadoop::hbase"
 
   include_recipe "neon_logs::flume_core_config"
+
+  service node[:neon_logs][:flume_service_name] do
+    action :nothing
+    :subscribes, :restart, "template[/etc/hbase/#{node['hbase']['conf_dir']}/hbase-site.xml]"
+  end
 end
