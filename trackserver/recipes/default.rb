@@ -21,7 +21,7 @@ include_recipe "trackserver::config"
 # quickly
 pydeps = {
   "futures" => "2.1.5",
-  "tornado" => "3.2.2",
+  "tornado" => "4.0.2",
   "shortuuid" => "0.3",
   "PyYAML" => "3.10",
   "boto" => "2.32.1",
