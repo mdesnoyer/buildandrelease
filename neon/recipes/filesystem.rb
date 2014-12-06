@@ -36,13 +36,13 @@ mountable_drives = []
   end
 end
 
-for mountable_drives.each do | drive |
-#  filesystem drive[:device] do
-#    fstype "ext4"
-#    device drive[:device]
-#    mount drive[:loc]
-#    mkfs_options drive[:mkfs_options]
-#    options drive[:mount_options]
-#    action [:create, :enable, :mount]
-#  end
+mountable_drives.each do |drive|
+  filesystem drive[:device] do
+    fstype "ext4"
+    device drive[:device]
+    mount drive[:loc]
+    mkfs_options drive[:mkfs_options]
+    options drive[:mount_options]
+    action [:create, :enable, :mount]
+  end
 end
