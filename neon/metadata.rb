@@ -12,5 +12,6 @@ depends 'java'
 depends 'neon_logs'
 depends 'neon-opencv'
 depends 'python', "= 1.4.6"
+depends 'filesystem'
 
 supports 'ubuntu'
