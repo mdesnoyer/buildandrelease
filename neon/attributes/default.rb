@@ -1,7 +1,7 @@
 include_attribute "python"
 include_attribute "java"
 
-default[:neon][:home] = "/opt/neon"
+default[:neon][:home] = "/mnt/neon"
 
 # The ssh key to serving machines
 default[:neon][:serving_key] = "s3://neon-keys/neon-serving.pem"

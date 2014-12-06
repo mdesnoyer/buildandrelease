@@ -44,5 +44,5 @@ for mountable_drives.each do | drive |
     mkfs_options drive[:mkfs_options] if drive[:mkfs_options]
     options drive[:mount_options] if drive[:mount_options]
     action [:create, :enable, :mount]
-  end  
+  end
 end
