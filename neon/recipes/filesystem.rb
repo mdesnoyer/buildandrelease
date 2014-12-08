@@ -39,7 +39,7 @@ end
 mountable_drives.each do |drive|
   filesystem drive[:device] do
     fstype "ext4"
-    device drive[:device]
+    device "/dev/#{drive[:device]}"
     mount drive[:loc]
     mkfs_options drive[:mkfs_options]
     options drive[:mount_options]
