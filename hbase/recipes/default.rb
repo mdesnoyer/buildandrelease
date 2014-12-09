@@ -54,8 +54,28 @@ include_recpie "hadoop::zookeeper_server"
 
 # Start all the services in this order
 #
+
 # namenode
+service 'hadoop-hdfs-namenode' do
+    action [:enable, :restart]
+end
+
 # datanode
+service 'hadoop-hdfs-datanode' do
+    action [:enable, :restart]
+end
+
 # zookeeper
+service 'zookeeper-server' do
+    action [:enable, :restart]
+end
+
 # hbase master
+service 'hbase-master' do
+    action [:enable, :restart]
+end
+
 # hbase regionserver
+service 'hbase-regionserver' do
+    action [:enable, :restart]
+end
