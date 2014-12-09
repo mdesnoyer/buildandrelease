@@ -1,4 +1,5 @@
-# hadoop configs
+# hbase/ hadoop configs to spin up hbase server in a pseduo distributed mode 
+ 
 #
 default[:hadoop][:core_site]['fs.defaultFS'] = "#{node['hostname']}"
 

@@ -38,9 +38,21 @@ include_recipe "hadoop::zookeeper_server"
 # Create namenode dir
 #
 # may need to run this :: hadoop namenode -format
+# TODO: What if the name node dir is already full ?
+
+execute 'hdfs-namenode-format' do
+  command 'hdfs namenode -format -nonInteractive' + (node['hadoop']['force_format'] ? ' -force' : '')
+  action :run
+  group 'hdfs'
+  user 'hdfs'
+end
+
+
 #
 # Creare data node dir
 #
+
+
 # Ensure both dirs have the right permissions
 #
 #
@@ -67,15 +79,15 @@ end
 
 # zookeeper
 service 'zookeeper-server' do
-    action [:enable, :restart]
+    action [:enable, :start]
 end
 
 # hbase master
 service 'hbase-master' do
-    action [:enable, :restart]
+    action [:enable, :start]
 end
 
 # hbase regionserver
 service 'hbase-regionserver' do
-    action [:enable, :restart]
+    action [:enable, :start]
 end
