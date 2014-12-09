@@ -5,6 +5,9 @@
 # install java
 include_recipe "java::default"
 
+node.default[:hadoop][:distribution] = 'cdh'
+node.default[:hadoop][:distribution_version] = '5'
+
 # install hadoop
 include_recipe "hadoop::default"
 
