@@ -1,5 +1,7 @@
 chef_gem 'aws-sdk'
 
+include_recipe "neon::filesystem"
+
 include_recipe "apt"
 
 # Install python
