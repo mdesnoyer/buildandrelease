@@ -18,22 +18,22 @@ include_recipe "hadoop::hadoop_hdfs_namenode"
 include_recipe "hadoop::hadoop_hdfs_datanode"
 
 # install hbase
-include_recpie "hadoop::hbase"
+include_recipe "hadoop::hbase"
 
 # hbase master
-include_recpie "hadoop::hbase_master"
+include_recipe "hadoop::hbase_master"
 
 # hbase regionserver
-include_recpie "hadoop::hbase_regionserver"
+include_recipe "hadoop::hbase_regionserver"
 
 # hbase REST
-include_recpie "hadoop::hbase_rest"
+include_recipe "hadoop::hbase_rest"
 
 # zookeeper client
-include_recpie "hadoop::zookeeper"
+include_recipe "hadoop::zookeeper"
 
 # zookeeper server
-include_recpie "hadoop::zookeeper_server"
+include_recipe "hadoop::zookeeper_server"
 
 # Create namenode dir
 #
