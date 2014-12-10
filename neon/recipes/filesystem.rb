@@ -15,7 +15,7 @@ mountable_drives = []
 `lsblk`.lines do |line|
   fields = line.split
   drive = nil
-  if fields[0] =~ /xvd[b-z]/ then
+  if fields[0] =~ /xvd[b-f]/ then
     drive = fields[0]
     drive_idx = drive.bytes[3]-'b'.bytes[0]
   elsif fields[0] =~ /sd[b-z]/ then
