@@ -41,28 +41,11 @@ include_recipe "hadoop::zookeeper_server"
 # TODO: What if the name node dir is already full ?
 
 execute 'hdfs-namenode-format' do
-  command 'hdfs namenode -format -nonInteractive' + (node['hadoop']['force_format'] ? ' -force' : '')
   action :run
-  group 'hdfs'
-  user 'hdfs'
 end
 
 
-#
-# Creare data node dir
-#
-
-
-# Ensure both dirs have the right permissions
-#
-#
-
-# Create the hbase mount
-# hadoop fs -mkdir hdfs://<IP>:8020/
-
-# ensure its owned by hbase user
-# hadoop fs -chown -R hbase:hbase hdfs://<IP>:8020/hbase
-
+# Initialize Zookeeper server
 
 # Start all the services in this order
 #
@@ -75,6 +58,20 @@ end
 # datanode
 service 'hadoop-hdfs-datanode' do
     action [:enable, :restart]
+end
+
+# format/setup the hdfs rootdir for hbase
+execute 'hbase-hdfs-rootdir' do
+    action :run
+end
+
+# Initialize zookeeper
+bash "initialize_zookeeper" do
+    user "root"
+    group "root"
+    code <<-EOH
+        /etc/init.d/zookeeper-server init --force 
+    EOH
 end
 
 # zookeeper
@@ -91,3 +88,6 @@ end
 service 'hbase-regionserver' do
     action [:enable, :start]
 end
+
+# Create the HBase tables and column families
+
