@@ -89,5 +89,9 @@ service 'hbase-regionserver' do
     action [:enable, :start]
 end
 
-# Create the HBase tables and column families
+# Create the HBase tables and column families, wait for HMaster so sleep for 30secs
+# NOTE: this is how they seem to do it the opentsdb recipe
+execute "create hbase tables" do
+    command "sleep 30 && echo \"create 'THUMBNAIL_TIMESTAMP_EVENTS', 'THUMBNAIL_EVENTS_TYPES'\" | /usr/bin/hbase shell  >> /var/log/hbase.create_tables.log 2>&1 && echo \"create 'TIMESTAMP_THUMBNAIL_EVENTS', 'THUMBNAIL_EVENTS_TYPES'\" | /usr/bin/hbase shell >> /var/log/hbase.create_tables.log 2>&1 "
+end
 
