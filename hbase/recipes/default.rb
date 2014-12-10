@@ -5,6 +5,9 @@
 # install java
 include_recipe "java::default"
 
+node.default[:hadoop][:distribution] = 'cdh'
+node.default[:hadoop][:distribution_version] = '5'
+
 # install hadoop
 include_recipe "hadoop::default"
 
@@ -15,29 +18,41 @@ include_recipe "hadoop::hadoop_hdfs_namenode"
 include_recipe "hadoop::hadoop_hdfs_datanode"
 
 # install hbase
-include_recpie "hadoop::hbase"
+include_recipe "hadoop::hbase"
 
 # hbase master
-include_recpie "hadoop::hbase_master"
+include_recipe "hadoop::hbase_master"
 
 # hbase regionserver
-include_recpie "hadoop::hbase_regionserver"
+include_recipe "hadoop::hbase_regionserver"
 
 # hbase REST
-include_recpie "hadoop::hbase_rest"
+include_recipe "hadoop::hbase_rest"
 
 # zookeeper client
-include_recpie "hadoop::zookeeper"
+include_recipe "hadoop::zookeeper"
 
 # zookeeper server
-include_recpie "hadoop::zookeeper_server"
+include_recipe "hadoop::zookeeper_server"
 
 # Create namenode dir
 #
 # may need to run this :: hadoop namenode -format
+# TODO: What if the name node dir is already full ?
+
+execute 'hdfs-namenode-format' do
+  command 'hdfs namenode -format -nonInteractive' + (node['hadoop']['force_format'] ? ' -force' : '')
+  action :run
+  group 'hdfs'
+  user 'hdfs'
+end
+
+
 #
 # Creare data node dir
 #
+
+
 # Ensure both dirs have the right permissions
 #
 #
@@ -51,8 +66,28 @@ include_recpie "hadoop::zookeeper_server"
 
 # Start all the services in this order
 #
+
 # namenode
+service 'hadoop-hdfs-namenode' do
+    action [:enable, :restart]
+end
+
 # datanode
+service 'hadoop-hdfs-datanode' do
+    action [:enable, :restart]
+end
+
 # zookeeper
+service 'zookeeper-server' do
+    action [:enable, :start]
+end
+
 # hbase master
+service 'hbase-master' do
+    action [:enable, :start]
+end
+
 # hbase regionserver
+service 'hbase-regionserver' do
+    action [:enable, :start]
+end
