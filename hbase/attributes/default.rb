@@ -2,6 +2,8 @@
  
 #
 default[:hadoop][:core_site]['fs.defaultFS'] = "#{node['hostname']}"
+default[:hadoop][:hdfs_site]['dfs.datanode.data.dir'] = "/opt/datanode"
+default[:hadoop][:hdfs_site]['dfs.namenode.name.dir'] = "/opt/namenode"
 
 #
 #
@@ -14,6 +16,9 @@ default[:hbase][:hbase_site]['hbase.regionserver.ipc.address'] = "#{node['hostna
 default[:hbase][:hbase_site]['hbase.master.ipc.address'] = "#{node['hostname']}" 
 default[:hbase][:hbase_site]['zookeeper.znode.parent'] = "/tmp/hbase" 
 default[:hbase][:hbase_site]['zookeeper.property.clientPort'] = "2181" 
+default[:hbase][:hbase_tables] = ["THUMBNAIL_TIMESTAMP_EVENTS", "TIMESTAMP_THUMBNAIL_EVENTS"]
+default[:hbase][:hbase_cfamily] = "THUMBNAIL_EVENTS_TYPES"
+
 
 # zookeepr config 
 default[:zookeeper][:zoocfg]['zookeeper.znode.parent'] = default[:hbase][:hbase_site]['zookeeper.znode.parent']  
