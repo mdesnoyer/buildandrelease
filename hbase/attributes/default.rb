@@ -2,8 +2,8 @@
  
 #
 default[:hadoop][:core_site]['fs.defaultFS'] = "#{node['hostname']}"
-default[:hadoop][:hdfs_site]['dfs.datanode.data.dir'] = "/opt/datanode"
-default[:hadoop][:hdfs_site]['dfs.namenode.name.dir'] = "/opt/namenode"
+default[:hadoop][:hdfs_site]['dfs.datanode.data.dir'] = "/mnt/datanode"
+default[:hadoop][:hdfs_site]['dfs.namenode.name.dir'] = "/mnt/namenode"
 
 #
 #
