@@ -1,6 +1,6 @@
 # The source is an avro source
 agent.sources.<%= @cs %>.type = avro
-agent.sources.<%= @cs %>.channels = <%= @cc %> <%= @hc %>
+agent.sources.<%= @cs %>.channels = <%= @cc %> <%= @do_hbase_sink ? @hc : "" %>
 agent.sources.<%= @cs %>.bind = <%= @collector_host %>
 agent.sources.<%= @cs %>.port = <%= @collector_port %>
 agent.sources.<%= @cs %>.interceptors =  addtime
@@ -37,6 +37,7 @@ agent.sinks.<%= @ck %>.hdfs.codeC = <%= @compression %>
 agent.sinks.<%= @ck %>.hdfs.fileType = CompressedStream
 <% end %>
 
+<% if @do_hbase_sink %>
 # second channel is to go to hbase
 agent.channels.<%= @hc %>.type = memory
 agent.channels.<%= @hc %>.capacity = 100000
@@ -50,3 +51,4 @@ agent.sinks.<%= @hk %>.coalesceIncrements = true
 agent.sinks.<%= @hk %>.table = <%= @hbase_table %>
 agent.sinks.<%= @hk %>.columnFamily = <%= @hbase_cf %>
 agent.sinks.<%= @hk %>.serializer = <%= @hbase_serializer %>
+<% end %>

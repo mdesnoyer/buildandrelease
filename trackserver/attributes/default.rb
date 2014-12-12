@@ -43,6 +43,7 @@ default[:trackserver][:collector][:channel_dir] = "/mnt/neon/channels/clicklog"
 default[:trackserver][:collector][:max_log_rolltime] = 43200 # 12 hours
 default[:trackserver][:collector][:s3_serializer] = \
   "org.apache.flume.sink.hdfs.AvroEventSerializer$Builder"
+default[:trackserver][:collector][:do_hbase_sink] = false
 default[:trackserver][:collector][:hbase_serializer] = \
   "com.neon.flume.NeonSerializer"
 

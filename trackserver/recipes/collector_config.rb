@@ -4,12 +4,13 @@ node.default[:neon_logs][:flume_streams][:clicklog_collector_log] = \
 
 node.default[:neon_logs][:flume_streams][:clicklog_hbase] = {\
   :sources => ["clicklog_s"],
-  :channels => ["s3_c", "hbase_c"],
-  :sinks => ["s3_k", "hbase_k"],
+  :channels => node[:trackserver][:collector][:do_hbase_sink] ? ["s3_c", "hbase_c"] : ["s3_c"],
+  :sinks => node[:trackserver][:collector][:do_hbase_sink] ? ["s3_k", "hbase_k"] : ["s3_k"],
   :sinkgroups => [],
   :template => 'collector_flume.conf.erb',
   :template_cookbook => 'trackserver',
   :variables => {
+    :do_hbase_sink => node[:trackserver][:collector][:do_hbase_sink],
     :cs => "clicklog_s",
     :cc => "s3_c",
     :ck => "s3_k",
@@ -61,6 +62,6 @@ if node[:opsworks][:activity] == "configure" then
 
   service node[:neon_logs][:flume_service_name] do
     action :nothing
-    :subscribes, :restart, "template[/etc/hbase/#{node['hbase']['conf_dir']}/hbase-site.xml]"
+    subscribes :restart, "template[/etc/hbase/#{node['hbase']['conf_dir']}/hbase-site.xml]"
   end
 end
