@@ -26,6 +26,11 @@ node[:deploy].each do |app_name, deploy|
   package "maven" do
     :install
   end
+    
+  # Install the neon code
+  include_recipe "neon::repo"
+
+  # Build the java code
   directory "#{node[:neon][:home]}/.m2" do
     owner "neon"
     group "neon"
@@ -33,11 +38,6 @@ node[:deploy].each do |app_name, deploy|
     mode "0755"
     recursive true
   end
-    
-  # Install the neon code
-  include_recipe "neon::repo"
-
-  # Build the java code
   app_built = "#{repo_path}/BUILD_DONE"
   file app_built do
     user "neon"
