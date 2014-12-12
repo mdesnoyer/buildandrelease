@@ -19,7 +19,7 @@ default[:video_client][:dequeue_period] = 10.0
 default[:video_client][:notification_api_key] = "icAxBCbwo--owZaFED8hWA"
 default[:video_client][:server_auth] = "secret_token"
 default[:video_client][:extra_workers] = 0
-default[:video_client][:video_temp_dir] = "/mnt/tmp"
+default[:video_client][:video_temp_dir] = "/mnt/tmp1"
 
 # Specify the repos to user
 default[:neon][:repos]["video_client"] = true
