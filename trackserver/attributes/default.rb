@@ -40,6 +40,12 @@ default[:neonisp][:app_name] = "track_server"
 # Parameters for the clicklog_collector
 default[:trackserver][:collector][:s3_path] = "s3n://neon-tracker-logs-v2/v%{track_vers}/%{tai}/%Y/%m/%d"
 default[:trackserver][:collector][:channel_dir] = "/mnt/neon/channels/clicklog"
+default[:trackserver][:collector][:max_log_rolltime] = 43200 # 12 hours
+default[:trackserver][:collector][:s3_serializer] = \
+  "org.apache.flume.sink.hdfs.AvroEventSerializer$Builder"
+default[:trackserver][:collector][:do_hbase_sink] = false
+default[:trackserver][:collector][:hbase_serializer] = \
+  "com.neon.flume.NeonSerializer"
 
 # Hbase sink configurations
 default[:trackserver][:collector][:hbase_layer] = "hbase"

@@ -1,8 +1,10 @@
 DEPENDENCIES
   apt (~> 2.4.0)
+  ark (~> 0.9.0)
   cmake (~> 0.3)
   ffmpeg
     path: ffmpeg
+  filesystem (~> 0.9.0)
   gflags (~> 1.0)
   git (~> 4.0.2)
   hadoop (~> 1.1)
@@ -11,6 +13,7 @@ DEPENDENCIES
     path: libvpx
   mastermind
     path: mastermind
+  maven (~> 1.2.0)
   minitest-handler (~> 1.2.0)
   neon
     path: neon
@@ -37,7 +40,12 @@ DEPENDENCIES
     path: yasm
 
 GRAPH
+  7-zip (1.0.2)
+    windows (>= 1.2.2)
   apt (2.4.0)
+  ark (0.9.0)
+    7-zip (>= 0.0.0)
+    windows (>= 0.0.0)
   bluepill (2.3.1)
     rsyslog (>= 0.0.0)
   build-essential (2.0.4)
@@ -50,6 +58,8 @@ GRAPH
     libvpx (>= 0.0.0)
     x264 (>= 0.0.0)
     yasm (>= 0.0.0)
+  filesystem (0.9.0)
+    lvm (~> 1.1.0)
   gflags (1.0.1)
     apt (>= 0.0.0)
     build-essential (>= 0.0.0)
@@ -70,16 +80,21 @@ GRAPH
     build-essential (>= 0.0.0)
     git (>= 0.0.0)
     yasm (>= 0.0.0)
+  lvm (1.1.2)
   mastermind (0.9.0)
     apt (>= 0.0.0)
     java (>= 0.0.0)
     neon (>= 0.0.0)
     neon_logs (>= 0.0.0)
     python (= 1.4.6)
+  maven (1.2.0)
+    ark (~> 0.4)
+    java (~> 1.13)
   minitest-handler (1.2.0)
     chef_handler (>= 0.0.0)
   neon (0.9.0)
     apt (>= 0.0.0)
+    filesystem (>= 0.0.0)
     gflags (~> 1.0)
     git (>= 0.0.0)
     java (>= 0.0.0)
@@ -133,7 +148,10 @@ GRAPH
     python (= 1.4.6)
   trackserver (0.9.0)
     apt (>= 0.0.0)
+    ark (>= 0.0.0)
+    hadoop (>= 0.0.0)
     java (>= 0.0.0)
+    maven (>= 0.0.0)
     neon (>= 0.0.0)
     neon-nginx (= 2.7.4)
     neon_logs (>= 0.0.0)

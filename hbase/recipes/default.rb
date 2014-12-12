@@ -18,44 +18,80 @@ include_recipe "hadoop::hadoop_hdfs_namenode"
 include_recipe "hadoop::hadoop_hdfs_datanode"
 
 # install hbase
-include_recpie "hadoop::hbase"
+include_recipe "hadoop::hbase"
 
 # hbase master
-include_recpie "hadoop::hbase_master"
+include_recipe "hadoop::hbase_master"
 
 # hbase regionserver
-include_recpie "hadoop::hbase_regionserver"
+include_recipe "hadoop::hbase_regionserver"
 
 # hbase REST
-include_recpie "hadoop::hbase_rest"
+include_recipe "hadoop::hbase_rest"
 
 # zookeeper client
-include_recpie "hadoop::zookeeper"
+include_recipe "hadoop::zookeeper"
 
 # zookeeper server
-include_recpie "hadoop::zookeeper_server"
+include_recipe "hadoop::zookeeper_server"
 
 # Create namenode dir
 #
 # may need to run this :: hadoop namenode -format
-#
-# Creare data node dir
-#
-# Ensure both dirs have the right permissions
-#
-#
+# TODO: What if the name node dir is already full ?
 
-# Create the hbase mount
-# hadoop fs -mkdir hdfs://<IP>:8020/
+execute 'hdfs-namenode-format' do
+  action :run
+end
 
-# ensure its owned by hbase user
-# hadoop fs -chown -R hbase:hbase hdfs://<IP>:8020/hbase
 
+# Initialize Zookeeper server
 
 # Start all the services in this order
 #
+
 # namenode
+service 'hadoop-hdfs-namenode' do
+    action [:enable, :restart]
+end
+
 # datanode
+service 'hadoop-hdfs-datanode' do
+    action [:enable, :restart]
+end
+
+# format/setup the hdfs rootdir for hbase
+execute 'hbase-hdfs-rootdir' do
+    action :run
+end
+
+# Initialize zookeeper
+bash "initialize_zookeeper" do
+    user "root"
+    group "root"
+    code <<-EOH
+        /etc/init.d/zookeeper-server init --force 
+    EOH
+end
+
 # zookeeper
+service 'zookeeper-server' do
+    action [:enable, :start]
+end
+
 # hbase master
+service 'hbase-master' do
+    action [:enable, :start]
+end
+
 # hbase regionserver
+service 'hbase-regionserver' do
+    action [:enable, :start]
+end
+
+# Create the HBase tables and column families, wait for HMaster so sleep for 30secs
+# NOTE: this is how they seem to do it the opentsdb recipe
+execute "create hbase tables" do
+    command "sleep 30 && echo \"create 'THUMBNAIL_TIMESTAMP_EVENTS', 'THUMBNAIL_EVENTS_TYPES'\" | /usr/bin/hbase shell  >> /var/log/hbase.create_tables.log 2>&1 && echo \"create 'TIMESTAMP_THUMBNAIL_EVENTS', 'THUMBNAIL_EVENTS_TYPES'\" | /usr/bin/hbase shell >> /var/log/hbase.create_tables.log 2>&1 "
+end
+
