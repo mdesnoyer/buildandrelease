@@ -27,6 +27,12 @@ file node[:video_client][:log_file] do
   group "neon"
   mode "0644"
 end
+directory node[:video_client][:video_temp_dir] do
+  user "root"
+  group "root"
+  mode "0777"
+  recursive true
+end
 
 node[:deploy].each do |app_name, deploy|
   if app_name != "video_client" then

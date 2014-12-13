@@ -75,3 +75,4 @@ template "#{node[:nginx][:dir]}/conf.d/trackserver.conf" do
     notifies :reload, 'service[nginx]', :delayed
   end
 end
+

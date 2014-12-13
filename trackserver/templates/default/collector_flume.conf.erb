@@ -1,0 +1,54 @@
+# The source is an avro source
+agent.sources.<%= @cs %>.type = avro
+agent.sources.<%= @cs %>.channels = <%= @cc %> <%= @do_hbase_sink ? @hc : "" %>
+agent.sources.<%= @cs %>.bind = <%= @collector_host %>
+agent.sources.<%= @cs %>.port = <%= @collector_port %>
+agent.sources.<%= @cs %>.interceptors =  addtime
+agent.sources.<%= @cs %>.interceptors.addtime.type = timestamp
+agent.sources.<%= @cs %>.interceptors.addtime.preserveExisting = true
+
+# The first channel is in memory because it will be buffered on disk before 
+# going to S3
+agent.channels.<%= @cc %>.type = memory
+agent.channels.<%= @cc %>.capacity = 100000
+agent.channels.<%= @cc %>.transactionCapacity = 1000
+
+# The sink goes to s3
+agent.sinks.<%= @ck %>.type = hdfs
+agent.sinks.<%= @ck %>.channel = <%= @cc %>
+agent.sinks.<%= @ck %>.hdfs.path = <%= @s3_log_path %>
+agent.sinks.<%= @ck %>.hdfs.filePrefix = <%= @log_type %>
+agent.sinks.<%= @ck %>.hdfs.threadsPoolSize = 100
+agent.sinks.<%= @ck %>.hdfs.rollSize = <%= @max_log_size %>
+agent.sinks.<%= @ck %>.hdfs.rollCount = 0
+agent.sinks.<%= @ck %>.hdfs.rollInterval = <%= @max_log_rolltime %>
+agent.sinks.<%= @ck %>.hdfs.idleTimeout = 1800
+agent.sinks.<%= @ck %>.hdfs.callTimeout = 600000
+agent.sinks.<%= @ck %>.hdfs.batchSize = <%= @s3_flush_batch_size %>
+agent.sinks.<%= @ck %>.serializer = <%= @s3_output_serializer %>
+
+<% if @s3_output_serializer == 'org.apache.flume.sink.hdfs.AvroEventSerializer$Builder' %>
+agent.sinks.<%= @ck %>.serializer.compressionCodec = snappy
+agent.sinks.<%= @ck %>.hdfs.fileSuffix = .avro
+# Avro data shouldn't be compressed again, so force it to be a datastream
+agent.sinks.<%= @ck %>.hdfs.fileType = DataStream
+<% else %>
+agent.sinks.<%= @ck %>.hdfs.codeC = <%= @compression %>
+agent.sinks.<%= @ck %>.hdfs.fileType = CompressedStream
+<% end %>
+
+<% if @do_hbase_sink %>
+# second channel is to go to hbase
+agent.channels.<%= @hc %>.type = memory
+agent.channels.<%= @hc %>.capacity = 100000
+agent.channels.<%= @hc %>.transactionCapacity = 1000
+
+# The sink goes to Hbase
+agent.sinks.<%= @hk %>.type = org.apache.flume.sink.hbase.AsyncHBaseSink 
+agent.sinks.<%= @hk %>.channel = <%= @hc %>
+agent.sinks.<%= @hk %>.batchSize = <%= @hbase_flush_batch_size%>
+agent.sinks.<%= @hk %>.coalesceIncrements = true
+agent.sinks.<%= @hk %>.table = <%= @hbase_table %>
+agent.sinks.<%= @hk %>.columnFamily = <%= @hbase_cf %>
+agent.sinks.<%= @hk %>.serializer = <%= @hbase_serializer %>
+<% end %>
