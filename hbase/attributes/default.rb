@@ -1,7 +1,7 @@
 # hbase/ hadoop configs to spin up hbase server in a pseduo distributed mode 
  
 #
-default[:hadoop][:core_site]['fs.defaultFS'] = "#{node['ipaddress']}"
+default[:hadoop][:core_site]['fs.defaultFS'] = "#{node['hostname']}"
 default[:hadoop][:hdfs_site]['dfs.datanode.data.dir'] = "/mnt/datanode"
 default[:hadoop][:hdfs_site]['dfs.namenode.name.dir'] = "/mnt/namenode"
 default[:hadoop][:hdfs_site]['dfs.datanode.max.transfer.threads'] = 8096 
@@ -11,7 +11,7 @@ default[:hadoop][:hdfs_site]['dfs.datanode.max.transfer.threads'] = 8096
 # hbase site-xml config
 # Replace "hbase1" with the IP address of the server being spun up
 default[:hbase][:hbase_site]['hbase.cluster.distributed'] = true 
-default[:hbase][:hbase_site]['hbase.rootdir'] = "hdfs://#{node['ipaddress']}:8020/hbase"
+default[:hbase][:hbase_site]['hbase.rootdir'] = "hdfs://#{node['hostname']}:8020/hbase"
 default[:hbase][:hbase_site]['hbase.zookeeper.quorum'] = "#{node['ipaddress']}" 
 default[:hbase][:hbase_site]['hbase.regionserver.ipc.address'] = "#{node['ipaddress']}" 
 default[:hbase][:hbase_site]['hbase.master.ipc.address'] = "#{node['ipaddress']}" 
