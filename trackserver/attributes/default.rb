@@ -54,7 +54,7 @@ default[:flume][:master][:zookeeper_port]     = 2181
 default[:hbase][:hbase_site]['hbase.rootdir'] = "hdfs://hbase1:8020"
 default[:hbase][:hbase_site]['hbase.zookeeper.quorum'] = "hbase1"
 default[:hbase][:hbase_site]['hbase.cluster.distributed'] = true 
-default[:hbase][:hbase_site]['zookeeper.znode.parent'] = "/tmp/hbase" 
+default[:hbase][:hbase_site]['zookeeper.znode.parent'] = "/mnt/hbase" 
 
 
 # Parameters for siege
