@@ -5,7 +5,7 @@ default[:hadoop][:core_site]['fs.defaultFS'] = "#{node['ipaddress']}"
 default[:hadoop][:hdfs_site]['dfs.datanode.data.dir'] = "/mnt/datanode"
 default[:hadoop][:hdfs_site]['dfs.namenode.name.dir'] = "/mnt/namenode"
 default[:hadoop][:hdfs_site]['dfs.datanode.max.transfer.threads'] = 8096 
-
+default[:hadoop][:hdfs_site]['dfs.namenode.datanode.registration.ip-hostname-check'] = false
 #
 #
 # hbase site-xml config
