@@ -36,7 +36,7 @@ end
 directory node[:neon][:log_dir] do
   user "neon"
   group "neon"
-  mode "1755"
+  mode "1777"
   recursive true
 end
 
