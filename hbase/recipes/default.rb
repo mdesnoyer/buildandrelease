@@ -2,6 +2,12 @@
 # http://www.cloudera.com/content/cloudera/en/documentation/cdh4/v4-2-2/CDH4-Installation-Guide/cdh4ig_topic_20_5.html
 # http://www.alexjf.net/blog/distributed-systems/hadoop-yarn-installation-definitive-guide/
 
+# Remove the localhost entry from /etc/hosts
+# TODO: Make this a function
+hostsfile_entry '127.0.1.1' do 
+    action :remove
+end
+
 # install java
 include_recipe "java::default"
 
@@ -44,11 +50,6 @@ execute 'hdfs-namenode-format' do
   action :run
 end
 
-# Remove the localhost entry from /etc/hosts
-# TODO: Make this a function
-#hostsfile_entry '127.0.1.1' do 
-#    action :remove
-#end
 
 # Add the entry for the ipaddress
 #hostsfile_entry "#{node['ipaddress']}" do 
