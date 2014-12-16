@@ -60,51 +60,56 @@ end
 
 
 
-# Start all the services in this order
+node[:deploy].each do |app_name, deploy|
+  if app_name != "hbase" then
+    next
+  end
 
-# namenode
-service 'hadoop-hdfs-namenode' do
-    action [:enable, :restart]
+    # Start all the services in this order
+
+    # namenode
+    service 'hadoop-hdfs-namenode' do
+        action [:enable, :restart]
+    end
+
+    # datanode
+    service 'hadoop-hdfs-datanode' do
+        action [:enable, :restart]
+    end
+
+
+    # format/setup the hdfs rootdir for hbase
+    execute 'hbase-hdfs-rootdir' do
+        action :run
+    end
+
+    # Initialize zookeeper
+    bash "initialize_zookeeper" do
+        user "root"
+        group "root"
+        code <<-EOH
+            /etc/init.d/zookeeper-server init --force 
+        EOH
+    end
+
+    # zookeeper
+    service 'zookeeper-server' do
+        action [:enable, :start]
+    end
+
+    # hbase master
+    service 'hbase-master' do
+        action [:enable, :start]
+    end
+
+    # hbase regionserver
+    service 'hbase-regionserver' do
+        action [:enable, :start]
+    end
+
+    # Create the HBase tables and column families, wait for HMaster so sleep for 30secs
+    # NOTE: this is how they seem to do it the opentsdb recipe
+    execute "create hbase tables" do
+        command "sleep 30 && echo \"create 'THUMBNAIL_TIMESTAMP_EVENTS', 'THUMBNAIL_EVENTS_TYPES'\" | /usr/bin/hbase shell  >> /var/log/hbase.create_tables.log 2>&1 && echo \"create 'TIMESTAMP_THUMBNAIL_EVENTS', 'THUMBNAIL_EVENTS_TYPES'\" | /usr/bin/hbase shell >> /var/log/hbase.create_tables.log 2>&1 "
+    end
 end
-
-# datanode
-service 'hadoop-hdfs-datanode' do
-    action [:enable, :restart]
-end
-
-
-# format/setup the hdfs rootdir for hbase
-execute 'hbase-hdfs-rootdir' do
-    action :run
-end
-
-# Initialize zookeeper
-bash "initialize_zookeeper" do
-    user "root"
-    group "root"
-    code <<-EOH
-        /etc/init.d/zookeeper-server init --force 
-    EOH
-end
-
-# zookeeper
-service 'zookeeper-server' do
-    action [:enable, :start]
-end
-
-# hbase master
-service 'hbase-master' do
-    action [:enable, :start]
-end
-
-# hbase regionserver
-service 'hbase-regionserver' do
-    action [:enable, :start]
-end
-
-# Create the HBase tables and column families, wait for HMaster so sleep for 30secs
-# NOTE: this is how they seem to do it the opentsdb recipe
-execute "create hbase tables" do
-    command "sleep 30 && echo \"create 'THUMBNAIL_TIMESTAMP_EVENTS', 'THUMBNAIL_EVENTS_TYPES'\" | /usr/bin/hbase shell  >> /var/log/hbase.create_tables.log 2>&1 && echo \"create 'TIMESTAMP_THUMBNAIL_EVENTS', 'THUMBNAIL_EVENTS_TYPES'\" | /usr/bin/hbase shell >> /var/log/hbase.create_tables.log 2>&1 "
-end
-
