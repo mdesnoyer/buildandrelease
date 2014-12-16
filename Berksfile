@@ -11,7 +11,7 @@ cookbook "python", "~> 1.4.6"
 cookbook 'ark', '~> 0.9.0'
 cookbook 'maven', '~> 1.2.0'
 cookbook 'filesystem', '~> 0.9.0'
-cookbook 'hostsfile', '= 0.1.0'
+cookbook 'hostsfile', '= 2.4.5'
 
 # These opencv depdencies need to be pulled into the repo because there is a 
 # bug in chef that creates and notifies don't work well together. 
