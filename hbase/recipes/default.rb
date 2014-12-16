@@ -53,7 +53,7 @@ end
 # Add the entry for the ipaddress
 hostsfile_entry "#{node['ipaddress']}" do 
     hostname "#{node['hostname']}" 
-    action :create_if_missing
+    action :create
 end
 
 # Start all the services in this order
