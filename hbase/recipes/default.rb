@@ -7,6 +7,11 @@
 hostsfile_entry '127.0.1.1' do 
     action :remove
 end
+# Add the entry for the ipaddress
+hostsfile_entry "#{node['ipaddress']}" do 
+    hostname "#{node['hostname']}" 
+    action :create
+end
 
 # install java
 include_recipe "java::default"
@@ -51,11 +56,6 @@ execute 'hdfs-namenode-format' do
 end
 
 
-# Add the entry for the ipaddress
-#hostsfile_entry "#{node['ipaddress']}" do 
-#    hostname "#{node['hostname']}" 
-#    action :create
-#end
 
 # Start all the services in this order
 
