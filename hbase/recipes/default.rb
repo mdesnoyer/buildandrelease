@@ -50,10 +50,13 @@ hostsfile_entry '127.0.1.1' do
     action :remove
 end
 
-# Initialize Zookeeper server
+# Add the entry for the ipaddress
+hostsfile_entry "#{node['ipaddress']}" do 
+    hostname "#{node['hostname']}" 
+    action :create_if_missing
+end
 
 # Start all the services in this order
-#
 
 # namenode
 service 'hadoop-hdfs-namenode' do
@@ -65,11 +68,6 @@ service 'hadoop-hdfs-datanode' do
     action [:enable, :restart]
 end
 
-# Add the entry for the ipaddress
-hostsfile_entry "#{node['ipaddress']}" do 
-    hostname "#{node['hostname']}" 
-    action :create_if_missing
-end
 
 # format/setup the hdfs rootdir for hbase
 execute 'hbase-hdfs-rootdir' do
