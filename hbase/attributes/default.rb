@@ -12,7 +12,7 @@ default[:hadoop][:hdfs_site]['dfs.namenode.datanode.registration.ip-hostname-che
 # hbase site-xml config
 # Replace "hbase1" with the IP address of the server being spun up
 default[:hbase][:hbase_site]['hbase.cluster.distributed'] = true 
-default[:hbase][:hbase_site]['hbase.rootdir'] = "hdfs://#{node['ipaddress']}:8020/hbase"
+default[:hbase][:hbase_site]['hbase.rootdir'] = "hdfs://#{node['hostname']}:8020/hbase"
 default[:hbase][:hbase_site]['hbase.zookeeper.quorum'] = "#{node['ipaddress']}" 
 default[:hbase][:hbase_site]['hbase.regionserver.ipc.address'] = "#{node['ipaddress']}" 
 default[:hbase][:hbase_site]['hbase.master.ipc.address'] = "#{node['ipaddress']}" 
