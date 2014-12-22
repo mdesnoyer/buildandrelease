@@ -15,20 +15,7 @@ end
 
 # Find the video db
 Chef::Log.info "Looking for the video database in layer: #{node[:video_server][:video_db_layer]}"
-video_db_host = nil
-video_db_layer = node[:opsworks][:layers][node[:video_server][:video_db_layer]]
-if video_db_layer.nil?
-  Chef::Log.warn "No video db instances available. Falling back to host #{node[:video_server][:video_db_fallbackhost]}"
-  video_db_host = node[:video_server][:video_db_fallbackhost]
-else
-  video_db_layer[:instances].each do |name, instance|
-    if (instance[:availability_zone] == 
-        node[:opsworks][:instance][:availability_zone] or 
-        video_db_host.nil?) then
-      video_db_host = instance[:private_ip]
-    end
-  end
-end
+video_db_host = get_server_in_layer(node[:video_server][:video_db_layer], node[:video_server][:video_db_fallbackhost])
 Chef::Log.info("Connecting to video db at #{video_db_host}")
 
 repo_path = get_repo_path("video_client")

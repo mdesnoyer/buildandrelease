@@ -22,6 +22,7 @@ class Chef
             end
           end
         end
+      Chef::Log.info "Returning server : #{server_host}"
       return server_host 
     end
   end
