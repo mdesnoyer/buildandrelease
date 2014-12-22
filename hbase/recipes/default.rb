@@ -40,6 +40,9 @@ include_recipe "hadoop::hbase_master"
 # hbase regionserver
 include_recipe "hadoop::hbase_regionserver"
 
+# hbase thrift
+include_recipe "hadoop::hbase_thrift"
+
 # hbase REST
 include_recipe "hadoop::hbase_rest"
 
@@ -106,10 +109,20 @@ node[:deploy].each do |app_name, deploy|
     service 'hbase-regionserver' do
         action [:enable, :start]
     end
+    
+    # hbase thrift server 
+    service 'hbase-thrift' do
+        action [:enable, :start]
+    end
+    
+    # hbase rest server (may be useful in the future)  
+    service 'hbase-rest' do
+        action [:enable, :start]
+    end
 
     # Create the HBase tables and column families, wait for HMaster so sleep for 30secs
     # NOTE: this is how they seem to do it the opentsdb recipe
     execute "create hbase tables" do
-        command "sleep 30 && echo \"create 'THUMBNAIL_TIMESTAMP_EVENTS', 'THUMBNAIL_EVENTS_TYPES'\" | /usr/bin/hbase shell  >> /var/log/hbase.create_tables.log 2>&1 && echo \"create 'TIMESTAMP_THUMBNAIL_EVENTS', 'THUMBNAIL_EVENTS_TYPES'\" | /usr/bin/hbase shell >> /var/log/hbase.create_tables.log 2>&1 "
+        command "sleep 30 && echo \"create 'THUMBNAIL_TIMESTAMP_EVENT_COUNTS', 'evts'\" | /usr/bin/hbase shell  >> /var/log/hbase.create_tables.log 2>&1 && echo \"create 'TIMESTAMP_THUMBNAIL_EVENT_COUNTS', 'evts'\" | /usr/bin/hbase shell >> /var/log/hbase.create_tables.log 2>&1"
     end
 end

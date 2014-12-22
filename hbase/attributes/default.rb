@@ -21,8 +21,8 @@ default[:hbase][:hbase_site]['zookeeper.znode.parent'] = "/mnt/hbase"
 default[:hbase][:hbase_site]['zookeeper.property.clientPort'] = "2181" 
 default[:hbase][:hbase_site]['hbase.client.retries.number'] = 3 
 default[:hbase][:hbase_site]['hbase.rpc.timeout'] = 3000 
-default[:hbase][:hbase_tables] = ["THUMBNAIL_TIMESTAMP_EVENTS", "TIMESTAMP_THUMBNAIL_EVENTS"]
-default[:hbase][:hbase_cfamily] = "THUMBNAIL_EVENTS_TYPES"
+default[:hbase][:hbase_tables] = ["THUMBNAIL_TIMESTAMP_EVENT_COUNTS", "TIMESTAMP_THUMBNAIL_EVENT_COUNTS"]
+default[:hbase][:hbase_cfamily] = "evts"
 
 
 # zookeepr config 

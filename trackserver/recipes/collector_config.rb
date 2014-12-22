@@ -35,24 +35,11 @@ node.default[:neon_logs][:flume_streams][:clicklog_hbase] = {\
 # Setup Hbase xml config
 Chef::Log.info("Looking for HBase in layer: "\
                "#{node[:trackserver][:collector][:hbase_layer]}")
-hbase_server = nil
-hbase_layer = node[:opsworks][:layers][
-  node[:trackserver][:collector][:hbase_layer]]
-if hbase_layer.nil?
-  Chef::Log.warn "No Hbase in the layer"
-else
-  hbase_layer[:instances].each do |name, instance|
-    if (instance[:availability_zone] == 
-        node[:opsworks][:instance][:availability_zone] or 
-        hbase_server.nil?) then
-      hbase_server = instance[:private_ip]
-      node.default[:hbase][:hbase_site]['hbase.rootdir'] = \
+hbase_server = get_server_in_layer(node[:trackserver][:collector][:hbase_layer], "hbase1")
+node.default[:hbase][:hbase_site]['hbase.rootdir'] = \
       "hdfs://#{hbase_server}:8020"
-      node.default[:hbase][:hbase_site]['hbase.zookeeper.quorum'] = \
+node.default[:hbase][:hbase_site]['hbase.zookeeper.quorum'] = \
       "#{hbase_server}"
-    end
-  end
-end
 
 if node[:opsworks][:activity] == "configure" then
   # install hbase libraries
