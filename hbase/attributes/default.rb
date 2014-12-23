@@ -28,4 +28,7 @@ default[:hbase][:hbase_cfamily] = "evts"
 # zookeepr config 
 default[:zookeeper][:zoocfg]['zookeeper.znode.parent'] = default[:hbase][:hbase_site]['zookeeper.znode.parent']  
 
-    
+# java configs    
+default[:java][:install_flavor] = 'oracle'
+default[:java][:jdk_version] = '7'
+default[:java][:oracle][:accept_oracle_download_terms] = true
