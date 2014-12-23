@@ -12,7 +12,7 @@ class Chef
         server_host = nil
         server_layer = node[:opsworks][:layers]["#{server_layer_name}"]
         if server_layer.nil?
-          server_host = fallback_host
+          server_host = "#{fallback_host}"
         else
             server_layer[:instances].each do |name, instance|
             if (instance[:availability_zone] == 
