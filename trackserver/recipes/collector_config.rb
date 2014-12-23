@@ -26,8 +26,8 @@ node.default[:neon_logs][:flume_streams][:clicklog_hbase] = {\
     :log_type => "clicklog",
     :s3_output_serializer => node[:trackserver][:collector][:s3_serializer],
     :hbase_flush_batch_size => 10000,
-    :hbase_table => "THUMBNAIL_TIMESTAMP_EVENTS",
-    :hbase_cf => "THUMBNAIL_EVENTS_TYPES",
+    :hbase_table => "THUMBNAIL_TIMESTAMP_EVENT_COUNTS",
+    :hbase_cf => "evts",
     :hbase_serializer => node[:trackserver][:collector][:hbase_serializer],
   }
 }
