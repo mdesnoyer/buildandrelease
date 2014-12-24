@@ -6,7 +6,7 @@ class Chef
     def get_host_in_layer(layer_name, fallback_host)
       primary_hosts = []
       fallback_hosts = []
-      layer node[:opsworks][:layers][layer_name]
+      layer = node[:opsworks][:layers][layer_name]
       if layer.nil?
         Chef::Log.warn "Could not find layer #{layer_name}. Falling back to host #{fallback_host}"
         return fallback_host
