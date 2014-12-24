@@ -10,6 +10,7 @@ class Chef
       if layer.nil?
         Chef::Log.warn "Could not find layer #{layer_name}. Falling back to host #{fallback_host}"
         return fallback_host
+      end
 
       video_db_layer[:instances].each do |name, instance|
         if (instance[:availability_zone] == 
