@@ -12,7 +12,7 @@ class Chef
         return fallback_host
       end
 
-      video_db_layer[:instances].each do |name, instance|
+      layer[:instances].each do |name, instance|
         if (instance[:availability_zone] == 
             node[:opsworks][:instance][:availability_zone]) then
           primary_hosts << instance[:private_ip]
