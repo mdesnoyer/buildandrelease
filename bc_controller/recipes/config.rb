@@ -15,56 +15,20 @@ end
 
 # Find the video db
 Chef::Log.info "Looking for the video database in layer: #{node[:bc_controller][:video_db_layer]}"
-video_db_host = nil
-video_db_layer = node[:opsworks][:layers][node[:bc_controller][:video_db_layer]]
-if video_db_layer.nil?
-  Chef::Log.warn "No video db instances available. Falling back to host #{node[:bc_controller][:video_db_fallbackhost]}"
-  video_db_host = node[:bc_controller][:video_db_fallbackhost]
-else
-  video_db_layer[:instances].each do |name, instance|
-    if (instance[:availability_zone] == 
-        node[:opsworks][:instance][:availability_zone] or 
-        video_db_host.nil?) then
-      video_db_host = instance[:private_ip]
-    end
-  end
-end
+video_db_host = get_host_in_layer(node[:bc_controller][:video_db_layer],
+                                  node[:bc_controller][:video_db_fallbackhost])
 Chef::Log.info("Connecting to video db at #{video_db_host}")
 
 # Find Mastermind
 Chef::Log.info "Looking for the Mastermind in layer: #{node[:bc_controller][:mastermind_layer]}"
-mastermind_host = nil
-mastermind_layer = node[:opsworks][:layers][node[:bc_controller][:mastermind]]
-if mastermind_layer.nil?
-  Chef::Log.warn "No mastermind instances available. Falling back to host #{node[:bc_controller][:mastermind_fallbackhost]}"
-  mastermind_host = node[:bc_controller][:mastermind_fallbackhost]
-else
-  mastermind_layer[:instances].each do |name, instance|
-    if (instance[:availability_zone] == 
-        node[:opsworks][:instance][:availability_zone] or 
-        mastermind_host.nil?) then
-      mastermind_host = instance[:private_ip]
-    end
-  end
-end
+mastermind_host = get_host_in_layer(node[:bc_controller][:mastermind],
+                                    node[:bc_controller][:mastermind_fallbackhost])
 Chef::Log.info("Connecting to mastermind at #{mastermind_host}")
 
 # Find Services/ CMS API server 
 Chef::Log.info "Looking for the CMS API in layer: #{node[:bc_controller][:cmsapi_layer]}"
-cmsapi_host = nil
-cmsapi_layer = node[:opsworks][:layers][node[:bc_controller][:cmsapi]]
-if cmsapi_layer.nil?
-  Chef::Log.warn "No cmsapi instances available. Falling back to host #{node[:bc_controller][:cmsapi_fallbackhost]}"
-  cmsapi_host = node[:bc_controller][:cmsapi_fallbackhost]
-else
-  cmsapi_layer[:instances].each do |name, instance|
-    if (instance[:availability_zone] == 
-        node[:opsworks][:instance][:availability_zone] or 
-        cmsapi_host.nil?) then
-       cmsapi_host = instance[:private_ip]
-    end 
-  end   
-end 
+cmsapi_host = get_host_in_layer(node[:bc_controller][:cmsapi],
+                                node[:bc_controller][:cmsapi_fallbackhost])
 Chef::Log.info("Connecting to cmsapi at #{cmsapi_host}")
 
 # Write the configuration file for the video server 

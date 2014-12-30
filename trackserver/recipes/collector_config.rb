@@ -2,6 +2,10 @@ node.default[:neon_logs][:flume_streams][:clicklog_collector_log] = \
   get_fileagent_config("#{get_log_dir()}/flume.log",
                        "clicklog-collector-flume")
 
+hbase_server = get_host_in_layer(node[:trackserver][:collector][:hbase_layer],
+                                 nil)
+do_hbase_sink = node[:trackserver][:collector][:do_hbase_sink] and not hbase_server.nil?
+
 node.default[:neon_logs][:flume_streams][:clicklog_hbase] = {\
   :sources => ["clicklog_s"],
   :channels => node[:trackserver][:collector][:do_hbase_sink] ? ["s3_c", "hbase_c"] : ["s3_c"],
@@ -10,7 +14,7 @@ node.default[:neon_logs][:flume_streams][:clicklog_hbase] = {\
   :template => 'collector_flume.conf.erb',
   :template_cookbook => 'trackserver',
   :variables => {
-    :do_hbase_sink => node[:trackserver][:collector][:do_hbase_sink],
+    :do_hbase_sink => do_hbase_sink,
     :cs => "clicklog_s",
     :cc => "s3_c",
     :ck => "s3_k",
@@ -35,7 +39,6 @@ node.default[:neon_logs][:flume_streams][:clicklog_hbase] = {\
 # Setup Hbase xml config
 Chef::Log.info("Looking for HBase in layer: "\
                "#{node[:trackserver][:collector][:hbase_layer]}")
-hbase_server = get_server_in_layer(node[:trackserver][:collector][:hbase_layer], "hbase1")
 node.default[:hbase][:hbase_site]['hbase.rootdir'] = \
       "hdfs://#{hbase_server}:8020"
 node.default[:hbase][:hbase_site]['hbase.zookeeper.quorum'] = \
