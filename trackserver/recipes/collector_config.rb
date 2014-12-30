@@ -1,3 +1,7 @@
+Chef::Log.info("Looking for HBase in layer: "\
+               "#{node[:trackserver][:collector][:hbase_layer]}")
+hbase_server = get_server_in_layer(node[:trackserver][:collector][:hbase_layer], "hbase1")
+
 node.default[:neon_logs][:flume_streams][:clicklog_collector_log] = \
   get_fileagent_config("#{get_log_dir()}/flume.log",
                        "clicklog-collector-flume")
@@ -29,17 +33,10 @@ node.default[:neon_logs][:flume_streams][:clicklog_hbase] = {\
     :hbase_table => "THUMBNAIL_TIMESTAMP_EVENT_COUNTS",
     :hbase_cf => "evts",
     :hbase_serializer => node[:trackserver][:collector][:hbase_serializer],
+    :zookeeper_quorum => "#{hbase_server}:#{node[:flume][:master][:zookeeper_port]}",
+    :znode_parent => node[:hbase][:hbase_site]['zookeeper.znode.parent'],
   }
 }
-
-# Setup Hbase xml config
-Chef::Log.info("Looking for HBase in layer: "\
-               "#{node[:trackserver][:collector][:hbase_layer]}")
-hbase_server = get_server_in_layer(node[:trackserver][:collector][:hbase_layer], "hbase1")
-node.default[:hbase][:hbase_site]['hbase.rootdir'] = \
-      "hdfs://#{hbase_server}:8020"
-node.default[:hbase][:hbase_site]['hbase.zookeeper.quorum'] = \
-      "#{hbase_server}"
 
 if node[:opsworks][:activity] == "configure" then
   # install hbase libraries

@@ -51,4 +51,6 @@ agent.sinks.<%= @hk %>.coalesceIncrements = true
 agent.sinks.<%= @hk %>.table = <%= @hbase_table %>
 agent.sinks.<%= @hk %>.columnFamily = <%= @hbase_cf %>
 agent.sinks.<%= @hk %>.serializer = <%= @hbase_serializer %>
+agent.sinks.<%= @hk %>.zookeeperQuorum= <%= @zookeeper_quorum%>
+agent.sinks.<%= @hk %>.znodeParent = <%= @znode_parent%>
 <% end %>
