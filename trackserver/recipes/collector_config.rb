@@ -4,6 +4,7 @@ node.default[:neon_logs][:flume_streams][:clicklog_collector_log] = \
 
 hbase_server = get_host_in_layer(node[:trackserver][:collector][:hbase_layer],
                                  nil)
+do_hbase_sink = node[:trackserver][:collector][:do_hbase_sink] and not hbase_server.nil?
 
 node.default[:neon_logs][:flume_streams][:clicklog_hbase] = {\
   :sources => ["clicklog_s"],
@@ -13,7 +14,7 @@ node.default[:neon_logs][:flume_streams][:clicklog_hbase] = {\
   :template => 'collector_flume.conf.erb',
   :template_cookbook => 'trackserver',
   :variables => {
-    :do_hbase_sink => node[:trackserver][:collector][:do_hbase_sink] and not hbase_server.nil?,
+    :do_hbase_sink => do_hbase_sink,
     :cs => "clicklog_s",
     :cc => "s3_c",
     :ck => "s3_k",
