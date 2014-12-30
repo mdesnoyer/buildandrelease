@@ -15,12 +15,14 @@ end
 
 # Find the video db
 Chef::Log.info "Looking for the video database in layer: #{node[:video_client][:video_db_layer]}"
-video_db_host = get_server_in_layer(node[:video_client][:video_db_layer], node[:video_client][:video_db_fallbackhost])
+video_db_host = get_host_in_layer(node[:video_client][:video_db_layer],
+                                  node[:video_client][:video_db_fallbackhost])
 Chef::Log.info("Connecting to video db at #{video_db_host}")
 
 # Find the video server 
 Chef::Log.info "Looking for the video server in layer: #{node[:video_client][:video_server_layer]}"
-video_server_host = get_server_in_layer(node[:video_client][:video_server_layer], node[:video_client][:video_server_fallbackhost])
+video_server_host = get_host_in_layer(node[:video_client][:video_server_layer],
+                                      node[:video_client][:video_server_fallbackhost])
 
 repo_path = get_repo_path("video_client")
 
