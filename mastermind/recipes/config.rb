@@ -14,22 +14,14 @@ else
 end
 
 # Find the video db
-Chef::Log.info "Looking for the video database in layer: #{node[:mastermind][:video_db_layer]}"
-video_db_host = nil
-video_db_layer = node[:opsworks][:layers][node[:mastermind][:video_db_layer]]
-if video_db_layer.nil?
-  Chef::Log.warn "No video db instances available. Falling back to host #{node[:mastermind][:video_db_fallbackhost]}"
-  video_db_host = node[:mastermind][:video_db_fallbackhost]
-else
-  video_db_layer[:instances].each do |name, instance|
-    if (instance[:availability_zone] == 
-        node[:opsworks][:instance][:availability_zone] or 
-        video_db_host.nil?) then
-      video_db_host = instance[:private_ip]
-    end
-  end
-end
+video_db_host = get_host_in_layer(node[:mastermind][:video_db_layer],
+                                  node[:mastermind][:video_db_fallbackhost])
 Chef::Log.info("Connecting mastermind to video db at #{video_db_host}")
+
+# Get the hbase database
+incr_stats_host = get_host_in_layer(node[:mastermind][:incr_stats_layer],
+                                    node[:mastermind][:incr_stats_fallbackhost])
+Chef::Log.info("Connecting mastermind to incremental stats db #{incr_stats_host}")
 
 # Write the configuration file for the mastermind
 template node[:mastermind][:config] do
@@ -47,6 +39,7 @@ template node[:mastermind][:config] do
               :publishing_period => node[:mastermind][:publishing_period],
               :video_db_host => video_db_host,
               :video_db_port => node[:mastermind][:video_db_port],
+              :incr_stats_host => incr_stats_host,
               :log_file => node[:mastermind][:log_file],
               :carbon_host => node[:neon][:carbon_host],
               :carbon_port => node[:neon][:carbon_port],
