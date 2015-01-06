@@ -1,0 +1,10 @@
+description "Hbase system metric and service monitoring"
+
+start on runlevel [234]
+stop on runlevel [0156]
+
+kill timeout 30
+limit nofile 65536 65536
+
+exec <%= @monitoring_script_path %>
+respawn

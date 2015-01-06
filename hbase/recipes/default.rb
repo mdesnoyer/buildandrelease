@@ -2,6 +2,10 @@
 # http://www.cloudera.com/content/cloudera/en/documentation/cdh4/v4-2-2/CDH4-Installation-Guide/cdh4ig_topic_20_5.html
 # http://www.alexjf.net/blog/distributed-systems/hadoop-yarn-installation-definitive-guide/
 
+# Install python
+node.default[:python][:version] = '2.7.5'
+include_recipe "python"
+
 # Remove the localhost entry from /etc/hosts
 # TODO: Make this a function
 hostsfile_entry '127.0.1.1' do 
@@ -125,4 +129,36 @@ node[:deploy].each do |app_name, deploy|
     service 'hbase-thrift' do
         action [:enable, :start]
     end
+
+    
+    # monitoring scripts
+    
+    # write the mointoring script to /usr/local/bin 
+    template "/usr/local/bin/check_hbase_services.py" 
+    do
+        source "check_hbase_services.py.erb"
+        owner "root"
+        group "root"
+        mode "0744"
+        variables({:carbon_server => "54.225.235.97",
+                   :carbon_port => 8090})
+    end
+
+    # write the upstart config file 
+    template "/etc/init/hbase-metrics.conf" do
+        source "check_hbase_upstart_service.conf.erb"
+        owner "root"
+        group "root"
+        mode "0644"
+        variables({:monitoring_script_path => "/usr/local/bin/check_hbase_services.py"})
+    end
+
+    # start monitoring service
+    service "neon-isp-metrics" do
+        provider Chef::Provider::Service::Upstart
+        supports :status => true, :restart => true, :start => true, :stop => true
+        action [:enable, :start]
+    end
+
 end
+
