@@ -134,8 +134,7 @@ node[:deploy].each do |app_name, deploy|
     # monitoring scripts
     
     # write the mointoring script to /usr/local/bin 
-    template "/usr/local/bin/check_hbase_services.py" 
-    do
+    template "/usr/local/bin/check_hbase_services.py" do  
         source "check_hbase_services.py.erb"
         owner "root"
         group "root"
@@ -161,4 +160,3 @@ node[:deploy].each do |app_name, deploy|
     end
 
 end
-
