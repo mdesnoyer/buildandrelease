@@ -153,7 +153,7 @@ node[:deploy].each do |app_name, deploy|
     end
 
     # start monitoring service
-    service "neon-isp-metrics" do
+    service "hbase-metrics" do
         provider Chef::Provider::Service::Upstart
         supports :status => true, :restart => true, :start => true, :stop => true
         action [:enable, :start]
