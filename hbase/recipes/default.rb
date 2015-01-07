@@ -6,6 +6,18 @@
 node.default[:python][:version] = '2.7.5'
 include_recipe "python"
 
+pydeps = {
+  "thrift" => "0.9.1",
+  "psutil" => "1.2.1"
+}
+
+pydeps.each do |package, vers|
+  python_pip package do
+    version vers
+    options "--no-index --find-links http://s3-us-west-1.amazonaws.com/neon-dependencies/index.html"
+  end
+end
+
 # Remove the localhost entry from /etc/hosts
 # TODO: Make this a function
 hostsfile_entry '127.0.1.1' do 
