@@ -51,7 +51,7 @@ end
 file node[:trackserver][:log_file] do
   user "trackserver"
   group "neon"
-  mode "0644"
+  mode "0777"
 end
 directory node[:trackserver][:backup_dir] do
   user "trackserver"
