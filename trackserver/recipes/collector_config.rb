@@ -1,6 +1,12 @@
+Chef::Log.info("Looking for HBase in layer: "\
+               "#{node[:trackserver][:collector][:hbase_layer]}")
+hbase_server = get_host_in_layer(node[:trackserver][:collector][:hbase_layer], nil)
+
 node.default[:neon_logs][:flume_streams][:clicklog_collector_log] = \
   get_fileagent_config("#{get_log_dir()}/flume.log",
                        "clicklog-collector-flume")
+
+do_hbase_sink = node[:trackserver][:collector][:do_hbase_sink] and not hbase_server.nil?
 
 node.default[:neon_logs][:flume_streams][:clicklog_hbase] = {\
   :sources => ["clicklog_s"],
@@ -10,7 +16,7 @@ node.default[:neon_logs][:flume_streams][:clicklog_hbase] = {\
   :template => 'collector_flume.conf.erb',
   :template_cookbook => 'trackserver',
   :variables => {
-    :do_hbase_sink => node[:trackserver][:collector][:do_hbase_sink],
+    :do_hbase_sink => do_hbase_sink,
     :cs => "clicklog_s",
     :cc => "s3_c",
     :ck => "s3_k",
@@ -26,33 +32,13 @@ node.default[:neon_logs][:flume_streams][:clicklog_hbase] = {\
     :log_type => "clicklog",
     :s3_output_serializer => node[:trackserver][:collector][:s3_serializer],
     :hbase_flush_batch_size => 10000,
-    :hbase_table => "THUMBNAIL_TIMESTAMP_EVENTS",
-    :hbase_cf => "THUMBNAIL_EVENTS_TYPES",
+    :hbase_table => "THUMBNAIL_TIMESTAMP_EVENT_COUNTS",
+    :hbase_cf => "evts",
     :hbase_serializer => node[:trackserver][:collector][:hbase_serializer],
+    :zookeeper_quorum => "#{hbase_server}:#{node[:flume][:master][:zookeeper_port]}",
+    :znode_parent => node[:hbase][:hbase_site]['zookeeper.znode.parent'],
   }
 }
-
-# Setup Hbase xml config
-Chef::Log.info("Looking for HBase in layer: "\
-               "#{node[:trackserver][:collector][:hbase_layer]}")
-hbase_server = nil
-hbase_layer = node[:opsworks][:layers][
-  node[:trackserver][:collector][:hbase_layer]]
-if hbase_layer.nil?
-  Chef::Log.warn "No Hbase in the layer"
-else
-  hbase_layer[:instances].each do |name, instance|
-    if (instance[:availability_zone] == 
-        node[:opsworks][:instance][:availability_zone] or 
-        hbase_server.nil?) then
-      hbase_server = instance[:private_ip]
-      node.default[:hbase][:hbase_site]['hbase.rootdir'] = \
-      "hdfs://#{hbase_server}:8020"
-      node.default[:hbase][:hbase_site]['hbase.zookeeper.quorum'] = \
-      "#{hbase_server}"
-    end
-  end
-end
 
 if node[:opsworks][:activity] == "configure" then
   # install hbase libraries
