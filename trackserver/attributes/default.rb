@@ -45,7 +45,7 @@ default[:trackserver][:collector][:s3_serializer] = \
   "org.apache.flume.sink.hdfs.AvroEventSerializer$Builder"
 default[:trackserver][:collector][:do_hbase_sink] = false
 default[:trackserver][:collector][:hbase_serializer] = \
-  "com.neon.flume.NeonSerializer"
+  "com.neon.flume.NeonGenericSerializer"
 
 # Hbase sink configurations
 default[:trackserver][:collector][:hbase_layer] = "hbase"
