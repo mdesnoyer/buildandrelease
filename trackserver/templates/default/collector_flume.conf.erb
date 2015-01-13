@@ -44,7 +44,7 @@ agent.channels.<%= @hc %>.capacity = 500000
 agent.channels.<%= @hc %>.transactionCapacity = 10000
 
 # The sink goes to Hbase
-agent.sinks.<%= @hk %>.type = org.apache.flume.sink.hbase.AsyncHBaseSink 
+agent.sinks.<%= @hk %>.type = com.neon.flume.NeonAsyncHBaseSink
 agent.sinks.<%= @hk %>.channel = <%= @hc %>
 agent.sinks.<%= @hk %>.batchSize = <%= @hbase_flush_batch_size%>
 agent.sinks.<%= @hk %>.coalesceIncrements = true
