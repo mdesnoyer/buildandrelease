@@ -40,8 +40,8 @@ agent.sinks.<%= @ck %>.hdfs.fileType = CompressedStream
 <% if @do_hbase_sink %>
 # second channel is to go to hbase
 agent.channels.<%= @hc %>.type = memory
-agent.channels.<%= @hc %>.capacity = 100000
-agent.channels.<%= @hc %>.transactionCapacity = 1000
+agent.channels.<%= @hc %>.capacity = 500000
+agent.channels.<%= @hc %>.transactionCapacity = 10000
 
 # The sink goes to Hbase
 agent.sinks.<%= @hk %>.type = com.neon.flume.NeonAsyncHBaseSink
@@ -51,4 +51,6 @@ agent.sinks.<%= @hk %>.coalesceIncrements = true
 agent.sinks.<%= @hk %>.table = <%= @hbase_table %>
 agent.sinks.<%= @hk %>.columnFamily = <%= @hbase_cf %>
 agent.sinks.<%= @hk %>.serializer = <%= @hbase_serializer %>
+agent.sinks.<%= @hk %>.zookeeperQuorum= <%= @zookeeper_quorum%>
+agent.sinks.<%= @hk %>.znodeParent = <%= @znode_parent%>
 <% end %>
