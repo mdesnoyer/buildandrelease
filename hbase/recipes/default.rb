@@ -106,6 +106,7 @@ node[:deploy].each do |app_name, deploy|
   bash "initialize_zookeeper" do
     user "root"
     group "root"
+    not_if { ::File.exist?(node.default['zookeeper']['zoocfg']['dataDir']) }
     code <<-EOH
       /etc/init.d/zookeeper-server init --force 
       EOH
