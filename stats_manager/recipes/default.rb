@@ -15,7 +15,7 @@ include_recipe "stats_manager::config"
 pydeps = {
   "numpy" => "1.6.1",
   "futures" => "2.1.5",
-  "tornado" => "3.1.1",
+  "tornado" => "4.0.2",
   "setuptools" => "4.0.1",
   "avro" => "1.7.6",
   "boto" => "2.32.1",
@@ -26,7 +26,9 @@ pydeps = {
   "thrift" => "0.9.1",
   "PyYAML" => "3.10",
   "dateutils" => "0.6.6",
-  "winpdb" => "1.4.8"
+  "winpdb" => "1.4.8",
+  "pyhs2" => "0.6.0",
+  "happybase" => "0.9"
 }
 
 # Install the python dependencies
