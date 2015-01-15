@@ -26,7 +26,9 @@ pydeps = {
   "thrift" => "0.9.1",
   "PyYAML" => "3.10",
   "dateutils" => "0.6.6",
-  "winpdb" => "1.4.8"
+  "winpdb" => "1.4.8",
+  "pyhs2" => "0.6.0",
+  "happybase" => "0.9"
 }
 
 # Install the python dependencies

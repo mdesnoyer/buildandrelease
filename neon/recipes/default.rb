@@ -49,3 +49,8 @@ package "mailutils" do
   :install
   options "--fix-missing"
 end
+
+# Install sasl
+package "libsasl2-dev" do
+  :install
+end
