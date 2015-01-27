@@ -14,6 +14,7 @@ default[:video_client][:video_db_layer] = "redis"
 default[:video_client][:video_server_fallbackhost] = "video-server1"
 default[:video_client][:video_server_layer] = "video_server"
 default[:video_client][:video_server_port] = 8081 
+default[:video_client][:video_server_auth] = "secret_token" 
 default[:video_client][:max_videos_per_proc] = 10
 default[:video_client][:dequeue_period] = 10.0 
 default[:video_client][:notification_api_key] = "icAxBCbwo--owZaFED8hWA"
