@@ -35,6 +35,7 @@ template node[:video_client][:config] do
   variables({
               :video_server_host => video_server_host,
               :video_server_port => node[:video_client][:video_server_port],
+              :video_server_auth => node[:video_client][:video_server_auth],
               :video_db_host => video_db_host,
               :video_db_port => node[:video_client][:video_db_port],
               :max_videos_per_proc => node[:video_client][:max_videos_per_proc],
