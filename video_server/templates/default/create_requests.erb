@@ -4,4 +4,4 @@
 cd <%= @neon_root_dir %>
 VIRTUAL_ENV=<%= @neon_root_dir %>/.pyenv
 PATH="${VIRTUAL_ENV}/bin:$PATH"
-sudo -u <%= @cron_user %> ${VIRTUAL_ENV}/bin/python <%= @neon_root_dir %>/api/create_brightcove_requests.py -c <%= @config_file%>
+sudo -u <%= @cron_user %> ${VIRTUAL_ENV}/bin/python <%= @neon_root_dir %>/tools/create_brightcove_requests.py -c <%= @config_file%>
