@@ -1,4 +1,4 @@
-api:
+video_processor:
   client:
     model_file: <%= @model_file %>
     video_server: <%= @video_server_host %>:<%= @video_server_port %>
@@ -8,16 +8,8 @@ api:
     server_auth: <%= @video_server_auth %>
     extra_workers: <%= @extra_workers %>
     video_temp_dir: <%= @video_temp_dir %>
-
-  server:
-    port: 8081
-
-  brightcove_api:
-    max_write_connections: 1
-    max_read_connections: 50
-    max_retries: 5
  
-supportServices:
+cmsdb:
   neondata:
     accountDB: <%= @video_db_host %>
     videoDB: <%= @video_db_host %>

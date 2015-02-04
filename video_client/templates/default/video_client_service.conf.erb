@@ -12,6 +12,6 @@ setgid <%= @group %>
 chdir <%= @neon_root_dir %>
 env VIRTUAL_ENV=<%= @neon_root_dir %>/.pyenv
 env PATH="${VIRTUAL_ENV}/bin:$PATH"
-exec ${VIRTUAL_ENV}/bin/python <%= @neon_root_dir %>/api/client.py -c <%= @config_file%> 2>/dev/null
+exec ${VIRTUAL_ENV}/bin/python <%= @neon_root_dir %>/video_processor/client.py -c <%= @config_file%> 2>/dev/null
 
 respawn
