@@ -63,7 +63,7 @@ node[:deploy].each do |app_name, deploy|
     group "neon"
     code <<-EOH
        . enable_env
-       nosetests --exe api utils supportServices model
+       nosetests --exe utils cmsdb model video_processor
        model/bin/TextDetectionTest
     EOH
     not_if {  ::File.exists?(app_tested) }

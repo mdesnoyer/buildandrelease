@@ -12,6 +12,6 @@ setgid <%= @group %>
 chdir <%= @neon_root_dir %>
 env VIRTUAL_ENV=<%= @neon_root_dir %>/.pyenv
 env PATH="${VIRTUAL_ENV}/bin:$PATH"
-exec ${VIRTUAL_ENV}/bin/python <%= @neon_root_dir %>/supportServices/services.py -c <%= @config_file%>
+exec ${VIRTUAL_ENV}/bin/python <%= @neon_root_dir %>/cmsapi/services.py -c <%= @config_file%>
 
 respawn
