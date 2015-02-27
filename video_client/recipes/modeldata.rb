@@ -13,10 +13,10 @@ directory node[:video_client][:model_data_folder] do
 end
 
 # Install the ssh deploy key to get the repository
-if data[:repo_key].start_with?("s3://") then
+if node[:video_client][:gitannex_key].start_with?("s3://") then
   # The key is on s3, so go get it
   s3_file "#{node[:neon][:home]}/.ssh/model_data.pem" do
-    source data[:repo_key]
+    source node[:video_client][:gitannex_key]
     owner "neon"
     group "neon"
     action :create
@@ -25,7 +25,7 @@ if data[:repo_key].start_with?("s3://") then
 else
   # The key is in the variable, so write it to a file
   file "#{node[:neon][:home]}/.ssh/model_data.pem" do
-    content data[:repo_key]
+    content node[:video_client][:gitannex_key]
     owner "neon"
     group "neon"
     action :create
