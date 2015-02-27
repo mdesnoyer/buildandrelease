@@ -1,42 +1,62 @@
 # Git Annex & setup model data
 # TODO: Fix the /root/.gitconfig lock issue & change user to root
 
-directory "/root/.ssh" do  
-  user "root"
-  group "root"
-  mode "0700"
-end
-
-s3_file "/root/.ssh/git-annex.pem" do
-  source node[:video_client][:gitannex_key]
-  owner "root"
-  group "root"
-  action :create
-  mode "0600"
-end
-
 apt_package "git-annex" do
     action :install
 end
 
-template "/root/.ssh/config" do
-  source "gitannex-ssh-config.erb"
-  owner "root"
-  group "root"
-  mode "0600"
-  variables({
-            :hostname => "#{node[:video_client][:model_data_host]}",
-            :key_file => "/root/.ssh/git-annex.pem",
-  })
+directory node[:video_client][:model_data_folder] do
+  action :create
+  owner "neon"
+  group "neon"
+  mode "1755"
 end
- 
-bash 'root' do
-  user "root" 
-  cwd "#{node[:neon][:home]}"
+
+# Install the ssh deploy key to get the repository
+if data[:repo_key].start_with?("s3://") then
+  # The key is on s3, so go get it
+  s3_file "#{node[:neon][:home]}/.ssh/model_data.pem" do
+    source data[:repo_key]
+    owner "neon"
+    group "neon"
+    action :create
+    mode "0600"
+  end
+else
+  # The key is in the variable, so write it to a file
+  file "#{node[:neon][:home]}/.ssh/model_data.pem" do
+    content data[:repo_key]
+    owner "neon"
+    group "neon"
+    action :create
+    mode "0600"
+  end
+end
+
+template "#{node[:neon][:code_root]}/model_data-wrap-ssh4git.sh" do
+  owner "neon"
+  group "neon"
+  cookbook "neon"
+  source "wrap-ssh4git.sh.erb"
+  mode "0755"
+  variables({:ssh_key => "#{node[:neon][:home]}/.ssh/model_data.pem"})
+end
+
+git node[:video_client][:model_data_folder] do
+  repository #{node[:video_client][:model_data_repo]}
+  revision node[:video_client][:model_data_repo_rev]
+  action :sync
+  user "neon"
+  group "neon"
+  ssh_wrapper "#{node[:neon][:code_root]}/model_data-wrap-ssh4git.sh"
+end
+
+bash "get_model_file" do
+  user "neon"
+  cwd node[:video_client][:model_data_folder]
   code <<-EOH
-  git clone git@#{node[:video_client][:model_data_loc]} model_data
-  cd model_data
-  git annex sync
-  git annex get
+  git annex get #{node[:video_client][:model_file]}
   EOH
+  action :nothing
+  subscribes :run, "git[#{node[:video_client][:model_data_folder]}]"
 end
