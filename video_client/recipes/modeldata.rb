@@ -43,7 +43,7 @@ template "#{node[:neon][:code_root]}/model_data-wrap-ssh4git.sh" do
 end
 
 git node[:video_client][:model_data_folder] do
-  repository #{node[:video_client][:model_data_repo]}
+  repository node[:video_client][:model_data_repo]
   revision node[:video_client][:model_data_repo_rev]
   action :sync
   user "neon"
