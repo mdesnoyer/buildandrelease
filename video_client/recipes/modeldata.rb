@@ -55,6 +55,9 @@ bash "get_model_file" do
   user "neon"
   cwd node[:video_client][:model_data_folder]
   code <<-EOH
+  git config user.email ops@neon-lab.com
+  git config user.name #{node[:opsworks][:instance][:hostname]}
+  git annex sync
   git annex get #{node[:video_client][:model_file]}
   EOH
   action :nothing
