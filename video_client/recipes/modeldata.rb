@@ -62,9 +62,9 @@ bash "get_model_file" do
     "GIT_SSH" => "#{node[:neon][:code_root]}/model_data-wrap-ssh4git.sh"
   })
   code <<-EOH
+  git clone #{node[:video_client][:model_data_repo]} .
   git config user.email ops@neon-lab.com
   git config user.name #{node[:opsworks][:instance][:hostname]}
-  git clone #{node[:video_client][:model_data_repo]} .
   git annex sync
   git annex get #{node[:video_client][:model_file]}
   EOH
