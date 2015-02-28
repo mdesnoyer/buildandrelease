@@ -79,6 +79,6 @@ bash "get_model_file" do
 end
 
 file "#{node[:neon][:home]}/model_file.md5" do
-  content Digest::MD5.file("#{node[:video_client][:model_data_folder]}/#{node[:video_client][:model_file]}").hexdigest
+  content lazy { Digest::MD5.file("#{node[:video_client][:model_data_folder]}/#{node[:video_client][:model_file]}").hexdigest }
   action :create
 end
