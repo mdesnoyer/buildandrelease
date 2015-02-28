@@ -80,5 +80,8 @@ end
 
 file "#{node[:neon][:home]}/model_file.md5" do
   content lazy { Digest::MD5.file("#{node[:video_client][:model_data_folder]}/#{node[:video_client][:model_file]}").hexdigest }
+  owner "neon"
+  group "neon"
+  mode "0644"
   action :create
 end
