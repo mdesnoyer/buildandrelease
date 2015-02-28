@@ -9,6 +9,7 @@ directory node[:video_client][:model_data_folder] do
   owner "neon"
   group "neon"
   mode "1755"
+  recursive true
 end
 
 # Install the ssh deploy key to get the repository
