@@ -33,14 +33,25 @@ else
   end
 end
 
-template "#{node[:neon][:code_root]}/model_data-wrap-ssh4git.sh" do
+template "#{node[:neon][:home]}/.ssh/config" do
+  source "gitannex-ssh-config.erb"
   owner "neon"
   group "neon"
-  cookbook "neon"
-  source "wrap-ssh4git.sh.erb"
-  mode "0755"
-  variables({:ssh_key => "#{node[:neon][:home]}/.ssh/model_data.pem"})
+  mode "0600"
+  variables({
+            :hostname => node[:video_client][:model_data_host],
+            :key_file => "#{node[:neon][:home]}/.ssh/model_data.pem",
+  })
 end
+
+#template "#{node[:neon][:code_root]}/model_data-wrap-ssh4git.sh" do
+#  owner "neon"
+#  group "neon"
+#  cookbook "neon"
+#  source "wrap-ssh4git.sh.erb"
+#  mode "0755"
+#  variables({:ssh_key => "#{node[:neon][:home]}/.ssh/model_data.pem"})
+#end
 
 #git node[:video_client][:model_data_folder] do
 #  repository node[:video_client][:model_data_repo]
@@ -58,9 +69,6 @@ end
 bash "get_model_file" do
   user "neon"
   cwd node[:video_client][:model_data_folder]
-  environment ({
-    "GIT_SSH" => "#{node[:neon][:code_root]}/model_data-wrap-ssh4git.sh"
-  })
   code <<-EOH
   git clone #{node[:video_client][:model_data_repo]} .
   git config user.email ops@neon-lab.com
