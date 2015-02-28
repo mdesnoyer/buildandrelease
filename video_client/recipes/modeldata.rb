@@ -1,5 +1,4 @@
 # Git Annex & setup model data
-# TODO: Fix the /root/.gitconfig lock issue & change user to root
 
 apt_package "git-annex" do
     action :install
@@ -44,26 +43,6 @@ template "#{node[:neon][:home]}/.ssh/config" do
   })
 end
 
-#template "#{node[:neon][:code_root]}/model_data-wrap-ssh4git.sh" do
-#  owner "neon"
-#  group "neon"
-#  cookbook "neon"
-#  source "wrap-ssh4git.sh.erb"
-#  mode "0755"
-#  variables({:ssh_key => "#{node[:neon][:home]}/.ssh/model_data.pem"})
-#end
-
-#git node[:video_client][:model_data_folder] do
-#  repository node[:video_client][:model_data_repo]
-#  revision node[:video_client][:model_data_repo_rev]
-#  action :sync
-#  user "neon"
-#  group "neon"
-#  ssh_wrapper "#{node[:neon][:code_root]}/model_data-wrap-ssh4git.sh"
-#end
-
-
-
 bash "get_model_file" do
   user "neon"
   cwd node[:video_client][:model_data_folder]
@@ -75,9 +54,10 @@ bash "get_model_file" do
   git annex get #{node[:video_client][:model_file]}
   EOH
   action :run
-  #subscribes :run, "git[#{node[:video_client][:model_data_folder]}]"
 end
 
+# Use an md5 of the model file to see if it has changed and trigger a
+# service restart.
 file "#{node[:neon][:home]}/model_file.md5" do
   content lazy { Digest::MD5.file("#{node[:video_client][:model_data_folder]}/#{node[:video_client][:model_file]}").hexdigest }
   owner "neon"
