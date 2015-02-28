@@ -62,9 +62,7 @@ end
 #  ssh_wrapper "#{node[:neon][:code_root]}/model_data-wrap-ssh4git.sh"
 #end
 
-file "#{node[:video_client][:model_data_folder]}/#{node[:video_client][:model_file]}" do
-  action :nothing
-end
+
 
 bash "get_model_file" do
   user "neon"
@@ -78,4 +76,9 @@ bash "get_model_file" do
   EOH
   action :run
   #subscribes :run, "git[#{node[:video_client][:model_data_folder]}]"
+end
+
+file "#{node[:neon][:home]}/model_file.md5" do
+  content Digest::MD5.file("#{node[:video_client][:model_data_folder]}/#{node[:video_client][:model_file]}").hexdigest
+  action :create
 end
