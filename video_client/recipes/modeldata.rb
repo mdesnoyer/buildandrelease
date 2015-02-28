@@ -42,24 +42,32 @@ template "#{node[:neon][:code_root]}/model_data-wrap-ssh4git.sh" do
   variables({:ssh_key => "#{node[:neon][:home]}/.ssh/model_data.pem"})
 end
 
-git node[:video_client][:model_data_folder] do
-  repository node[:video_client][:model_data_repo]
-  revision node[:video_client][:model_data_repo_rev]
-  action :sync
-  user "neon"
-  group "neon"
-  ssh_wrapper "#{node[:neon][:code_root]}/model_data-wrap-ssh4git.sh"
+#git node[:video_client][:model_data_folder] do
+#  repository node[:video_client][:model_data_repo]
+#  revision node[:video_client][:model_data_repo_rev]
+#  action :sync
+#  user "neon"
+#  group "neon"
+#  ssh_wrapper "#{node[:neon][:code_root]}/model_data-wrap-ssh4git.sh"
+#end
+
+file "#{node[:video_client][:model_data_folder]}/#{node[:video_client][:model_file]}" do
+  action :nothing
 end
 
 bash "get_model_file" do
   user "neon"
   cwd node[:video_client][:model_data_folder]
+  environment ({
+    "GIT_SSH" => "#{node[:neon][:code_root]}/model_data-wrap-ssh4git.sh"
+  })
   code <<-EOH
   git config user.email ops@neon-lab.com
   git config user.name #{node[:opsworks][:instance][:hostname]}
+  git clone #{node[:video_client][:model_data_repo]} .
   git annex sync
   git annex get #{node[:video_client][:model_file]}
   EOH
-  action :nothing
-  subscribes :run, "git[#{node[:video_client][:model_data_folder]}]"
+  action :run
+  #subscribes :run, "git[#{node[:video_client][:model_data_folder]}]"
 end
