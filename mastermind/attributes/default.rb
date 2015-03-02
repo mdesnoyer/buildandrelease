@@ -16,6 +16,8 @@ default[:mastermind][:incr_stats_fallbackhost] = "hbase1"
 default[:mastermind][:directive_bucket] = "neon-image-serving-directives"
 default[:mastermind][:directive_filename] = "mastermind"
 default[:mastermind][:publishing_period] = 300
+default[:mastermind][:expiry_buffer] = 30
+default[:mastermind][:serving_update_delay] = 120
 
 
 # Specify the repos to user
