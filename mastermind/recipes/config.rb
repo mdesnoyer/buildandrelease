@@ -37,6 +37,8 @@ template node[:mastermind][:config] do
               :directive_bucket => node[:mastermind][:directive_bucket],
               :directive_filename => node[:mastermind][:directive_filename],
               :publishing_period => node[:mastermind][:publishing_period],
+              :expiry_buffer => node[:mastermind][:expiry_buffer],
+              :serving_update_delay => node[:mastermind][:serving_update_delay],
               :video_db_host => video_db_host,
               :video_db_port => node[:mastermind][:video_db_port],
               :incr_stats_host => incr_stats_host,
