@@ -34,12 +34,15 @@ package_deps.each do |pkg|
 end
 
 # Install redis and make sure the service is turned off
+remote_file "/tmp/redis-installer.deb" do
+  source node[:neon][:redis_pkg_link]
+  mode 0644
+end
 dpkg_package "redis-server" do
   action :install
-  source node[:neon][:redis_pkg_link]
+  source "/tmp/redis-installer.deb"
   version node[:neon][:redis_version]
 end
-
 service "redis-server" do
   action :stop
 end
