@@ -37,7 +37,7 @@ end
 dpkg_package "redis-server" do
   action :install
   source node[:neon][:redis_pkg_link]
-  version default[:neon][:redis_version]
+  version node[:neon][:redis_version]
 end
 
 service "redis-server" do
