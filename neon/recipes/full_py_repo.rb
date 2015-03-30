@@ -40,7 +40,7 @@ dpkg_package "redis-server" do
   version default[:neon][:redis_version]
 end
 
-service "redis-server" do:
+service "redis-server" do
   action :stop
 end
 
