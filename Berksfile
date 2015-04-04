@@ -1,6 +1,7 @@
 source "https://api.berkshelf.com"
 
 cookbook "apt", "~> 2.4.0"
+cookbook 'build-essential', '>= 1.4.0'
 cookbook "cmake", "~> 0.3"
 cookbook "gflags", "~> 1.0"
 cookbook "git", "~> 4.0.2"
