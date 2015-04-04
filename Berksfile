@@ -12,6 +12,7 @@ cookbook 'ark', '~> 0.9.0'
 cookbook 'maven', '~> 1.2.0'
 cookbook 'filesystem', '~> 0.9.0'
 cookbook 'hostsfile', '= 2.4.5'
+cookbook 'awscli', '~> 1.0.1'
 
 # These opencv depdencies need to be pulled into the repo because there is a 
 # bug in chef that creates and notifies don't work well together. 
@@ -29,5 +30,6 @@ cookbook "neon_logs", path: "neon_logs"
 cookbook "mastermind", path: "mastermind"
 cookbook "stats_manager", path: "stats_manager"
 cookbook "trackserver", path: "trackserver"
+cookbook "cmsdb", path: "cmsdb"
 cookbook "neon-nginx", path: "neon-nginx"
 cookbook "neon-opencv", path: "neon-opencv"
