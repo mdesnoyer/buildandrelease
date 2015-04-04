@@ -8,5 +8,5 @@
 # All rights reserved - Do Not Redistribute
 #
 
-default.node[:cmsdb][:is_slave] = true
+node.default[:cmsdb][:is_slave] = true
 include_recipe "cmsdb::default"
