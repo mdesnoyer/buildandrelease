@@ -22,6 +22,7 @@ directory node[:monitoring][:log_dir] do
   group "neon"
   mode "0755"
 end
+
 file node[:monitoring][:log_file] do
   user "neon"
   group "neon"
@@ -35,7 +36,7 @@ node[:deploy].each do |app_name, deploy|
 
   repo_path = get_repo_path(app_name)
   Chef::Log.info("Deploying app #{app_name} using code path #{repo_path}")
-
+  
   # Install the neon code
   include_recipe "neon::full_py_repo"
 
@@ -74,6 +75,7 @@ node[:deploy].each do |app_name, deploy|
     action [:enable, :start]
     subscribes :restart, "git[#{repo_path}]", :delayed
   end
+end
 
 if ['undeploy', 'shutdown'].include? node[:opsworks][:activity] then
   # Turn off monitoring
