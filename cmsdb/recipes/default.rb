@@ -14,6 +14,10 @@ include_recipe "neon::system_metrics"
 if node[:cmsdb][:is_slave] then
   node.default[:redis][:slave_priority] = 0
   node.default[:redis][:master_ip] = get_host_in_layer(node[:cmsdb][:master_layer], node[:cmsdb][:master_fallback_host])
+  
+  # Don't save anything to disk. No need to.
+  node.default[:redis][:snapshot_saves] = []
+  node.default[:redis][:appendonly] = 'no'
 end
 include_recipe "redis::default"
 

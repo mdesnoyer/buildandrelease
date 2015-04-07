@@ -5,7 +5,7 @@ default[:redis][:version] = "2.8.19"
 default[:redis][:source_checksum] = '29bb08abfc3d392b2f0c3e7f48ec46dd09ab1023f9a5575fc2a93546f4ca5145'
 default[:redis][:db_dir] = '/mnt/redis'
 default[:redis][:bind_address] = node[:opsworks][:instance][:private_ip]
-default[:redis][:log_file] = '/mnt/neon/redis.log'
+default[:redis][:log_file] = '#{node[:redis][:db_dir]}/redis.log'
 default[:redis][:appendonly] = 'yes'
 default[:redis][:notify_keyspace_events] = 'Kgsz$'
 
