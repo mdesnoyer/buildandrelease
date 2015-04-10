@@ -43,7 +43,7 @@ mountable_drives = []
     else
       mount_point = "#{node[:neon][:filesystem][:ephemeral_base]}#{drive_idx}"
     end
-    if used_mount.include? mount_point then
+    if used_mounts.include? mount_point then
       mount_point = "#{mount_point}/tmp#{drive_id}"
     end
     
