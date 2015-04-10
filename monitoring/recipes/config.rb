@@ -19,6 +19,12 @@ video_db_host = get_host_in_layer(node[:monitoring][:video_db_layer],
                                   node[:monitoring][:video_db_fallbackhost])
 Chef::Log.info("Connecting to video db at #{video_db_host}")
 
+# Find the isp host
+isp_host = get_host_in_layer(node[:monitoring][:isp_layer], nil)
+
+# Find the cmsapi
+cmsapi_host = get_host_in_layer(node[:monitoring][:cmsapi_layer], nil)
+
 repo_path = get_repo_path("monitoring")
 
 template node[:monitoring][:config] do
@@ -35,5 +41,10 @@ template node[:monitoring][:config] do
               :carbon_host => node[:neon][:carbon_host],
               :carbon_port => node[:neon][:carbon_port],
               :flume_log_port => node[:neon_logs][:json_http_source_port],
+              :cmsapi_host => cmsapi_host,
+              :isp_host => isp_host,
+              :account => node[:monitoring][:account],
+              :api_key => node[:monitoring][:api_key],
+              :sleep => node[:monitoring][:sleep]
             })
 end
