@@ -44,7 +44,6 @@ template node[:monitoring][:config] do
               :cmsapi_host => cmsapi_host,
               :isp_host => isp_host,
               :account => node[:monitoring][:account],
-              :api_key => node[:monitoring][:api_key],
-              :sleep => node[:monitoring][:sleep]
+              :api_key => node[:monitoring][:api_key]
             })
 end
