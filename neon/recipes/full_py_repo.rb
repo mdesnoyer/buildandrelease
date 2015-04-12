@@ -21,7 +21,6 @@ package_deps = [
                 "cmake",
                 "libpcre3",
                 "libpcre3-dev",
-                "redis-server",
                 "libgtest-dev",
                 "cython",
                 "libsnappy-dev",
@@ -32,6 +31,20 @@ package_deps.each do |pkg|
   package pkg do
     action :install
   end
+end
+
+# Install redis and make sure the service is turned off
+remote_file "/tmp/redis-installer.deb" do
+  source node[:neon][:redis_pkg_link]
+  mode 0644
+end
+dpkg_package "redis-server" do
+  action :install
+  source "/tmp/redis-installer.deb"
+  version node[:neon][:redis_version]
+end
+service "redis-server" do
+  action :stop
 end
 
 # Install the FindNumpy.cmake file

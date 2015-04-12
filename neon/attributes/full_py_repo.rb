@@ -17,3 +17,6 @@ default[:yasm][:build_dir] = "#{node[:neon][:home]}/yasm"
 default[:x264][:build_dir] = "#{node[:neon][:home]}/x264"
 default[:libvpx][:build_dir] = "#{node[:neon][:home]}/libvpx"
 default[:ffmpeg][:build_dir] = "#{node[:neon][:home]}/ffmpeg"
+
+default[:neon][:redis_pkg_link] = "https://neon-dependencies.s3.amazonaws.com/redis-2.8.4.ubuntu.12.04_amd64.deb"
+default[:neon][:redis_version] = "2.8.4"
