@@ -14,13 +14,13 @@ else
 end
 
 # Find the video db
-video_db_host = get_host_in_layer(node[:mastermind][:video_db_layer],
-                                  node[:mastermind][:video_db_fallbackhost])
+video_db_host = get_first_host_in_layer(node[:mastermind][:video_db_layer],
+                                        node[:mastermind][:video_db_fallbackhost])
 Chef::Log.info("Connecting mastermind to video db at #{video_db_host}")
 
 # Get the hbase database
-incr_stats_host = get_host_in_layer(node[:mastermind][:incr_stats_layer],
-                                    node[:mastermind][:incr_stats_fallbackhost])
+incr_stats_host = get_first_host_in_layer(node[:mastermind][:incr_stats_layer],
+                                          node[:mastermind][:incr_stats_fallbackhost])
 Chef::Log.info("Connecting mastermind to incremental stats db #{incr_stats_host}")
 
 # Write the configuration file for the mastermind

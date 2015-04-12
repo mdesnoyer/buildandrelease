@@ -30,5 +30,29 @@ class Chef
         return fallback_host
       end
     end
+
+    # Returns the first host in a layer
+    def get_first_host_in_layer(layer_name, fallback_host)
+      layer = node[:opsworks][:layers][layer_name]
+      if layer.nil?
+        Chef::Log.warn "Could not find layer #{layer_name}. Falling back to host #{fallback_host}"
+        return fallback_host
+      end
+
+      first_hostname = nil
+      first_hostip = nil
+      layer[:instances].each do |name, instance|
+        if (first_hostname.nil? or name < first_hostname) then
+          first_hostname = name
+          first_hostip = instance[:private_ip]
+        end
+      end
+
+      if first_hostname.nil? then
+        Chef::Log.warn "Could not find a valid host in layer #{layer_name}. Falling back to host #{fallback_host}"
+        return fallback_host
+      end
+      return first_hostip
+    end
   end
 end

@@ -15,8 +15,8 @@ end
 
 # Find the video db
 Chef::Log.info "Looking for the video database in layer: #{node[:monitoring][:video_db_layer]}"
-video_db_host = get_host_in_layer(node[:monitoring][:video_db_layer],
-                                  node[:monitoring][:video_db_fallbackhost])
+video_db_host = get_first_host_in_layer(node[:monitoring][:video_db_layer],
+                                        node[:monitoring][:video_db_fallbackhost])
 Chef::Log.info("Connecting to video db at #{video_db_host}")
 
 # Find the isp host
