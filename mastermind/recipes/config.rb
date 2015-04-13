@@ -14,8 +14,7 @@ else
 end
 
 # Find the video db
-video_db_host = get_first_host_in_layer(node[:mastermind][:video_db_layer],
-                                        node[:mastermind][:video_db_fallbackhost])
+video_db_host = get_master_cmsdb_ip()
 Chef::Log.info("Connecting mastermind to video db at #{video_db_host}")
 
 # Get the hbase database
@@ -40,7 +39,7 @@ template node[:mastermind][:config] do
               :expiry_buffer => node[:mastermind][:expiry_buffer],
               :serving_update_delay => node[:mastermind][:serving_update_delay],
               :video_db_host => video_db_host,
-              :video_db_port => node[:mastermind][:video_db_port],
+              :video_db_port => node[:cmsdb][:master_port],
               :incr_stats_host => incr_stats_host,
               :log_file => node[:mastermind][:log_file],
               :carbon_host => node[:neon][:carbon_host],

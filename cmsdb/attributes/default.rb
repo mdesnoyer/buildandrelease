@@ -14,6 +14,8 @@ default[:redis][:notify_keyspace_events] = 'Kgsz$'
 default[:cmsdb][:is_slave] = false
 default[:cmsdb][:master_layer] = "redis"
 default[:cmsdb][:master_fallback_host] = "redis1"
+default[:cmsdb][:master_port] = 6379
+default[:cmsdb][:master_ip] = nil
 
 # Configuration for the backup cron
 default[:cmsdb][:backup_s3_bucket] = 'neon-db-backup'

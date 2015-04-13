@@ -13,7 +13,7 @@ include_recipe "neon::system_metrics"
 # Install redis
 if node[:cmsdb][:is_slave] then
   node.default[:redis][:slave_priority] = 0
-  node.default[:redis][:master_ip] = get_first_host_in_layer(node[:cmsdb][:master_layer], node[:cmsdb][:master_fallback_host])
+  node.default[:redis][:master_ip] = get_master_cmsdb_ip()
   
   # Don't save anything to disk. No need to.
   node.default[:redis][:snapshot_saves] = {'""' => ""}
