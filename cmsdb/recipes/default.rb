@@ -11,14 +11,6 @@ include_recipe "neon::default"
 include_recipe "neon::system_metrics"
 
 # Install redis
-if node[:cmsdb][:is_slave] then
-  node.default[:redis][:slave_priority] = 0
-  node.default[:redis][:master_ip] = get_master_cmsdb_ip()
-  
-  # Don't save anything to disk. No need to.
-  node.default[:redis][:snapshot_saves] = {'""' => ""}
-  node.default[:redis][:appendonly] = 'no'
-end
 include_recipe "redis::default"
 
 if not node[:cmsdb][:is_slave] then
