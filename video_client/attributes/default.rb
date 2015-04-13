@@ -1,4 +1,5 @@
 include_attribute "neon::default"
+include_attribute "cmsdb::default"
 
 # Parameters for video_client
 default[:video_client][:log_dir] = "#{node[:neon][:log_dir]}/video_client"
@@ -10,9 +11,6 @@ default[:video_client][:model_data_repo] = "git@#{node[:video_client][:model_dat
 default[:video_client][:model_data_repo_rev] = "master"
 default[:video_client][:model_file] = "20130924_textdiff.model"
 default[:video_client][:model_data_folder] = "#{node[:neon][:home]}/model_data/repo"
-default[:video_client][:video_db_port] = 6379
-default[:video_client][:video_db_fallbackhost] = "redis1"
-default[:video_client][:video_db_layer] = "redis"
 default[:video_client][:video_server_fallbackhost] = "video-server1"
 default[:video_client][:video_server_layer] = "video_server"
 default[:video_client][:video_server_port] = 8081 

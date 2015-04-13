@@ -9,6 +9,7 @@ depends 'apt'
 depends 'java'
 depends 'neon'
 depends 'neon_logs'
+depends 'cmsdb'
 depends 'python', "= 1.4.6"
 
 supports 'ubuntu'

@@ -14,9 +14,7 @@ else
 end
 
 # Find the video db
-Chef::Log.info "Looking for the video database in layer: #{node[:video_client][:video_db_layer]}"
-video_db_host = get_host_in_layer(node[:video_client][:video_db_layer],
-                                  node[:video_client][:video_db_fallbackhost])
+video_db_host = get_master_cmsdb_ip()
 Chef::Log.info("Connecting to video db at #{video_db_host}")
 
 # Find the video server 
@@ -37,7 +35,7 @@ template node[:video_client][:config] do
               :video_server_port => node[:video_client][:video_server_port],
               :video_server_auth => node[:video_client][:video_server_auth],
               :video_db_host => video_db_host,
-              :video_db_port => node[:video_client][:video_db_port],
+              :video_db_port => node[:cmsdb][:master_port],
               :max_videos_per_proc => node[:video_client][:max_videos_per_proc],
               :dequeue_period => node[:video_client][:dequeue_period],
               :notification_api_key => node[:video_client][:notification_api_key],
