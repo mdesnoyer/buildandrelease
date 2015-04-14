@@ -14,9 +14,7 @@ else
 end
 
 # Find the video db
-Chef::Log.info "Looking for the video database in layer: #{node[:bc_controller][:video_db_layer]}"
-video_db_host = get_host_in_layer(node[:bc_controller][:video_db_layer],
-                                  node[:bc_controller][:video_db_fallbackhost])
+video_db_host = get_master_cmsdb_ip()
 Chef::Log.info("Connecting to video db at #{video_db_host}")
 
 # Find Mastermind
@@ -40,7 +38,7 @@ template node[:bc_controller][:config] do
   variables({
               :bc_controller_port => node[:bc_controller][:port],
               :video_db_host => video_db_host,
-              :video_db_port => node[:bc_controller][:video_db_port],
+              :video_db_port => node[:cmsdb][:master_port],
               :mastermind_host => mastermind_host,
               :mastermind_port => node[:bc_controller][:mastermind_port],
               :cmsapi_host => cmsapi_host, 

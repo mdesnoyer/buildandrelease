@@ -1,7 +1,7 @@
-name             'Controller'
+name             'monitoring'
 maintainer       'Neon'
 maintainer_email 'ops@neon-lab.com'
-description      'AB Controller'
+description      'videopipeline server'
 license          'Proprietary - All Rights Reserved'
 version          '0.9.0'
 

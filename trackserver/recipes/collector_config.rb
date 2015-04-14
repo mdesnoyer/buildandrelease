@@ -1,6 +1,6 @@
 Chef::Log.info("Looking for HBase in layer: "\
                "#{node[:trackserver][:collector][:hbase_layer]}")
-hbase_server = get_host_in_layer(node[:trackserver][:collector][:hbase_layer], nil)
+hbase_server = get_first_host_in_layer(node[:trackserver][:collector][:hbase_layer], nil)
 
 node.default[:neon_logs][:flume_streams][:clicklog_collector_log] = \
   get_fileagent_config("#{get_log_dir()}/flume.log",

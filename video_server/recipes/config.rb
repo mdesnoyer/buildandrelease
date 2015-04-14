@@ -14,9 +14,7 @@ else
 end
 
 # Find the video db
-Chef::Log.info "Looking for the video database in layer: #{node[:video_server][:video_db_layer]}"
-video_db_host = get_host_in_layer(node[:video_server][:video_db_layer],
-                                  node[:video_server][:video_db_fallbackhost])
+video_db_host = get_master_cmsdb_ip()
 Chef::Log.info("Connecting to video db at #{video_db_host}")
 
 repo_path = get_repo_path("video_client")
@@ -30,7 +28,7 @@ template node[:video_server][:config] do
               :neon_root_dir => repo_path, 
               :video_server_port => node[:video_server][:port],
               :video_db_host => video_db_host,
-              :video_db_port => node[:video_server][:video_db_port],
+              :video_db_port => node[:cmsdb][:master_port],
               :log_file => node[:video_server][:log_file],
               :carbon_host => node[:neon][:carbon_host],
               :carbon_port => node[:neon][:carbon_port],
