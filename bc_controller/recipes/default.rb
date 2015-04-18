@@ -56,7 +56,8 @@ node[:deploy].each do |app_name, deploy|
        nosetests --exe api utils controllers cmsdb
     EOH
     not_if {  ::File.exists?(app_tested) }
-    notifies :restart, "service[bc_controller]", :delayed
+    notifies :restart, "service[bc_ingester]", :delayed
+    #notifies :restart, "service[bc_controller", :delayed
     notifies :create, "file[#{app_tested}]"
   end
 
