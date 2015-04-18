@@ -73,6 +73,18 @@ node[:deploy].each do |app_name, deploy|
                 :group => "neon",
               })
   end
+  template "/etc/init/bc_ingester.conf" do
+    source "bc_ingester_service.conf.erb"
+    owner "root"
+    group "root"
+    mode "0644"
+    variables({
+                :neon_root_dir => "#{repo_path}",
+                :config_file => node[:bc_controller][:ingester_config],
+                :user => "neon",
+                :group => "neon",
+              })
+  end
 
   # Write a script that will send a mail when the service dies
   template "/etc/init/bc_controller-email.conf" do
@@ -88,8 +100,29 @@ node[:deploy].each do |app_name, deploy|
                 :log_file => node[:bc_controller][:log_file]
               })
   end
+  template "/etc/init/bc_ingester-email.conf" do
+    source "mail-on-restart.conf.erb"
+    cookbook "neon"
+    owner "root"
+    group "root"
+    mode "0644"
+    variables({
+                :service => "bc_ingester",
+                :host => node[:hostname],
+                :email => node[:neon][:ops_email],
+                :log_file => node[:bc_controller][:ingester_log_file]
+              })
+  end
 
-  service "bc_controller" do
+  # TODO: Re-enable the controller when we actually run tests through
+  # Brightcove
+  #service "bc_controller" do
+  #  provider Chef::Provider::Service::Upstart
+  #  supports :status => true, :restart => true, :start => true, :stop => true
+  #  action [:enable, :start]
+  #  subscribes :restart, "git[#{repo_path}]", :delayed
+  #end
+  service "bc_ingester" do
     provider Chef::Provider::Service::Upstart
     supports :status => true, :restart => true, :start => true, :stop => true
     action [:enable, :start]
