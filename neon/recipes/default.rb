@@ -1,5 +1,7 @@
 chef_gem 'aws-sdk'
 
+include_recipe "neon::filesystem"
+
 include_recipe "apt"
 
 # Install python
@@ -34,7 +36,7 @@ end
 directory node[:neon][:log_dir] do
   user "neon"
   group "neon"
-  mode "1755"
+  mode "1777"
   recursive true
 end
 
@@ -46,4 +48,9 @@ end
 package "mailutils" do
   :install
   options "--fix-missing"
+end
+
+# Install sasl
+package "libsasl2-dev" do
+  :install
 end

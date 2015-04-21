@@ -54,7 +54,7 @@ node[:deploy].each do |app_name, deploy|
     group "neon"
     code <<-EOH
        . enable_env
-       nosetests --exe api utils supportServices
+       nosetests --exe api cmsdb utils video_processor
     EOH
     not_if {  ::File.exists?(app_tested) }
     notifies :restart, "service[video_server]", :delayed

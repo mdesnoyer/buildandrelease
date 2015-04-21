@@ -1,74 +1,83 @@
-# install hbase 
-include_recipe "hadoop::hbase"
+include_recipe "java"
+include_recipe "trackserver::collector_config"
 
-# install maven
-include_recipe "maven::default"
+node.default[:hadoop][:distribution] = 'cdh'
+node.default[:hadoop][:distribution_version] = '5'
 
-node.default[:neon_logs][:flume_streams][:clicklog_collector_log] = \
-  get_fileagent_config("#{get_log_dir()}/flume.log",
-                       "clicklog-collector-flume")
+# Specify which repos will be installed
+node.default[:neon][:repos]["tracklog_collector"] = true
+node.default[:neon][:repos]["core"] = false
+node.default[:neon][:repos]["track_server"] = false
+node.default[:neon][:repos]["neonisp"] = false
+ 
+node[:deploy].each do |app_name, deploy|
+  if app_name != "tracklog_collector" then
+    next
+  end
 
-node.default[:neon_logs][:flume_streams][:clicklog_hbase] = \
-  get_collector_with_hbasesink_config(node[:neon_logs][:collector_port],
-                          "clicklog",
-                          1073741824, #1 GB
-                          10800, # 3 hours
-                          1000, # flush size
-                          "bzip2",
-                          'org.apache.flume.sink.hdfs.AvroEventSerializer$Builder',
-                          1000, # hbase batch size
-                          "THUMBNAIL_TIMESTAMP_EVENTS",
-                          "THUMBNAIL_EVENTS_TYPES",
-                          "IMAGE_VISIBLE,IMAGE_LOAD,IMAGE_CLICK",
-                          'com.neon.flume.NeonSerializer')
+  repo_path = get_repo_path("tracklog_collector")
 
-if node[:opsworks][:activity] == "config" then
-    include_recipe "neon_logs::flume_core_config"
-else
-    include_recipe "neon_logs::flume_core"
-end
+  Chef::Log.info("Deploying app #{app_name} using code path #{repo_path}")
 
+  # install hbase libraries
+  include_recipe "hadoop::hbase"
 
-if node[:opsworks][:activity] == "configure" then
-    # Setup Hbase xml config
-    Chef::Log.info "Looking for HBase in layer: #{node[:trackserver][:collector][:hbase_layer]}"
-    hbase_server = nil
-    hbase_layer = node[:opsworks][:layers][node[:trackserver][:collector][:hbase_layer]]
-    if hbase_layer.nil?
-      Chef::Log.warn "No Hbase in the layer"
-    else
-      hbase_layer[:instances].each do |name, instance|
-        if (instance[:availability_zone] == 
-            node[:opsworks][:instance][:availability_zone] or 
-            hbase_server.nil?) then
-          hbase_server = instance[:private_ip]
-          node.default[:hbase][:hbase_site]['hbase.rootdir'] = "hdfs://#{hbase_server}:8020"
-          node.default[:hbase][:hbase_site]['hbase.zookeeper.quorum'] = "#{hbase_server}"
-        end
-      end
+  # install maven
+  package "maven" do
+    :install
+  end
+    
+  # Install the neon code
+  include_recipe "neon::repo"
+
+  # Build the java code
+  directory "#{node[:neon][:home]}/.m2" do
+    owner "neon"
+    group "neon"
+    action :create
+    mode "0755"
+    recursive true
+  end
+  app_built = "#{repo_path}/BUILD_DONE"
+  file app_built do
+    user "neon"
+    group "neon"
+    action :nothing
+    subscribes :delete, "git[#{repo_path}]", :immediately
+  end
+  execute "compile_#{app_name}" do
+    command "mvn generate-sources package"
+    cwd "#{repo_path}/flume"
+    user "neon"
+    group "neon"
+    not_if {  ::File.exists?(app_built) }
+    notifies :create, "file[#{app_built}]"
+  end
+
+  # Install the flume plugin
+  plugin_dir = "/usr/lib/flume-ng/plugins.d/neon/"
+  directory "#{plugin_dir}/lib" do
+    owner "root"
+    group "root"
+    action :create
+    recursive true
+    mode "0755"
+  end
+  jars = ["flume/target/neon-hbase-serializer-1.0-jar-with-dependencies.jar"]
+  for jar_path in jars do
+    jar_name = ::File.basename(jar_path)
+    remote_file "#{plugin_dir}/lib/#{jar_name}" do
+      source "file://#{repo_path}/#{jar_path}"
+      notifies :restart, "service[#{node[:neon_logs][:flume_service_name]}]", :delayed
     end
+  end
+    
+  # Install flume
+  include_recipe "neon_logs::flume_core"
+
+  if ['undeploy'].include? node[:opsworks][:activity] then
+    service node[:neon_logs][:flume_service_name] do
+      action :stop
+    end
+  end
 end
-
-
-# TODO(Mark): Download the flume code and package it.
-#
-#   copy the file into /usr/lib/flume-ng/lib/
-#
-#  # include a deploy stage, check for app   
-#  node[:deploy].each do |app_name, deploy|
-#    if app_name != "log_collector" then
-#       next
-#    end
-#
-#    repo_path = get_repo_path("log_collector")
-#
-#    Chef::Log.info("Deploying app #{app_name} using code path #{repo_path}")
-#    
-#    # Install the neon code
-#    include_recipe "neon::full_py_repo"
-#
-#    # Now build the jar using maven
-#    # mvn clean
-#    # mvn generate-sources
-#    # mvn compile 
-#    # mvn package

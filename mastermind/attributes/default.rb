@@ -1,4 +1,5 @@
 include_attribute "neon::default"
+include_attribute "cmsdb::default"
 
 # Parameters for mastermind
 default[:mastermind][:log_dir] = "#{node[:neon][:log_dir]}/mastermind"
@@ -8,12 +9,13 @@ default[:mastermind][:stats_cluster_type] = "video_click_stats"
 default[:mastermind][:stats_cluster_name] = "Neon Event Cluster"
 default[:mastermind][:stats_polling_delay] = 247
 default[:mastermind][:video_polling_delay] = 261
-default[:mastermind][:video_db_port] = 6379
-default[:mastermind][:video_db_fallbackhost] = "redis1"
-default[:mastermind][:video_db_layer] = "redis"
+default[:mastermind][:incr_stats_layer] = "hbase"
+default[:mastermind][:incr_stats_fallbackhost] = "hbase1"
 default[:mastermind][:directive_bucket] = "neon-image-serving-directives"
 default[:mastermind][:directive_filename] = "mastermind"
 default[:mastermind][:publishing_period] = 300
+default[:mastermind][:expiry_buffer] = 30
+default[:mastermind][:serving_update_delay] = 120
 
 
 # Specify the repos to user

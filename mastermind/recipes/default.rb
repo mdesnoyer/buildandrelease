@@ -54,7 +54,7 @@ node[:deploy].each do |app_name, deploy|
     group "neon"
     code <<-EOH
        . enable_env
-       nosetests --exe mastermind utils supportServices
+       nosetests --exe mastermind cmsdb utils
     EOH
     not_if {  ::File.exists?(app_tested) }
     notifies :restart, "service[mastermind]", :delayed

@@ -1,7 +1,4 @@
 api:
-  server:
-  port: <%= @video_server_port %> 
-
   brightcove_api:
     max_write_connections: 1
     max_read_connections: 50
@@ -13,7 +10,7 @@ controllers:
     service_url: http://<%= @cmsapi_host %>:<%= @cmsapi_port %>/
     mastermind_url: http://<%= @mastermind_host %>:<%= @mastermind_port %>/get_directives
     
-supportServices:
+cmsdb:
   neondata:
     accountDB: <%= @video_db_host %>
     videoDB: <%= @video_db_host %>
@@ -27,7 +24,7 @@ utils:
     do_stdout: 1
     level: info
     flume_url: http://localhost:<%= @flume_log_port %>
-    loggly_tag: cmsapi 
+    loggly_tag: bc_controller 
   monitor:
     carbon_server: <%= @carbon_host %>
     carbon_port: <%= @carbon_port %>

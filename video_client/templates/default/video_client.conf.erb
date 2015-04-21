@@ -1,19 +1,15 @@
-api:
+video_processor:
   client:
-    local: 0
     model_file: <%= @model_file %>
-    sync: 0
-    video_server: http://<%= @video_server_host %>:<%= @video_server_port %>
-
-  server:
-    port: 8081
-
-  brightcove_api:
-    max_write_connections: 1
-    max_read_connections: 50
-    max_retries: 5
+    video_server: <%= @video_server_host %>:<%= @video_server_port %>
+    max_videos_per_proc: <%= @max_videos_per_proc %>
+    dequeue_period: <%= @dequeue_period %>
+    notification_api_key: <%= @notification_api_key %>
+    server_auth: <%= @video_server_auth %>
+    extra_workers: <%= @extra_workers %>
+    video_temp_dir: <%= @video_temp_dir %>
  
-supportServices:
+cmsdb:
   neondata:
     accountDB: <%= @video_db_host %>
     videoDB: <%= @video_db_host %>

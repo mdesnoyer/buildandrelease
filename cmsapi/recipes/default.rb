@@ -53,7 +53,7 @@ node[:deploy].each do |app_name, deploy|
     group "neon"
     code <<-EOH
        . enable_env
-       nosetests --exe utils supportServices
+       nosetests --exe api cmsapi cmsdb utils
     EOH
     not_if {  ::File.exists?(app_tested) }
     notifies :restart, "service[cmsapi]", :delayed

@@ -27,6 +27,12 @@ file node[:video_client][:log_file] do
   group "neon"
   mode "0644"
 end
+directory node[:video_client][:video_temp_dir] do
+  user "root"
+  group "root"
+  mode "0777"
+  recursive true
+end
 
 node[:deploy].each do |app_name, deploy|
   if app_name != "video_client" then
@@ -57,7 +63,7 @@ node[:deploy].each do |app_name, deploy|
     group "neon"
     code <<-EOH
        . enable_env
-       nosetests --exe api utils supportServices model
+       nosetests --exe utils cmsdb model video_processor
        model/bin/TextDetectionTest
     EOH
     not_if {  ::File.exists?(app_tested) }
@@ -99,6 +105,7 @@ node[:deploy].each do |app_name, deploy|
     supports :status => true, :restart => true, :start => true, :stop => true
     action [:enable, :start]
     subscribes :restart, "git[#{repo_path}]", :delayed
+    subscribes :restart, "file[#{node[:neon][:home]}/model_file.md5]", :delayed
   end
 end
 

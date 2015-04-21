@@ -40,15 +40,20 @@ default[:neonisp][:app_name] = "track_server"
 # Parameters for the clicklog_collector
 default[:trackserver][:collector][:s3_path] = "s3n://neon-tracker-logs-v2/v%{track_vers}/%{tai}/%Y/%m/%d"
 default[:trackserver][:collector][:channel_dir] = "/mnt/neon/channels/clicklog"
+default[:trackserver][:collector][:max_log_rolltime] = 43200 # 12 hours
+default[:trackserver][:collector][:s3_serializer] = \
+  "org.apache.flume.sink.hdfs.AvroEventSerializer$Builder"
+default[:trackserver][:collector][:do_hbase_sink] = false
+default[:trackserver][:collector][:hbase_serializer] = \
+  "com.neon.flume.NeonGenericSerializer"
 
 # Hbase sink configurations
 default[:trackserver][:collector][:hbase_layer] = "hbase"
 default[:flume][:master][:external_zookeeper] = false
 default[:flume][:master][:zookeeper_port]     = 2181
-default[:hbase][:hbase_site]['hbase.rootdir'] = "hdfs://hbase1:8020"
-default[:hbase][:hbase_site]['hbase.zookeeper.quorum'] = "hbase1"
 default[:hbase][:hbase_site]['hbase.cluster.distributed'] = true 
-default[:hbase][:hbase_site]['zookeeper.znode.parent'] = "/tmp/hbase" 
+default[:hbase][:hbase_site]['zookeeper.znode.parent'] = "/mnt/hbase" 
+default[:hbase][:hbase_site]['hbase.zookeeper.quorum'] = "hbase1"
 
 
 # Parameters for siege

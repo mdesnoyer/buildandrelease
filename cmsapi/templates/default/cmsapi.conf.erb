@@ -1,19 +1,18 @@
 api:
-  server:
-    port: <%= @video_server_port %> 
-
   brightcove_api:
     max_write_connections: 1
     max_read_connections: 50
     max_retries: 5
  
-supportServices:
+cmsdb:
   neondata:
     accountDB: <%= @video_db_host %>
     videoDB: <%= @video_db_host %>
     thumbnailDB: <%= @video_db_host %>
     dbPort: <%= @video_db_port %>
     video_server: <%= @video_server_host %>
+
+cmsapi:
   services:
     video_server: <%= @video_server_host %>
 
