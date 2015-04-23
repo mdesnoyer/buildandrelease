@@ -22,7 +22,7 @@ if not node[:cmsdb][:is_slave] then
     minute '12'
     user 'redis'
     mailto 'ops@neon-lab.com'
-    command "aws s3 cp #{node[:redis][:db_dir]}/#{node[:redis][:dbfilename]} s3://#{node[:cmsdb][:backup_s3_bucket]}/#{node[:hostname]}/`date +\\%F-\\%H-\\%M-\\%S`.rdb"
+    command "/usr/local/bin/aws s3 cp #{node[:redis][:db_dir]}/#{node[:redis][:dbfilename]} s3://#{node[:cmsdb][:backup_s3_bucket]}/#{node[:hostname]}/`date +\\%F-\\%H-\\%M-\\%S`.rdb"
   end
 end
     
