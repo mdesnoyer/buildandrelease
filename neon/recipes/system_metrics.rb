@@ -18,7 +18,7 @@ pydeps = {
 pydeps.each do |package, vers|
   python_pip package do
     version vers
-    options "--no-index --find-links http://s3-us-west-1.amazonaws.com/neon-dependencies/index.html"
+    options "--no-index --find-links https://s3-us-west-1.amazonaws.com/neon-dependencies/index.html"
   end
 end
 
