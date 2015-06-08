@@ -5,10 +5,8 @@ api:
     max_retries: 5
 
 controllers:
-  brightcove_controller:
-    port: <%= @controller_port %>
-    service_url: http://<%= @cmsapi_host %>:<%= @cmsapi_port %>/
-    mastermind_url: http://<%= @mastermind_host %>:<%= @mastermind_port %>/get_directives
+  brightcove_ingester:
+    poll_period: <%= @poll_period %>
     
 cmsdb:
   neondata:
@@ -24,7 +22,7 @@ utils:
     do_stdout: 1
     level: info
     flume_url: http://localhost:<%= @flume_log_port %>
-    loggly_tag: bc_controller 
+    loggly_tag: bc_ingester 
   monitor:
     carbon_server: <%= @carbon_host %>
     carbon_port: <%= @carbon_port %>
