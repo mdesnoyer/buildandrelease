@@ -6,10 +6,10 @@ include_recipe "neon::repo"
 
 # List the python dependencies needed for this script.
 pydeps = {
-  "tornado" => "3.1.1",
+  "tornado" => "4.1",
   "simplejson" => "2.3.2",
   "PyYAML" => "3.10",
-  "boto" => "2.29.1",
+  "boto" => "2.32.1",
   "psutil" => "1.2.1",
   "winpdb" => "1.4.8"
 }
@@ -18,7 +18,7 @@ pydeps = {
 pydeps.each do |package, vers|
   python_pip package do
     version vers
-    options "--no-index --find-links http://s3-us-west-1.amazonaws.com/neon-dependencies/index.html"
+    options "--no-index --find-links https://s3-us-west-1.amazonaws.com/neon-dependencies/index.html"
   end
 end
 

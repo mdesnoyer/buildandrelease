@@ -15,7 +15,7 @@ include_recipe "stats_manager::config"
 pydeps = {
   "numpy" => "1.6.1",
   "futures" => "2.1.5",
-  "tornado" => "4.0.2",
+  "tornado" => "4.1",
   "setuptools" => "4.0.1",
   "avro" => "1.7.6",
   "boto" => "2.32.1",
@@ -35,7 +35,7 @@ pydeps = {
 pydeps.each do |package, vers|
   python_pip package do
     version vers
-    options "--no-index --find-links http://s3-us-west-1.amazonaws.com/neon-dependencies/index.html"
+    options "--no-index --find-links https://s3-us-west-1.amazonaws.com/neon-dependencies/index.html"
   end
 end
 
