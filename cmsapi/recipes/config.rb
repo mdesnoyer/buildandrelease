@@ -35,6 +35,7 @@ template node[:cmsapi][:config] do
               :video_db_host => video_db_host,
               :video_db_port => node[:cmsdb][:master_port],
               :log_file => node[:cmsapi][:log_file],
+              :access_log_file => node[:cmsapi][:access_log_file],
               :carbon_host => node[:neon][:carbon_host],
               :carbon_port => node[:neon][:carbon_port],
               :flume_log_port => node[:neon_logs][:json_http_source_port],

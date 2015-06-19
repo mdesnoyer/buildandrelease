@@ -5,6 +5,7 @@ include_attribute "cmsdb::default"
 default[:cmsapi][:log_dir] = "#{node[:neon][:log_dir]}/cmsapi"
 default[:cmsapi][:config] = "#{node[:neon][:config_dir]}/cmsapi.conf"
 default[:cmsapi][:log_file] = "#{node[:cmsapi][:log_dir]}/cmsapi.log"
+default[:cmsapi][:access_log_file] = "#{node[:cmsapi][:log_dir]}/access.log"
 default[:cmsapi][:port] = 8083 
 default[:cmsapi][:video_server_port] = 8081 
 default[:cmsapi][:video_server_fallbackhost] = "video-server1"
