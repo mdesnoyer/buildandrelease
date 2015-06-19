@@ -9,6 +9,7 @@ default[:neon][:repos]["core"] = true
 # Parameters for the trackserver
 default[:trackserver][:config] = "#{node[:neon][:config_dir]}/trackserver.conf"
 default[:trackserver][:log_file] = "#{node[:neon][:log_dir]}/trackserver.log"
+default[:trackserver][:access_log_file] = "#{node[:neon][:log_dir]}/trackserver_access.log"
 default[:trackserver][:port] = 7214 # Port being listened to internally
 default[:trackserver][:external_port] = 80 # External port being listened to
 default[:trackserver][:flume_port] = 6360
