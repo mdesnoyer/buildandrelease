@@ -25,7 +25,7 @@ end
 directory node[:mastermind][:tmp_dir] do
   user "neon"
   group "neon"
-  recursive :true
+  recursive true
   mode "0755"
 end
 file node[:mastermind][:log_file] do
