@@ -51,6 +51,8 @@ node[:neon][:repos].each do |app_name, do_deploy|
     next
   end
 
+  Chef::Log.info("Deploying app #{app_name} revision #{data[:revision]} from #{data[:repo_url]} to #{data[:code_folder]}.")
+
   # Create the code directory
   directory "#{data[:code_folder]}" do
     action :create

@@ -3,6 +3,11 @@ include_attribute "java"
 
 default[:neon][:home] = "/opt/neon"
 
+# Tracker logs bucket locations
+default[:neon][:tracker_bucket] = "neon-tracker-logs-v2"
+default[:neon][:input_path] = "s3://#{node[:neon][:tracker_bucket]}/v2.2/*/*/*/*"
+default[:neon][:cleaned_output_path] = "s3://#{node[:neon][:tracker_bucket]}/cleaned"
+
 # The ssh key to serving machines
 default[:neon][:serving_key] = "s3://neon-keys/neon-serving.pem"
 

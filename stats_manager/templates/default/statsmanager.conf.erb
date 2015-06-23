@@ -1,8 +1,8 @@
 stats:
   cluster_manager:
     cluster_type: <%= @cluster_type %>
-    input_path: "s3://neon-tracker-logs-v2/v2.2/*/*/*/*"
-    cleaned_output_path: "s3://neon-tracker-logs-v2/cleaned/"
+    input_path: "<%= @input_path %>"
+    cleaned_output_path: "<%= @cleaned_output_path %>"
     batch_period: <%= @batch_period %>
     cluster_ip: <%= @cluster_ip %>
     max_task_instances: <%= @max_task_instances %>
@@ -12,7 +12,9 @@ stats:
 
   cluster:
     ssh_key: <%= @emr_key %>    
-    cluster_name: "Neon Event Cluster"
+    cluster_subnet_id: <%= @cluster_subnet_id %>
+    cluster_name: <%= @cluster_name %>
+    cluster_log_uri: <%= @cluster_log_uri %>
 
 utils:
   logs:
