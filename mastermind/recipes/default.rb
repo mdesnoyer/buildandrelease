@@ -22,6 +22,12 @@ directory node[:mastermind][:log_dir] do
   group "neon"
   mode "0755"
 end
+directory node[:mastermind][:tmp_dir] do
+  user "neon"
+  group "neon"
+  recursive true
+  mode "0755"
+end
 file node[:mastermind][:log_file] do
   user "neon"
   group "neon"
