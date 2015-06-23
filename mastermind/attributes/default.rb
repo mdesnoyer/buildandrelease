@@ -5,6 +5,7 @@ include_attribute "cmsdb::default"
 default[:mastermind][:log_dir] = "#{node[:neon][:log_dir]}/mastermind"
 default[:mastermind][:config] = "#{node[:neon][:config_dir]}/mastermind.conf"
 default[:mastermind][:log_file] = "#{node[:mastermind][:log_dir]}/mastermind.log"
+default[:mastermind][:tmp_dir] = "/mnt/tmp/mastermind"
 default[:mastermind][:stats_cluster_type] = "video_click_stats"
 default[:mastermind][:stats_cluster_name] = "Neon Event Cluster"
 default[:mastermind][:stats_polling_delay] = 247
