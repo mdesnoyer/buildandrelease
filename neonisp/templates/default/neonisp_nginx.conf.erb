@@ -35,6 +35,8 @@ server {
     v1_client;
     expires  <%= @client_expires %>;
     add_header  Cache-Control private;
+    add_header 'Access-Control-Allow-Origin' '*';
+    add_header 'Access-Control-Allow-Credentials' 'true';
 
   }
 
