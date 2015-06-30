@@ -63,5 +63,14 @@ server {
   location = /crossdomain.xml{
     root <%= node[:neonisp][:crossdomain_root] %>; 
   }
-
+  
+  location = /robots.txt { 
+    access_log off; 
+    log_not_found off; 
+  } 
+  
+  location = /favicon.ico { 
+    access_log off; 
+    log_not_found off; 
+  } 
 }
