@@ -31,3 +31,6 @@ default[:aws][:secret_access_key] = ENV['AWS_SECRET_ACCESS_KEY']
 
 # Set desired python settings
 default[:python][:virtualenv_version] = "1.11.6"
+
+# Address to get the ip ranges inside amazon from
+default[:aws][:ip_ranges_url] = "https://ip-ranges.amazonaws.com/ip-ranges.json"
