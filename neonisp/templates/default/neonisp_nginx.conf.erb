@@ -50,16 +50,8 @@ server {
     v1_getthumbnailid;
     add_header 'Access-Control-Allow-Origin' '*';
     add_header 'Access-Control-Allow-Credentials' 'true';
-    add_header 'Access-Control-Allow-Headers' 'X-Neon-guid'; 
   }
 
-  location ~ ^/v1/unique_id { 
-    v1_unique_id; 
-    add_header 'Access-Control-Allow-Origin' '*';
-    add_header 'Access-Control-Allow-Credentials' 'true';
-    add_header 'Access-Control-Allow-Headers' 'X-Neon-guid';
-  }
-        
   location = /stats {
     mastermind_stats;
   }
