@@ -96,6 +96,7 @@ GRAPH
   lvm (1.1.2)
   mastermind (0.9.0)
     apt (>= 0.0.0)
+    cmsdb (>= 0.0.0)
     java (>= 0.0.0)
     neon (>= 0.0.0)
     neon_logs (>= 0.0.0)
