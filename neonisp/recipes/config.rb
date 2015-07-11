@@ -9,7 +9,7 @@ else
   include_recipe "neon_logs::flume_core"
 end
 
-
+include_recipe "neon::nginx_realip"
 include_recipe "neon-nginx::commons_dir"
 
 # Write the imageservingplatform configuration for nginx

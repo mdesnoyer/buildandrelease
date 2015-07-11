@@ -60,6 +60,7 @@ template node[:trackserver][:config] do
   end
 end
 
+include_recipe "neon::nginx_realip"
 include_recipe "neon-nginx::commons_dir"
 
 # Write the configuration for nginx

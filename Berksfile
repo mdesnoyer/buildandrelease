@@ -5,7 +5,7 @@ cookbook 'build-essential', '>= 1.4.0'
 cookbook "cmake", "~> 0.3"
 cookbook "gflags", "~> 1.0"
 cookbook "git", "~> 4.0.2"
-cookbook "hadoop", "~> 1.1"
+cookbook "hadoop", "~> 1.12.0"
 cookbook "java", "~> 1.22"
 cookbook "minitest-handler", '~> 1.2.0'
 cookbook "python", "~> 1.4.6"
