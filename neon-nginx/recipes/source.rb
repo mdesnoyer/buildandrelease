@@ -48,7 +48,7 @@ src_filepath  = "#{Chef::Config['file_cache_path'] || '/tmp'}/nginx-#{node['ngin
 packages = value_for_platform_family(
   %w(rhel fedora) => %w(pcre-devel openssl-devel),
   %w(gentoo)      => [],
-  %w(default)     => %w(libpcre3 libpcre3-dev libssl-dev)
+  %w(default)     => %w(libpcre3 libpcre3-dev libssl-dev libboost1.46-dev libboost1.46-dbg)
 )
 
 packages.each do |name|
