@@ -44,13 +44,30 @@ template "#{node[:neon][:home]}/.ssh/config" do
   })
 end
 
+template "#{node[:neon][:code_root]}/model_data-wrap-ssh4git.sh" do
+  owner "neon"
+  group "neon"
+  source "wrap-ssh4git.sh.erb"
+  mode "0755"
+  cookbook "neon"
+  variables({:ssh_key => "#{node[:neon][:home]}/.ssh/model_data.pem"})
+end
+
+
+git node[:video_client][:model_data_folder] do
+  repository node[:video_client][:model_data_repo]
+  revision node[:video_client][:model_data_repo_rev]
+  action :sync
+  user "neon"
+  group "neon"
+  ssh_wrapper "#{node[:neon][:code_root]}/model_data-wrap-ssh4git.sh"
+end
+
 bash "get_model_file" do
   user "neon"
   cwd node[:video_client][:model_data_folder]
+  group "neon"
   code <<-EOH
-  git clone #{node[:video_client][:model_data_repo]} .
-  git config user.email ops@neon-lab.com
-  git config user.name #{node[:opsworks][:instance][:hostname]}
   git annex sync
   git annex get #{node[:video_client][:model_file]}
   EOH
