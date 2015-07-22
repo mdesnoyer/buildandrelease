@@ -67,8 +67,8 @@ bash "get_model_file" do
   user "neon"
   cwd node[:video_client][:model_data_folder]
   group "neon"
+  environment {"GIT_SSH" => "#{node[:neon][:code_root]}/model_data-wrap-ssh4git.sh"}
   code <<-EOH
-  git annex sync
   git annex get #{node[:video_client][:model_file]}
   EOH
   action :run
