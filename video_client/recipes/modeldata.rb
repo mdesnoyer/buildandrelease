@@ -69,6 +69,8 @@ bash "get_model_file" do
   group "neon"
   environment "GIT_SSH" => "#{node[:neon][:code_root]}/model_data-wrap-ssh4git.sh"
   code <<-EOH
+  git config --global user.email "ops@neon-lab.com"
+  git config --global user.name "Ops"
   git annex get #{node[:video_client][:model_file]}
   EOH
   action :run
