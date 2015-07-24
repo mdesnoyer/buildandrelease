@@ -63,15 +63,27 @@ git node[:video_client][:model_data_folder] do
   ssh_wrapper "#{node[:neon][:code_root]}/model_data-wrap-ssh4git.sh"
 end
 
-bash "get_model_file" do
+bash "sync_annex" do
   user "neon"
   cwd node[:video_client][:model_data_folder]
   group "neon"
   code <<-EOH
   git annex sync
-  git annex get #{node[:video_client][:model_file]}
   EOH
   action :run
+end
+
+node[:video_client][:model_files].each do |file|
+  # iterate through the model files
+  bash "get_model_file" do
+    user "neon"
+    cwd node[:video_client][:model_data_folder]
+    group "neon"
+    code <<-EOH
+    git annex get #{file}
+    EOH
+    action :run
+  end
 end
 
 # Use an md5 of the model file to see if it has changed and trigger a
