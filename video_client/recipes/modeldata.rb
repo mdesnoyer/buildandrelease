@@ -67,8 +67,15 @@ bash "sync_annex" do
   user "neon"
   cwd node[:video_client][:model_data_folder]
   group "neon"
+  environment "GIT_SSH" => "#{node[:neon][:code_root]}/model_data-wrap-ssh4git.sh"
   code <<-EOH
+<<<<<<< HEAD
   git annex sync
+=======
+  git config user.email "ops@neon-lab.com"
+  git config user.name "Ops"
+  git annex get #{node[:video_client][:model_file]}
+>>>>>>> working
   EOH
   action :run
 end
