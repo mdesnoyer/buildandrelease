@@ -76,7 +76,7 @@ end
 
 node[:video_client][:model_files].each do |file|
   # iterate through the model files
-  bash "get_model_file" do
+  bash "get_model_file #{file}" do
     user "neon"
     cwd node[:video_client][:model_data_folder]
     group "neon"
