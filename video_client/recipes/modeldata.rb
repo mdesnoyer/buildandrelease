@@ -63,16 +63,16 @@ git node[:video_client][:model_data_folder] do
   ssh_wrapper "#{node[:neon][:code_root]}/model_data-wrap-ssh4git.sh"
 end
 
-bash "sync_annex" do
-  user "neon"
-  cwd node[:video_client][:model_data_folder]
-  group "neon"
-  environment "GIT_SSH" => "#{node[:neon][:code_root]}/model_data-wrap-ssh4git.sh"
-  code <<-EOH
-  git annex sync
-  EOH
-  action :run
-end
+# bash "sync_annex" do
+#   user "neon"
+#   cwd node[:video_client][:model_data_folder]
+#   group "neon"
+#   environment "GIT_SSH" => "#{node[:neon][:code_root]}/model_data-wrap-ssh4git.sh"
+#   code <<-EOH
+#   git annex sync
+#   EOH
+#   action :run
+# end
 
 node[:video_client][:model_files].each do |file|
   # iterate through the model files
