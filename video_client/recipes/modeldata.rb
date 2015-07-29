@@ -81,6 +81,8 @@ node[:video_client][:model_files].each do |file|
     cwd node[:video_client][:model_data_folder]
     group "neon"
     code <<-EOH
+    git config user.email "ops@neon-lab.com"
+    git config user.name "ops"
     git annex get #{file}
     EOH
     action :run
