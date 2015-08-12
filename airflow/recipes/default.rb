@@ -7,9 +7,9 @@ user node[:airflow][:user] do
   shell "/bin/false"
 end
 
-directory node[:airflow][:log_dir] do
+directory node[:airflow][:airflow_logs] do
   user node[:airflow][:user]
-  group node[:airflow][:user]
+  group node[:airflow][:group]
   mode "2775"
   recursive true
 end
