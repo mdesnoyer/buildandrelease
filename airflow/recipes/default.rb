@@ -119,7 +119,7 @@ end
 #   include_recipe "neon_logs::flume_core"
 # end
 
-service "airflow-webserver" do
+service "airflow-web" do
     provider Chef::Provider::Service::Upstart
     supports :status => true, :restart => true, :start => true, :stop => true
     action [:enable, :start]
