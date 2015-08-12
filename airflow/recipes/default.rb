@@ -89,12 +89,12 @@ template "#{node[:airflow][:airflow_home]}/airflow.cfg" do
   group "root"
   mode "0644"
   variables({
-              :airflow_home => node[:airflow][:airflow_home]
-              :airflow_logs => node[:airflow][:airflow_logs]
-              :db_user => node[:airflow][:db_user]
-              :db_password => node[:airflow][:db_password]
-              :db_host => node[:airflow][:db_host]
-              :db_port => node[:airflow][:db_port]
+              :airflow_home => node[:airflow][:airflow_home],
+              :airflow_logs => node[:airflow][:airflow_logs],
+              :db_user => node[:airflow][:db_user],
+              :db_password => node[:airflow][:db_password],
+              :db_host => node[:airflow][:db_host],
+              :db_port => node[:airflow][:db_port],
               :db_name => node[:airflow][:db_name]
             })
 end
@@ -112,18 +112,17 @@ end
 #                         [defaults to neon_logs]
 #   :variables => {hash of variables for the template}
 
-
 # Configure the flume agent that will listen to the logs from the
 # stats manager job
-node.default[:neon_logs][:flume_streams][:airflow_logs] =
-  get_jsonagent_config(node[:neon_logs][:json_http_source_port],
-                       "airflow")
+# node.default[:neon_logs][:flume_streams][:airflow_logs] =
+#   get_jsonagent_config(node[:neon_logs][:json_http_source_port],
+#                        "airflow")
 
-if node[:opsworks][:activity] == "config" then
-  include_recipe "neon_logs::flume_core_config"
-else
-  include_recipe "neon_logs::flume_core"
-end
+# if node[:opsworks][:activity] == "config" then
+#   include_recipe "neon_logs::flume_core_config"
+# else
+#   include_recipe "neon_logs::flume_core"
+# end
 
 service "airflow-webserver" do
     provider Chef::Provider::Service::Upstart
@@ -144,6 +143,20 @@ service "airflow-worker" do
     supports :status => true, :restart => true, :start => true, :stop => true
     action [:enable, :start]
     subscribes :restart, "template[/etc/init/airflow-worker.conf]", :delayed
+end
+
+
+if ['shutdown'].include? node[:opsworks][:activity] then
+  services = [
+    'airflow-worker',
+    'airflow-scheduler',
+    'airflow-web'
+  ]
+  services.each do |service_name|
+    service service_name do
+      action :stop
+    end
+  end
 end
 
 # template the cluster.conf
