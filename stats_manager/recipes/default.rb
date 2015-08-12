@@ -137,11 +137,19 @@ node[:deploy].each do |app_name, deploy|
               })
   end
 
-  service "neon-statsmanager" do
-    provider Chef::Provider::Service::Upstart
-    supports :status => true, :restart => true, :start => true, :stop => true
-    action [:enable, :start]
-    subscribes :restart, "git[#{repo_path}]", :delayed
+  if node[:stats_manager][:service_enabled] then
+    service "neon-statsmanager" do
+      provider Chef::Provider::Service::Upstart
+      supports :status => true, :restart => true, :start => true, :stop => true
+      action [:enable, :start]
+      subscribes :restart, "git[#{repo_path}]", :delayed
+    end
+  else
+    service "neon-statsmanager" do
+      provider Chef::Provider::Service::Upstart
+      supports :status => true, :restart => true, :start => true, :stop => true
+      action [:disable, :stop]
+    end
   end
 end
 

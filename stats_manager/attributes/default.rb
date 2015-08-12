@@ -12,6 +12,7 @@ default[:neon][:repos]["stats_manager"] = true
 default[:stats_manager][:log_dir] = "#{node[:neon][:log_dir]}/statsmanager"
 default[:stats_manager][:config] = "#{node[:neon][:config_dir]}/statsmanager.conf"
 default[:stats_manager][:log_file] = "#{node[:stats_manager][:log_dir]}/statsmanager.log"
+default[:stats_manager][:service_enabled] = true
 
 # Pramaters for the process
 default[:stats_manager][:batch_period] = 10800 # 3h for now
