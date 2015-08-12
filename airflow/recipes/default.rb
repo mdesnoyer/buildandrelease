@@ -1,11 +1,6 @@
+# Installs Airflow for cleaning and loading click logs via stats modules
 
-# Create an airflow user
-user node[:airflow][:user] do
-  group node[:airflow][:group]
-  action :create
-  system true
-  shell "/bin/false"
-end
+include_recipe "neon::default"
 
 directory node[:airflow][:airflow_logs] do
   user node[:airflow][:user]

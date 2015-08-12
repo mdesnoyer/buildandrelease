@@ -5,8 +5,8 @@ include_attribute "neon_logs::default"
 default[:airflow][:airflow_home] = "#{node[:neon][:code_root]}/stats/airflow"
 default[:airflow][:airflow_logs] = "#{node[:neon][:log_dir]}/airflow"
 
-default[:airflow][:user] = 'airflow'
-default[:airflow][:group] = 'airflow'
+default[:airflow][:user] = 'neon'
+default[:airflow][:group] = 'neon'
 
 default[:airflow][:webserver_port] = 8080
 
