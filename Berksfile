@@ -15,8 +15,8 @@ cookbook 'filesystem', '~> 0.9.0'
 cookbook 'hostsfile', '= 2.4.5'
 cookbook 'awscli', '~> 1.0.1'
 
-# These opencv depdencies need to be pulled into the repo because there is a 
-# bug in chef that creates and notifies don't work well together. 
+# These opencv depdencies need to be pulled into the repo because there is a
+# bug in chef that creates and notifies don't work well together.
 # See https://tickets.opscode.com/browse/CHEF-3740
 cookbook "yasm", path: "yasm"
 cookbook "ffmpeg", path: "ffmpeg"
@@ -25,6 +25,7 @@ cookbook "libvpx", path: "libvpx"
 cookbook "redis", path: "redis"
 cookbook "s3cmd", path: "s3cmd"
 
+cookbook "airflow", path: "airflow"
 cookbook "neon", path: "neon"
 cookbook "neonisp", path: "neonisp"
 cookbook "neon_logs", path: "neon_logs"
@@ -34,3 +35,4 @@ cookbook "trackserver", path: "trackserver"
 cookbook "cmsdb", path: "cmsdb"
 cookbook "neon-nginx", path: "neon-nginx"
 cookbook "neon-opencv", path: "neon-opencv"
+
