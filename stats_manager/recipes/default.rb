@@ -43,7 +43,7 @@ end
 package "mailutils" do
   :install
 end
-  
+
 # Install maven
 package "maven" do
   :install
@@ -105,6 +105,9 @@ node[:deploy].each do |app_name, deploy|
     cwd "#{repo_path}/stats/java"
     user "neon"
   end
+
+  # Setup Airflow
+  include_recipe "airflow"
 
   # Write the daemon service wrapper
   template "/etc/init/neon-statsmanager.conf" do
