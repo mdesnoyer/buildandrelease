@@ -84,51 +84,5 @@ service "airflow-worker" do
 end
 
 
-
-
-
-
-
-
-pydeps = {
-  "numpy" => "1.6.1",
-  "futures" => "2.1.5",
-  "tornado" => "4.1",
-  "setuptools" => "4.0.1",
-  "avro" => "1.7.6",
-  "boto" => "2.32.1",
-  "impyla" => "0.8.1",
-  "simplejson" => "2.3.2",
-  "paramiko" => "1.14.0",
-  "nose" => "1.3.0",
-  "thrift" => "0.9.1",
-  "PyYAML" => "3.10",
-  "dateutils" => "0.6.6",
-  "winpdb" => "1.4.8",
-  "pyhs2" => "0.6.0",
-  "happybase" => "0.9"
-}
-
-# Install the python dependencies
-pydeps.each do |package, vers|
-  python_pip package do
-    version vers
-    options "--no-index --find-links https://s3-us-west-1.amazonaws.com/neon-dependencies/index.html"
-  end
-end
-
-
-
-if ['undeploy', 'shutdown'].include? node[:opsworks][:activity] then
-  # Turn off the statsmanager
-  service "neon-statsmanager" do
-    action :stop
-  end
-
-  file "/etc/init/neon-statsmanager.conf" do
-    action :delete
-  end
-end
-
-
+# template the cluster.conf
 #              :mr_jar => "#{repo_path}/stats/java/target/neon-stats-1.0-job.jar"
