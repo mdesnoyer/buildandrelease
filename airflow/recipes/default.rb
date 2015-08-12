@@ -99,13 +99,52 @@ template "#{node[:airflow][:airflow_home]}/airflow.cfg" do
             })
 end
 
+
+# capture logs via flume
+# https://flume.apache.org/FlumeUserGuide.html#spooling-directory-source
+# default[:neon_logs][:flume_streams][:stream_name] = {
+#   :sources => [source_names],
+#   :channels => [channel_names],
+#   :sinks => [sink_names],
+#   :sinkgroups => [sinkgroup_names],
+#   :template => template_file,
+#   :template_cookbook => cookbook containing the template_file
+#                         [defaults to neon_logs]
+#   :variables => {hash of variables for the template}
+
+
+# Configure the flume agent that will listen to the logs from the
+# stats manager job
+node.default[:neon_logs][:flume_streams][:airflow_logs] =
+  get_jsonagent_config(node[:neon_logs][:json_http_source_port],
+                       "airflow")
+
+if node[:opsworks][:activity] == "config" then
+  include_recipe "neon_logs::flume_core_config"
+else
+  include_recipe "neon_logs::flume_core"
+end
+
+service "airflow-webserver" do
+    provider Chef::Provider::Service::Upstart
+    supports :status => true, :restart => true, :start => true, :stop => true
+    action [:enable, :start]
+    subscribes :restart, "template[/etc/init/airflow-web.conf]", :delayed
+end
+
+service "airflow-scheduler" do
+    provider Chef::Provider::Service::Upstart
+    supports :status => true, :restart => true, :start => true, :stop => true
+    action [:enable, :start]
+    subscribes :restart, "template[/etc/init/airflow-scheduler.conf]", :delayed
+end
+
 service "airflow-worker" do
     provider Chef::Provider::Service::Upstart
     supports :status => true, :restart => true, :start => true, :stop => true
     action [:enable, :start]
-    subscribes :restart, "git[#{repo_path}]", :delayed
+    subscribes :restart, "template[/etc/init/airflow-worker.conf]", :delayed
 end
-
 
 # template the cluster.conf
 #              :mr_jar => "#{repo_path}/stats/java/target/neon-stats-1.0-job.jar"
