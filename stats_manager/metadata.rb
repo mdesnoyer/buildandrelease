@@ -5,6 +5,7 @@ description      'The Neon stats manager'
 license          'Proprietary - All Rights Reserved'
 version          '0.9.0'
 
+depends 'airflow'
 depends 'apt'
 depends 'java'
 depends 'neon'
