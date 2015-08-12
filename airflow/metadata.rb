@@ -1,6 +1,3 @@
-#
-# Airflow - https://github.com/airbnb/airflow
-#
 name             'airflow'
 maintainer       'Neon'
 maintainer_email 'ops@neon-lab.com'

@@ -14,9 +14,32 @@ directory node[:airflow][:log_dir] do
   recursive true
 end
 
+# Build dependencies
+deps = [
+  'libmysqlclient-dev',
+  'libblas-dev',
+  'liblapack-dev',
+  'libkrb5-dev',
+  'libsasl2-dev'
+]
+
+deps.each do |dep|
+  package dep do
+    :install
+  end
+end
+
 # Install the python dependencies
-python_pip airflow do
-  version "1.3.0"
+py_deps = [
+  'airflow',
+  'airflow[mysql]',
+  'airflow[s3]',
+  'airflow[hive]'
+]
+py_deps.each do |dep|
+  python_pip dep do
+    version "1.3.0"
+  end
 end
 
 # Airflow Webserver service
