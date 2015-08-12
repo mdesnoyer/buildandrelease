@@ -3,7 +3,7 @@ maintainer       'Neon'
 maintainer_email 'ops@neon-lab.com'
 description      'The Neon stats manager'
 license          'Proprietary - All Rights Reserved'
-version          '0.9.0'
+version          '0.9.1'
 
 depends 'airflow'
 depends 'apt'
