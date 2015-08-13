@@ -7,8 +7,8 @@ include_attribute "neon_logs::default"
 default[:airflow][:airflow_logs] = "#{node[:neon][:log_dir]}/airflow"
 
 # Run as the Neon user
-default[:airflow][:user] = 'neon'
-default[:airflow][:group] = 'neon'
+default[:airflow][:user] = 'statsmanager'
+default[:airflow][:group] = 'statsmanager'
 
 # Webserver
 default[:airflow][:webserver_host] = node[:hostname]
