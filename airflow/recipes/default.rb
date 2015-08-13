@@ -58,11 +58,11 @@ template "#{airflow_home}/airflow.cfg" do
               :db_name => node[:airflow][:db_name],
               :webserver_host => node[:airflow][:webserver_host],
               :webserver_port => node[:airflow][:webserver_port],
-              :smtp_host => node[:airflow][:smtp_user],
-              :smtp_host => node[:airflow][:smtp_password],
+              :smtp_user => node[:airflow][:smtp_user],
+              :smtp_password => node[:airflow][:smtp_password],
               :smtp_host => node[:airflow][:smtp_host],
-              :smtp_host => node[:airflow][:smtp_port],
-              :smtp_host => node[:airflow][:smtp_from]
+              :smtp_port => node[:airflow][:smtp_port],
+              :smtp_from => node[:airflow][:smtp_from]
             })
 end
 
