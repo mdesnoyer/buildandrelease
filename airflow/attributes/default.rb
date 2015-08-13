@@ -28,4 +28,4 @@ default[:airflow][:smtp_host] = email-smtp.us-east-1.amazonaws.com
 default[:airflow][:smtp_port] = 25
 default[:airflow][:smtp_from] = ops@neon-lab.com
 
-default[:airflow][:version] = 1.3.0
+default[:airflow][:version] = "1.3.0"
