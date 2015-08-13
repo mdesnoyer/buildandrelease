@@ -66,6 +66,17 @@ template "#{airflow_home}/airflow.cfg" do
             })
 end
 
+# Setup login shell environment for users
+template "/etc/profile.d/airflow.sh" do
+  sources "airflow.sh.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+  variables({
+              :airflow_home => airflow_home
+            })
+end
+
 
 # ----------------------------
 # capture logs via flume
