@@ -24,7 +24,7 @@ deps.each do |dep|
   end
 end
 
-# Install the python dependencies
+# Install Airflow and used submodules
 py_deps = [
   'airflow',
   'airflow[mysql]',
@@ -33,9 +33,67 @@ py_deps = [
 ]
 py_deps.each do |dep|
   python_pip dep do
-    version "1.3.0"
+    version node[:airflow][:version]
   end
 end
+
+
+# Airflow configuration
+template "#{node[:airflow][:airflow_home]}/airflow.cfg" do
+  source "airflow.cfg.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+  variables({
+              :airflow_home => node[:airflow][:airflow_home],
+              :airflow_logs => node[:airflow][:airflow_logs],
+              :db_user => node[:airflow][:db_user],
+              :db_password => node[:airflow][:db_password],
+              :db_host => node[:airflow][:db_host],
+              :db_port => node[:airflow][:db_port],
+              :db_name => node[:airflow][:db_name],
+              :webserver_host => node[:airflow][:webserver_host],
+              :webserver_port => node[:airflow][:webserver_port],
+              :smtp_host => node[:airflow][:smtp_user],
+              :smtp_host => node[:airflow][:smtp_password],
+              :smtp_host => node[:airflow][:smtp_host],
+              :smtp_host => node[:airflow][:smtp_port],
+              :smtp_host => node[:airflow][:smtp_from]
+            })
+end
+
+
+# ----------------------------
+# capture logs via flume
+# ----------------------------
+# https://flume.apache.org/FlumeUserGuide.html#spooling-directory-source
+
+# default[:neon_logs][:flume_streams][:stream_name] = {
+#   :sources => [source_names],
+#   :channels => [channel_names],
+#   :sinks => [sink_names],
+#   :sinkgroups => [sinkgroup_names],
+#   :template => template_file,
+#   :template_cookbook => cookbook containing the template_file
+#                         [defaults to neon_logs]
+#   :variables => {hash of variables for the template}
+
+# Configure the flume agent that will listen to the logs from the
+# stats manager job
+# node.default[:neon_logs][:flume_streams][:airflow_logs] =
+#   get_jsonagent_config(node[:neon_logs][:json_http_source_port],
+#                        "airflow")
+
+# if node[:opsworks][:activity] == "config" then
+#   include_recipe "neon_logs::flume_core_config"
+# else
+#   include_recipe "neon_logs::flume_core"
+# end
+
+
+# ----------------------------
+# Airflow services
+# ----------------------------
 
 # Airflow Webserver service
 template "/etc/init/airflow-web.conf" do
@@ -76,48 +134,6 @@ template "/etc/init/airflow-worker.conf" do
               :airflow_home => node[:airflow][:airflow_home]
             })
 end
-
-# Airflow configuration
-template "#{node[:airflow][:airflow_home]}/airflow.cfg" do
-  source "airflow.cfg.erb"
-  owner "root"
-  group "root"
-  mode "0644"
-  variables({
-              :airflow_home => node[:airflow][:airflow_home],
-              :airflow_logs => node[:airflow][:airflow_logs],
-              :db_user => node[:airflow][:db_user],
-              :db_password => node[:airflow][:db_password],
-              :db_host => node[:airflow][:db_host],
-              :db_port => node[:airflow][:db_port],
-              :db_name => node[:airflow][:db_name]
-            })
-end
-
-
-# capture logs via flume
-# https://flume.apache.org/FlumeUserGuide.html#spooling-directory-source
-# default[:neon_logs][:flume_streams][:stream_name] = {
-#   :sources => [source_names],
-#   :channels => [channel_names],
-#   :sinks => [sink_names],
-#   :sinkgroups => [sinkgroup_names],
-#   :template => template_file,
-#   :template_cookbook => cookbook containing the template_file
-#                         [defaults to neon_logs]
-#   :variables => {hash of variables for the template}
-
-# Configure the flume agent that will listen to the logs from the
-# stats manager job
-# node.default[:neon_logs][:flume_streams][:airflow_logs] =
-#   get_jsonagent_config(node[:neon_logs][:json_http_source_port],
-#                        "airflow")
-
-# if node[:opsworks][:activity] == "config" then
-#   include_recipe "neon_logs::flume_core_config"
-# else
-#   include_recipe "neon_logs::flume_core"
-# end
 
 service "airflow-web" do
     provider Chef::Provider::Service::Upstart

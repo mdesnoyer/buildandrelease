@@ -7,7 +7,7 @@ airflow_home = <%= @airflow_home %>
 dags_folder = <%= @airflow_home %>/dags
 
 # The folder where airflow should store its log files
-base_log_folder = <%= airflow_logs %>
+base_log_folder = <%= @airflow_logs %>
 
 # The executor class that airflow should use. Choices include
 # SequentialExecutor, LocalExecutor, CeleryExecutor
@@ -37,10 +37,10 @@ plugins_folder = <%= @airflow_home %>/plugins
 # The base url of your website as airflow cannot guess what domain or
 # cname you are using. This is use in automated emails that
 # airflow sends to point links to the right web server
-base_url = http://<%= @base_url_host %>:<%= @webserver_port %>
+base_url = http://<%= @webserver_host %>:<%= @webserver_port %>
 
 # The ip specified when starting the web server
-web_server_host = 127.0.0.1
+web_server_host = 0.0.0.0
 
 # The port on which to run the web server
 web_server_port = <%= @webserver_port %>
@@ -54,12 +54,11 @@ secret_key = temporary_key
 # the airflow.utils.send_email function, you have to configure an smtp
 # server here
 smtp_host = <%= @smtp_host %>
-smtp_starttls = True
-smtp_user = <%= @smtp_user %>
 smtp_port = <%= @smtp_port %>
+smtp_user = <%= @smtp_user %>
 smtp_password = "<%= @smtp_password %>"
 smtp_mail_from = <%= @smtp_from %>
-
+smtp_starttls = True
 
 [celery]
 # This section only applies if you are using the CeleryExecutor in
