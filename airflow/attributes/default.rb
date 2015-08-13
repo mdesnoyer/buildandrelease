@@ -3,7 +3,7 @@ include_attribute "neon::repo"
 include_attribute "neon_logs::default"
 
 # Neon's Airflow configuration and DAG files are in stats/airflow
-default[:airflow][:airflow_home] = "#{repo_path}/stats/airflow"
+#default[:airflow][:airflow_home] = "#{repo_path}/stats/airflow"
 default[:airflow][:airflow_logs] = "#{node[:neon][:log_dir]}/airflow"
 
 # Run as the Neon user

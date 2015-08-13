@@ -2,6 +2,10 @@
 
 include_recipe "neon::default"
 
+repo_path = get_repo_path("stats_manager")
+airflow_home = "#{repo_path}/stats/airflow"
+Chef::Log.info("Using #{airflow_home} as AIRFLOW_HOME.")
+
 directory node[:airflow][:airflow_logs] do
   user node[:airflow][:user]
   group node[:airflow][:group]
@@ -39,13 +43,13 @@ end
 
 
 # Airflow configuration
-template "#{node[:airflow][:airflow_home]}/airflow.cfg" do
+template "#{airflow_home}/airflow.cfg" do
   source "airflow.cfg.erb"
   owner "root"
   group "root"
   mode "0644"
   variables({
-              :airflow_home => node[:airflow][:airflow_home],
+              :airflow_home => airflow_home,
               :airflow_logs => node[:airflow][:airflow_logs],
               :db_user => node[:airflow][:db_user],
               :db_password => node[:airflow][:db_password],
@@ -104,7 +108,7 @@ template "/etc/init/airflow-web.conf" do
   variables({
               :user => node[:airflow][:user],
               :group => node[:airflow][:group],
-              :airflow_home => node[:airflow][:airflow_home],
+              :airflow_home => airflow_home,
               :webserver_port => node[:airflow][:webserver_port]
             })
 end
@@ -118,7 +122,7 @@ template "/etc/init/airflow-scheduler.conf" do
   variables({
               :user => node[:airflow][:user],
               :group => node[:airflow][:group],
-              :airflow_home => node[:airflow][:airflow_home]
+              :airflow_home => airflow_home
             })
 end
 
@@ -131,7 +135,7 @@ template "/etc/init/airflow-worker.conf" do
   variables({
               :user => node[:airflow][:user],
               :group => node[:airflow][:group],
-              :airflow_home => node[:airflow][:airflow_home]
+              :airflow_home => airflow_home
             })
 end
 
