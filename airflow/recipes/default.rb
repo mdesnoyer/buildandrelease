@@ -68,7 +68,7 @@ end
 
 # Setup login shell environment for users
 template "/etc/profile.d/airflow.sh" do
-  sources "airflow.sh.erb"
+  source "airflow.sh.erb"
   owner "root"
   group "root"
   mode "0644"
