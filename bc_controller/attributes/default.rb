@@ -1,5 +1,6 @@
 include_attribute "neon::default"
 include_attribute "cmsdb::default"
+include_attribute "cmsapi::default"
 
 # Parameters for bc_controller
 default[:bc_controller][:log_dir] = "#{node[:neon][:log_dir]}/bc_controller"
@@ -13,8 +14,8 @@ default[:bc_controller][:mastermind_layer] = "mastermind"
 default[:bc_controller][:mastermind_port] = 8086 
 default[:bc_controller][:cmsapi_fallbackhost] = "cmsapi1"
 default[:bc_controller][:cmsapi_layer] = "cmsapi"
-default[:bc_controller][:cmsapi_port] = 8083 
 default[:bc_controller][:ingester_poll_period] = 293
+default[:bc_controller][:max_vids_in_new_account] = 100
 
 # Specify the repos to user
 default[:neon][:repos]["brightcove_controller"] = true
