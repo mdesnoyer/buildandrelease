@@ -19,13 +19,13 @@ Chef::Log.info("Connecting to video db at #{video_db_host}")
 
 # Find Mastermind
 Chef::Log.info "Looking for the Mastermind in layer: #{node[:bc_controller][:mastermind_layer]}"
-mastermind_host = get_host_in_layer(node[:bc_controller][:mastermind],
+mastermind_host = get_host_in_layer(node[:bc_controller][:mastermind_layer],
                                     node[:bc_controller][:mastermind_fallbackhost])
 Chef::Log.info("Connecting to mastermind at #{mastermind_host}")
 
 # Find Services/ CMS API server 
 Chef::Log.info "Looking for the CMS API in layer: #{node[:bc_controller][:cmsapi_layer]}"
-cmsapi_host = get_host_in_layer(node[:bc_controller][:cmsapi],
+cmsapi_host = get_host_in_layer(node[:bc_controller][:cmsapi_layer],
                                 node[:bc_controller][:cmsapi_fallbackhost])
 Chef::Log.info("Connecting to cmsapi at #{cmsapi_host}")
 
@@ -56,9 +56,10 @@ template node[:bc_controller][:ingester_config] do
   group "bc_controller"
   mode "0644"
   variables({
-              :poll_period => node[:bc_controller][:ingester_poll_period],
               :video_db_host => video_db_host,
               :video_db_port => node[:cmsdb][:master_port],
+              :cmsapi_host => cmsapi_host, 
+              :cmsapi_port => node[:cmsapi][:port], 
               :log_file => node[:bc_controller][:ingester_log_file],
               :carbon_host => node[:neon][:carbon_host],
               :carbon_port => node[:neon][:carbon_port],
