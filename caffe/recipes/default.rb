@@ -166,3 +166,9 @@ end
 magic_shell_environment 'PYTHONPATH' do
   value "$PYTHONPATH:#{software_dir}/python"
 end
+
+install_interactive = node[:caffe][:interactive]
+
+if install_interactive
+    execute "pip install ipython"
+end
