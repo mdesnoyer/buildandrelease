@@ -7,6 +7,14 @@ node.default[:neon_logs][:flume_streams][:cmsapi_flume_logs] = \
   get_fileagent_config("#{get_log_dir()}/flume.log",
                        "cmsapi-flume")
 
+node.default[:neon_logs][:flume_streams][:cmsapiv2_logs] = 
+  get_jsonagent_config(node[:neon_logs][:json_http_source_port],
+                       "cmsapiv2")
+
+node.default[:neon_logs][:flume_streams][:cmsapiv2_flume_logs] = \
+  get_fileagent_config("#{get_log_dir()}/flume.log",
+                       "cmsapiv2-flume")
+
 if node[:opsworks][:activity] == "config" then
   include_recipe "neon_logs::flume_core_config"
 else
@@ -42,11 +50,46 @@ template node[:cmsapi][:config] do
             })
 end
 
+# Write the configuration file for CMS API 
+template node[:cmsapiv2][:config] do
+  source "cmsapiv2.conf.erb"
+  owner "cmsapiv2"
+  group "cmsapiv2"
+  mode "0644"
+  variables({
+              :video_server_port => node[:cmsapiv2][:video_server_port],
+              :video_server_host => video_server_host, 
+              :cmsapiv2_port => node[:cmsapiv2][:port],
+              :video_db_host => video_db_host,
+              :video_db_port => node[:cmsdb][:master_port],
+              :log_file => node[:cmsapiv2][:log_file],
+              :access_log_file => node[:cmsapiv2][:access_log_file],
+              :carbon_host => node[:neon][:carbon_host],
+              :carbon_port => node[:neon][:carbon_port],
+              :flume_log_port => node[:neon_logs][:json_http_source_port],
+            })
+end
+
 cmsapi_exists = File.exists?("/etc/init/cmsapi.conf")
 
 if cmsapi_exists then
   # Specify the service for chef so that they can be restarted.
   service "cmsapi" do
+    provider Chef::Provider::Service::Upstart
+    supports :status => true, :restart => true, :start => true, :stop => true
+    action :nothing
+  end
+
+  service "nginx" do
+    action :nothing
+  end
+end
+
+cmsapiv2_exists = File.exists?("/etc/init/cmsapiv2.conf")
+
+if cmsapiv2_exists then
+  # Specify the service for chef so that they can be restarted.
+  service "cmsapiv2" do
     provider Chef::Provider::Service::Upstart
     supports :status => true, :restart => true, :start => true, :stop => true
     action :nothing

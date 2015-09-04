@@ -11,8 +11,19 @@ default[:cmsapi][:video_server_port] = 8081
 default[:cmsapi][:video_server_fallbackhost] = "video-server1"
 default[:cmsapi][:video_server_layer] = "video_server"
 
+# Parameters for cmsapiv2
+default[:cmsapiv2][:log_dir] = "#{node[:neon][:log_dir]}/cmsapiv2"
+default[:cmsapiv2][:config] = "#{node[:neon][:config_dir]}/cmsapiv2.conf"
+default[:cmsapiv2][:log_file] = "#{node[:cmsapiv2][:log_dir]}/cmsapiv2.log"
+default[:cmsapiv2][:access_log_file] = "#{node[:cmsapiv2][:log_dir]}/access.log"
+default[:cmsapiv2][:port] = 8083 
+default[:cmsapiv2][:video_server_port] = 8081 
+default[:cmsapiv2][:video_server_fallbackhost] = "video-server1"
+default[:cmsapiv2][:video_server_layer] = "video_server"
+
 # Specify the repos to user
 default[:neon][:repos]["cmsapi"] = true
+default[:neon][:repos]["cmsapiv2"] = true
 default[:neon][:repos]["core"] = true
 
 # Nginx parameters
