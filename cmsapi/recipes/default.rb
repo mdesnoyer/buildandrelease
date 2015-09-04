@@ -43,7 +43,7 @@ node[:deploy].each do |app_name, deploy|
   base_installs = false 
   if app_name == "cmsapi" or app_name == "cmsapiv2" then
     if not base_installs then 
-      Chef::Log.info("Deploying app base installs using code path #{repo_path}")
+      Chef::Log.info("Deploying app base installs.")
       include_recipe "neon::full_py_repo"
       include_recipe "neon-nginx::default"
       template "/etc/init/nginx-email.conf" do
