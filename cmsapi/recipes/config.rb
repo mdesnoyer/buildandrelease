@@ -53,8 +53,8 @@ end
 # Write the configuration file for CMS API 
 template node[:cmsapiv2][:config] do
   source "cmsapiv2.conf.erb"
-  owner "cmsapiv2"
-  group "cmsapiv2"
+  owner "cmsapi"
+  group "cmsapi"
   mode "0644"
   variables({
               :video_server_port => node[:cmsapiv2][:video_server_port],
