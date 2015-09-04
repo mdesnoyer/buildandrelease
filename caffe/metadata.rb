@@ -1,7 +1,13 @@
-name 'caffe'
-maintainer 'The Authors'
-maintainer_email 'you@example.com'
-license 'all_rights'
-description 'Installs/Configures caffe'
-long_description 'Installs/Configures caffe'
-version '0.1.0'
+name             'caffe'
+maintainer       'Neon'
+maintainer_email 'ops@neon-lab.com'
+description      'caffe-based video client'
+license          'Proprietary - All Rights Reserved'
+version          '0.1.0'
+
+depends 'apt'
+depends 'neon'
+depends 'neon_logs'
+depends 'python', "= 1.4.6"
+
+supports 'ubuntu'
