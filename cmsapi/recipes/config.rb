@@ -112,7 +112,7 @@ template "#{node[:nginx][:dir]}/conf.d/cmsapi.conf" do
               :service_port => node[:cmsapi][:port], 
               :frontend_port => 80 
             })
-  if cmsapi_exists
+  if cmsapi_exists || cmsapiv2_exists
     notifies :reload, 'service[nginx]', :delayed
   end
 end

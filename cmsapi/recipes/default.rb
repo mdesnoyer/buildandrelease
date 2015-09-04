@@ -39,8 +39,9 @@ file node[:cmsapiv2][:log_file] do
   mode "0644"
 end
 
+base_installs = false
+ 
 node[:deploy].each do |app_name, deploy|
-  base_installs = false 
   if app_name == "cmsapi" or app_name == "cmsapiv2" then
     if not base_installs then 
       Chef::Log.info("Deploying app base installs.")
