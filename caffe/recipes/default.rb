@@ -12,9 +12,15 @@ include_recipe "neon::full_py_repo"
 software_dir = node[:caffe][:software_dir]
 local_user = node[:caffe][:local_user]
 local_group = node[:caffe][:local_group]
+# remote filenames
 cudnn_filename = "#{node['caffe']['cudnn_tarball_name_wo_tgz']}.tgz"
 cuda_filename = "#{node['caffe']['CUDA_deb_file']}.deb"
-cuda_local_filename = "#{software_dir}/cuda-repo-ubuntu1204-7-0-local_7.0-28_amd64.deb"
+glog_filename = "#{node['caffe']['glog_deb_file']}.deb"
+lmdb_filename = "#{node['caffe']['lmdb_deb_file']}.deb"
+# local filenames
+cuda_local_filename = "/tmp/cuda-repo-ubuntu1204-7-0-local_7.0-28_amd64.deb"
+glog_local_filename = "/tmp/libgoogle-glog-dev_0.3.4-0.1+b1_amd64.deb"
+lmdb_local_filename = "/tmp/liblmdb-dev_0.9.15-1_amd64.deb"
 
 # linux headers
 package "linux-headers-#{node['os_version']}"
@@ -31,10 +37,7 @@ package_deps = [
                 "protobuf-compiler",
                 "libjpeg62",
                 "libfreeimage-dev",
-                "libatlas-base-dev",
-                "libgflags-dev",
-                "libgoogle-glog-dev",
-                "liblmdb-dev"]
+                "libatlas-base-dev"]
 
 package_deps.each do |pkg|
   package pkg do
@@ -42,23 +45,59 @@ package_deps.each do |pkg|
   end
 end
 
+# install GLOG
+
+remote_file "#{glog_local_filename}" do
+  source "#{glog_filename}"
+  mode 0644
+end
+
+dpkg_package "cuda" do
+  source "#{glog_local_filename}"
+  action :install
+end
+
+# install LMDB
+
+remote_file "#{lmdb_local_filename}" do
+  source "#{lmdb_filename}"
+  mode 0644
+end
+
+dpkg_package "cuda" do
+  source "#{cuda_local_filename}"
+  action :install
+end
+
+# install CUDA
+
 remote_file "#{cuda_local_filename}" do
-    source "#{cuda_filename}"
-    action :create_if_missing
-    notifies :run, 'bash[install-cuda-repo]', :immediately
-    # owner local_user
-    # group local_group
+  source "#{cuda_filename}"
+  mode 0644
 end
 
-bash 'install-cuda-repo' do
-    action :nothing
-    code "dpkg -i #{cuda_local_filename}"
-    notifies :run, 'execute[apt-get update]', :immediately
+dpkg_package "cuda" do
+  source "#{cuda_local_filename}"
+  action :install
 end
 
-execute 'install-cuda' do
-    command "apt-get -q -y install --no-install-recommends cuda"
-end
+# remote_file "#{cuda_local_filename}" do
+#     source "#{cuda_filename}"
+#     action :create_if_missing
+#     notifies :run, 'bash[install-cuda-repo]', :immediately
+#     owner local_user
+#     group local_group
+# end
+
+# bash 'install-cuda-repo' do
+#     action :nothing
+#     code "dpkg -i #{cuda_local_filename}"
+#     notifies :run, 'execute[apt-get update]', :immediately
+# end
+
+# execute 'install-cuda' do
+#     command "apt-get -q -y install --no-install-recommends cuda"
+# end
 
 cookbook_file "#{software_dir}/#{cudnn_filename}" do
     source "cudnn-tarball/#{cudnn_filename}"
