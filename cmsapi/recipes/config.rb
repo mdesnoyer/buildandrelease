@@ -109,7 +109,8 @@ template "#{node[:nginx][:dir]}/conf.d/cmsapi.conf" do
   group node['nginx']['group']
   mode "0644"
   variables({
-              :service_port => node[:cmsapi][:port], 
+              :service_port_v1 => node[:cmsapi][:port], 
+              :service_port_v2 => node[:cmsapiv2][:port], 
               :frontend_port => 80 
             })
   if cmsapi_exists || cmsapiv2_exists

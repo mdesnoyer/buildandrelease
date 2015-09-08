@@ -1,5 +1,6 @@
 upstream tornado_servers {
-  server 127.0.0.1:<%= @service_port %>;
+  server 127.0.0.1:<%= @service_port_v1 %>;
+  server 127.0.0.1:<%= @service_port_v2 %>;
 }
 
 server {
