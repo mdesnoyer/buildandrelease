@@ -120,9 +120,9 @@ node[:deploy].each do |app_name, deploy|
       action [:enable, :start]
       subscribes :restart, "git[#{repo_path}]", :delayed
     end
-  end
+  #end
  
-  if app_name == "cmsapiv2" then 
+  #if app_name == "cmsapiv2" then 
     repo_path = get_repo_path(app_name)
     Chef::Log.info("Deploying app #{app_name} using code path #{repo_path}")
     app_tested = "#{repo_path}/TEST_DONE"
