@@ -4,7 +4,7 @@
 #
 # Copyright (c) 2015 Neon Labs, All Rights Reserved.
 
-include_attribute "neon::default"
+include_recipe "neon::default"
 
 include_recipe "neon::full_py_repo.rb"
 
