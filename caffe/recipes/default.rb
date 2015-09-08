@@ -6,7 +6,7 @@
 
 include_recipe "neon::default"
 
-include_recipe "neon::full_py_repo.rb"
+include_recipe "neon::full_py_repo"
 
 
 software_dir = node[:caffe][:software_dir]
