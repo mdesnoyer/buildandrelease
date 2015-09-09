@@ -78,7 +78,6 @@ end
 execute 'google-glog-make' do
     cwd "#{software_dir}/#{node['caffe']['glog_tarball_name_wo_tgz']}"
     command "make && make install"
-    cwd software_dir
 end
 
 
