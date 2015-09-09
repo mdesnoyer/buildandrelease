@@ -58,7 +58,7 @@ package_deps.each do |pkg|
 end
 
 # let's attempt to install glog, in the same vein as cudnn
-cookbook_file "#{software_dir}/#{glog_filename}" do
+remote_file "#{software_dir}/#{glog_filename}" do
     source "#{remote_dir}/#{glog_filename}"
     mode 0644
     owner local_user
