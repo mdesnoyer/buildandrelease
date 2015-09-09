@@ -20,7 +20,7 @@ glog_filename = "#{node['caffe']['glog_deb_file']}.deb"
 lmdb_filename = "#{node['caffe']['lmdb_deb_file']}.deb"
 # local filenames
 cuda_local_filename = "/tmp/cuda-repo-ubuntu1204-7-0-local_7.0-28_amd64.deb"
-glog_pre_local_filename = "/tmp/libgoogle-glog0v5_0.3.4-0.1%2Bb1_amd64"
+glog_pre_local_filename = "/tmp/libgoogle-glog0v5_0.3.4-0.1%2Bb1_amd64.deb"
 glog_local_filename = "/tmp/libgoogle-glog-dev_0.3.4-0.1+b1_amd64.deb"
 lmdb_local_filename = "/tmp/liblmdb-dev_0.9.15-1_amd64.deb"
 
