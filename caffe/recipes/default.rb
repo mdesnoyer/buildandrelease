@@ -5,7 +5,9 @@
 # Copyright (c) 2015 Neon Labs, All Rights Reserved.
 
 include_recipe "neon::default"
-
+include_recipe "yasm::source"
+include_recipe "build-essential"
+include_recipe "git"
 include_recipe "neon::full_py_repo"
 
 
@@ -15,6 +17,8 @@ local_user = node[:caffe][:local_user]
 local_group = node[:caffe][:local_group]
 glog_filename = "#{node["caffe"]["glog_tarball_name_wo_tgz"]}.tar.gz"
 cudnn_filename = "#{node['caffe']['cudnn_tarball_name_wo_tgz']}.tgz"
+creates_lmdb = "#{node['caffe']['lmdb_prefix']}/bin/lmdb"
+
 # remote filenames
 #cuda_filename = "#{node['caffe']['CUDA_deb_file']}.deb"
 #glog_pre_filename = "#{node['caffe']['glog_pre_deb_file']}.deb"
@@ -80,6 +84,38 @@ execute 'google-glog-make' do
     command "make && make install"
 end
 
+# now, we're going to adapt libvpx source.rb recipe to install lmdb
+file "#{creates_lmdb}" do
+    action :nothing
+    subscribes :delete, "bash[compile_yasm]", :immediately
+end
+
+git node['caffe']['lmdb_build_dir'] do
+    repository node['caffe']['lmdb_git_repository']
+    reference node['caffe']['lmdb_git_revision']
+    action :sync
+    notifies :delete, "file[#{creates_lmdb}]", :immediately
+end
+
+template "#{node['lmdb']['build_dir']}/lmdb-compiled_with_flags" do
+    source "compiled_with_flags.erb"
+    owner "root"
+    group "root"
+    mode 0600
+    variables(
+        :compile_flags => node['lmdb']['compile_flags']
+    )
+    notifies :delete, "file[#{creates_lmdb}]", :immediately
+end
+
+# apparently this just gets executed like, as a thing.
+bash "compile_lmdb" do
+    cwd node['lmdb']['build_dir']
+    code <<-EOH
+        make clean && make && make install
+    EOH
+    not_if {  ::File.exists?(creates_lmdb) }
+end
 
 # okay, instead we're going to try to download things 
 # install GLOG dependency
