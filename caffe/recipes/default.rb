@@ -110,7 +110,7 @@ end
 
 # apparently this just gets executed like, as a thing.
 bash "compile_lmdb" do
-    cwd node['lmdb']['build_dir']
+    cwd node['caffe']['lmdb_build_dir']
     code <<-EOH
         make clean && make && make install
     EOH
