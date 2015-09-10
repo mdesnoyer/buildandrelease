@@ -2,7 +2,11 @@
 # Contributions simplifying and improving our build system are welcome!
 
 # cuDNN acceleration switch (uncomment to build with cuDNN).
+<% if @cudnn_installed -%>
 USE_CUDNN := 1
+<% else -%>
+# USE_CUDNN := 1
+<% end -%>
 
 # CPU-only switch (uncomment to build without GPU support).
 # CPU_ONLY := 1
