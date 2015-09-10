@@ -111,78 +111,44 @@ end
 # apparently this just gets executed like, as a thing.
 bash "compile_lmdb" do
     cwd node['caffe']['lmdb_build_dir']
+    # code <<-EOH
+    #     make clean && make && make install
+    # EOH
     code <<-EOH
-        make clean && make && make install
+        make && make install
     EOH
     not_if {  ::File.exists?(creates_lmdb) }
 end
 
-# okay, instead we're going to try to download things 
-# install GLOG dependency
+# install CUDA
 
-# remote_file "#{glog_pre_local_filename}" do
-#   source "#{glog_pre_filename}"
-#   mode 0644
-# end
+remote_file "#{cuda_local_filename}" do
+  source "#{cuda_filename}"
+  mode 0644
+end
 
-# dpkg_package "libgoogle-glog0v5" do
-#   source "#{glog_pre_local_filename}"
-#   action :install
-# end
+dpkg_package "cuda" do
+  source "#{cuda_local_filename}"
+  action :install
+end
 
-# # # install GLOG
+remote_file "#{cuda_local_filename}" do
+    source "#{cuda_filename}"
+    action :create_if_missing
+    notifies :run, 'bash[install-cuda-repo]', :immediately
+    owner local_user
+    group local_group
+end
 
-# # remote_file "#{glog_local_filename}" do
-# #   source "#{glog_filename}"
-# #   mode 0644
-# # end
+bash 'install-cuda-repo' do
+    action :nothing
+    code "dpkg -i #{cuda_local_filename}"
+    notifies :run, 'execute[apt-get update]', :immediately
+end
 
-# # dpkg_package "libgoogle-glog" do
-# #   source "#{glog_local_filename}"
-# #   action :install
-# # end
-
-# # install LMDB
-
-# remote_file "#{lmdb_local_filename}" do
-#   source "#{lmdb_filename}"
-#   mode 0644
-# end
-
-# dpkg_package "liblmdb-dev" do
-#   source "#{lmdb_local_filename}"
-#   action :install
-# end
-
-# # install CUDA
-
-# remote_file "#{cuda_local_filename}" do
-#   source "#{cuda_filename}"
-#   mode 0644
-# end
-
-# dpkg_package "cuda" do
-#   source "#{cuda_local_filename}"
-#   action :install
-# end
-
-# # remote_file "#{cuda_local_filename}" do
-# #     source "#{cuda_filename}"
-# #     action :create_if_missing
-# #     notifies :run, 'bash[install-cuda-repo]', :immediately
-# #     owner local_user
-# #     group local_group
-# # end
-
-# # bash 'install-cuda-repo' do
-# #     action :nothing
-# #     code "dpkg -i #{cuda_local_filename}"
-# #     notifies :run, 'execute[apt-get update]', :immediately
-# # end
-
-# # execute 'install-cuda' do
-# #     command "apt-get -q -y install --no-install-recommends cuda"
-# # end
+execute 'install-cuda' do
+    command "apt-get -q -y install --no-install-recommends cuda"
+end
 
 # ------------------ legit stuff -------------------- #
 # cookbook_file "#{software_dir}/#{cudnn_filename}" do
