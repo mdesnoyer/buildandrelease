@@ -15,19 +15,23 @@ software_dir = node[:caffe][:software_dir]
 remote_dir = node[:caffe][:remote_dir]
 local_user = node[:caffe][:local_user]
 local_group = node[:caffe][:local_group]
+
+# remote files
 glog_filename = "#{node["caffe"]["glog_tarball_name_wo_tgz"]}.tar.gz"
 cudnn_filename = "#{node['caffe']['cudnn_tarball_name_wo_tgz']}.tgz"
+cuda_filename = "#{node['caffe']['CUDA_deb_file']}.deb"
+
+# local files and directories
 creates_lmdb = "#{node['caffe']['lmdb_prefix']}/bin/lmdb"
+cuda_local_filename = "/tmp/cuda-repo-ubuntu1204-7-0-local_7.0-28_amd64.deb"
 
 # remote filenames
-#cuda_filename = "#{node['caffe']['CUDA_deb_file']}.deb"
 #glog_pre_filename = "#{node['caffe']['glog_pre_deb_file']}.deb"
 #glog_filename = "#{node['caffe']['glog_deb_file']}.deb"
 #lmdb_filename = "#{node['caffe']['lmdb_deb_file']}.deb"
 
 #glog-0.3.3
 # local filenames
-#cuda_local_filename = "/tmp/cuda-repo-ubuntu1204-7-0-local_7.0-28_amd64.deb"
 #glog_pre_local_filename = "/tmp/libgoogle-glog0v5_0.3.4-0.1+b1_amd64.deb"
 #glog_local_filename = "/tmp/libgoogle-glog-dev_0.3.4-0.1+b1_amd64.deb"
 #glog_local_filename = "/tmp/"
