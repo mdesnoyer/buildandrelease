@@ -6,7 +6,7 @@ default["caffe"]["remote_dir"] = "https://neon-dependencies.s3.amazonaws.com"
 default["caffe"]["local_user"] = "ubuntu"
 default["caffe"]["local_group"] = "ubuntu"
 
-default["caffe"]["cudnn_tarball_name_wo_tgz"] = "cudnn-7.0-linux-x64-v3.0-rc"
+default["caffe"]["cudnn_tarball_name_wo_tgz"] = "cudnn-6.5-linux-R1"
 
 default["caffe"]["glog_tarball_name_wo_tgz"] = "glog-0.3.3"
 default["caffe"]["CUDA_deb_file"] = "cuda-repo-ubuntu1204-7-0-local_7.0-28_amd64"
