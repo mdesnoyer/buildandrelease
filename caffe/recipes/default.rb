@@ -116,6 +116,7 @@ end
 # apparently this just gets executed like, as a thing.
 bash "compile_lmdb" do
     cwd "#{node['caffe']['lmdb_build_dir']}/libraries/liblmdb"
+    environment 'PREFIX' => '/usr/local'
     code <<-EOH
         make clean && make && make install
     EOH
