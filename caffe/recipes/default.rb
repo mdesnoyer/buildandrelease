@@ -214,85 +214,85 @@ end
 
 cudnn_installed = true
 
-# # set up LD_LIBRARY_PATH
-# file "/etc/ld.so.conf.d/caffe.conf" do
-#   owner "root"
-#   group "root"
-#   content "/usr/local/cuda-7.0/targets/x86_64-linux/lib"
-#   notifies :run, 'execute[ldconfig]', :immediately
-# end
-# execute 'ldconfig' do
-#   action :nothing
+# set up LD_LIBRARY_PATH
+file "/etc/ld.so.conf.d/caffe.conf" do
+  owner "root"
+  group "root"
+  content "/usr/local/cuda-7.0/targets/x86_64-linux/lib"
+  notifies :run, 'execute[ldconfig]', :immediately
+end
+execute 'ldconfig' do
+  action :nothing
+end
+
+# download caffe and setup initial Makefile.config
+git "#{software_dir}" do
+  repository "https://github.com/BVLC/caffe.git"
+  revision "66823b59d70097f4ccbe3631b102ef238c08535b" # master as of Sep 3, 2015
+  action :sync
+  user local_user
+  group local_group
+end
+template "#{software_dir}/Makefile.config" do
+  source "Makefile.config.erb"
+  mode 0644
+  owner local_user
+  group local_group
+  variables({
+      :cudnn_installed => cudnn_installed
+  })
+end
+
+# install python requirements
+execute 'install-python-reqs' do
+  cwd "#{software_dir}/python"
+  command "(for req in $(cat requirements.txt); do pip install $req; done) && touch /home/#{local_user}/.caffe-python-reqs-installed && chown #{local_user}:#{local_group} /home/#{local_user}/.caffe-python-reqs-installed"
+  creates "/home/#{local_user}/.caffe-python-reqs-installed"
+end
+
+# make caffe!
+execute 'build-caffe' do
+  cwd "#{software_dir}"
+  command "make all -j8"
+  creates "#{software_dir}/build"
+  user local_user
+  group local_group
+  notifies :run, 'execute[build-caffe-tests]', :immediately
+end
+execute 'build-caffe-tests' do
+  cwd "#{software_dir}"
+  command "make test -j8"
+  action :nothing
+  user local_user
+  group local_group
+  notifies :run, 'execute[build-caffe-python]', :immediately
+end
+execute 'build-caffe-python' do
+  cwd "#{software_dir}"
+  command "make pycaffe"
+  action :nothing
+  user local_user
+  group local_group
+end
+
+# # fix warning message 'libdc1394 error: Failed to initialize libdc1394' when running make runtest
+# # http://stackoverflow.com/a/26028597
+# # need to set this on each boot since the /dev links are cleared after shutdown
+# cron_d 'fix-libdc1394-warning' do
+#   predefined_value '@reboot'
+#   command 'ln -s /dev/null /dev/raw1394'
 # end
 
-# # download caffe and setup initial Makefile.config
-# git "#{software_dir}" do
-#   repository "https://github.com/BVLC/caffe.git"
-#   revision "66823b59d70097f4ccbe3631b102ef238c08535b" # master as of Sep 3, 2015
-#   action :sync
-#   user local_user
-#   group local_group
-# end
-# template "#{software_dir}/Makefile.config" do
-#   source "Makefile.config.erb"
-#   mode 0644
-#   owner local_user
-#   group local_group
-#   variables({
-#       :cudnn_installed => cudnn_installed
-#   })
-# end
+# set path
+magic_shell_environment 'PATH' do
+  value "$PATH:#{software_dir}/build/tools"
+end
+magic_shell_environment 'PYTHONPATH' do
+  value "$PYTHONPATH:#{software_dir}/python"
+end
 
-# # install python requirements
-# execute 'install-python-reqs' do
-#   cwd "#{software_dir}/python"
-#   command "(for req in $(cat requirements.txt); do pip install $req; done) && touch /home/#{local_user}/.caffe-python-reqs-installed && chown #{local_user}:#{local_group} /home/#{local_user}/.caffe-python-reqs-installed"
-#   creates "/home/#{local_user}/.caffe-python-reqs-installed"
-# end
+install_interactive = node[:caffe][:interactive]
 
-# # make caffe!
-# execute 'build-caffe' do
-#   cwd "#{software_dir}"
-#   command "make all -j8"
-#   creates "#{software_dir}/build"
-#   user local_user
-#   group local_group
-#   notifies :run, 'execute[build-caffe-tests]', :immediately
-# end
-# execute 'build-caffe-tests' do
-#   cwd "#{software_dir}"
-#   command "make test -j8"
-#   action :nothing
-#   user local_user
-#   group local_group
-#   notifies :run, 'execute[build-caffe-python]', :immediately
-# end
-# execute 'build-caffe-python' do
-#   cwd "#{software_dir}"
-#   command "make pycaffe"
-#   action :nothing
-#   user local_user
-#   group local_group
-# end
-
-# # # fix warning message 'libdc1394 error: Failed to initialize libdc1394' when running make runtest
-# # # http://stackoverflow.com/a/26028597
-# # # need to set this on each boot since the /dev links are cleared after shutdown
-# # cron_d 'fix-libdc1394-warning' do
-# #   predefined_value '@reboot'
-# #   command 'ln -s /dev/null /dev/raw1394'
-# # end
-
-# # set path
-# magic_shell_environment 'PATH' do
-#   value "$PATH:#{software_dir}/build/tools"
-# end
-# magic_shell_environment 'PYTHONPATH' do
-#   value "$PYTHONPATH:#{software_dir}/python"
-# end
-
-# install_interactive = node[:caffe][:interactive]
-
-# if install_interactive
-#     execute "pip install ipython"
-# end
+if install_interactive
+    execute "pip install ipython"
+end
