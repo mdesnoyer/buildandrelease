@@ -111,11 +111,9 @@ end
 # apparently this just gets executed like, as a thing.
 bash "compile_lmdb" do
     cwd node['caffe']['lmdb_build_dir']
-    # code <<-EOH
-    #     make clean && make && make install
-    # EOH
     code <<-EOH
-        make && make install
+        ./configure --prefix=#{node['caffe']['lmdb_prefix']} #{node['caffe']['lmdb_compile_flags'].join(' ')}
+        make clean && make && make install
     EOH
     not_if {  ::File.exists?(creates_lmdb) }
 end
