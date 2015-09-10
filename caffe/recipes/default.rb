@@ -103,7 +103,7 @@ template "#{node['caffe']['build_dir']}/lmdb-compiled_with_flags" do
     group "root"
     mode 0600
     variables(
-        :compile_flags => node['lmdb']['compile_flags']
+        :compile_flags => node['caffe']['lmdb_compile_flags']
     )
     notifies :delete, "file[#{creates_lmdb}]", :immediately
 end
