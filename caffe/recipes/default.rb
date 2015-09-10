@@ -130,7 +130,7 @@ end
 # INSTALL CUDA
 ###################################################################
 remote_file "#{cuda_local_filename}" do
-    source "#{cuda_filename}"
+    source "#{remote_dir}/#{cuda_filename}"
     action :create_if_missing
     notifies :run, 'bash[install-cuda-repo]', :immediately
     owner local_user
