@@ -40,7 +40,7 @@ package_deps.each do |pkg|
 end
 
 package "libboost-all-dev" do
-  action :upgrade
+  action :install
   options("--no-install-recommends")
 end
 
