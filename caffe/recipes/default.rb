@@ -97,7 +97,7 @@ git node['caffe']['lmdb_build_dir'] do
     notifies :delete, "file[#{creates_lmdb}]", :immediately
 end
 
-template "#{node['lmdb']['build_dir']}/lmdb-compiled_with_flags" do
+template "#{node['caffe']['build_dir']}/lmdb-compiled_with_flags" do
     source "compiled_with_flags.erb"
     owner "root"
     group "root"
