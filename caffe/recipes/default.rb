@@ -67,6 +67,23 @@ end
 #   end
 # end
 
+# we have to perform fix-apt-get because
+# it produces errors of unknown origin; possible
+# due purely to the ~60 or so attempts that have 
+# been performed so far.
+#
+# apparently it's extremely non-trivial to get chef 
+# to perform simple actions in the case that apt-get
+# fails to install a package propertly. I literally
+# can't imagine why this is, but apparently it is so,
+# so we're just going to run this *in case* something
+# fails to work properly downstream. Lovely.
+bash "fix-apt-get" do
+    code <<-EOH
+        apt-get -f -y install
+    EOH
+end
+
 package_deps = ["libprotobuf-dev",
                 "libleveldb-dev",
                 "libsnappy-dev",
@@ -75,16 +92,10 @@ package_deps = ["libprotobuf-dev",
 package_deps.each do |pkg|
   package pkg do
     action :install
-    notifies :run, 'bash[fix-apt-get]', :immediately
-    #options("-f")
+    #notifies :run, 'bash[fix-apt-get]', :immediately
   end
 end
 
-bash "fix-apt-get" do
-    code <<-EOH
-        apt-get -f -y install
-    EOH
-end
 
 package "libboost-all-dev" do
   action :install
@@ -167,36 +178,41 @@ execute 'install-cuda' do
     command "apt-get -q -y install --no-install-recommends cuda"
 end
 
-# ------------------ legit stuff -------------------- #
-# cookbook_file "#{software_dir}/#{cudnn_filename}" do
-#     source "cudnn-tarball/#{cudnn_filename}"
-#     mode 0644
-#     owner local_user
-#     group local_group
-# end
-# execute "tar -zxf #{cudnn_filename}" do
-#     cwd software_dir
-#     not_if { FileTest.exists? "#{software_dir}/#{node['caffe']['cudnn_tarball_name_wo_tgz']}" }
-#     user local_user
-#     group local_group
-# end
-# execute 'cp cudnn.h /usr/local/include' do
-#     cwd "#{software_dir}/#{node['caffe']['cudnn_tarball_name_wo_tgz']}"
-#     not_if { FileTest.exists? "/usr/local/include/cudnn.h" }
-# end
-# [ 'libcudnn_static.a', 'libcudnn.so.6.5.18' ].each do |lib|
-#     execute "cp #{lib} /usr/local/lib" do
-#         cwd "#{software_dir}/#{node['caffe']['cudnn_tarball_name_wo_tgz']}"
-#         not_if { FileTest.exists? "/usr/local/lib/#{lib}" }
-#     end
-# end
-# link "/usr/local/lib/libcudnn.so.6.5" do
-#     to "/usr/local/lib/libcudnn.so.6.5.18"
-# end
-# link "/usr/local/lib/libcudnn.so" do
-#     to "/usr/local/lib/libcudnn.so.6.5"
-# end
-# cudnn_installed = true
+remote_file "#{software_dir}/#{cudnn_filename}" do
+    source "#{remote_dir}/#{cudnn_filename}"
+    mode 0644
+    owner local_user
+    group local_group
+end
+
+execute "tar -zxf #{cudnn_filename}" do
+    cwd software_dir
+    not_if { FileTest.exists? "#{software_dir}/#{node['caffe']['cudnn_tarball_name_wo_tgz']}" }
+    user local_user
+    group local_group
+end
+
+execute 'cp cudnn.h /usr/local/include' do
+    cwd "#{software_dir}/#{node['caffe']['cudnn_tarball_name_wo_tgz']}"
+    not_if { FileTest.exists? "/usr/local/include/cudnn.h" }
+end
+
+[ 'libcudnn_static.a', 'libcudnn.so.6.5.18' ].each do |lib|
+    execute "cp #{lib} /usr/local/lib" do
+        cwd "#{software_dir}/#{node['caffe']['cudnn_tarball_name_wo_tgz']}"
+        not_if { FileTest.exists? "/usr/local/lib/#{lib}" }
+    end
+end
+
+link "/usr/local/lib/libcudnn.so.6.5" do
+    to "/usr/local/lib/libcudnn.so.6.5.18"
+end
+
+link "/usr/local/lib/libcudnn.so" do
+    to "/usr/local/lib/libcudnn.so.6.5"
+end
+
+cudnn_installed = true
 
 # # set up LD_LIBRARY_PATH
 # file "/etc/ld.so.conf.d/caffe.conf" do
