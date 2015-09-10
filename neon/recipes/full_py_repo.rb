@@ -30,13 +30,12 @@ include_recipe "python::virtualenv"
 package_deps = ["libprotobuf-dev",
                 "libleveldb-dev",
                 "libsnappy-dev",
-                "libopencv-dev",
                 "libhdf5-serial-dev",
                 "protobuf-compiler"]
 package_deps.each do |pkg|
   package pkg do
-    action :upgrade
-    options("-f")
+    action :install
+    #options("-f")
   end
 end
 
