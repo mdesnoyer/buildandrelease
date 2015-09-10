@@ -23,7 +23,7 @@ cuda_filename = "#{node['caffe']['CUDA_deb_file']}.deb"
 
 # local files and directories
 creates_lmdb = "#{node['caffe']['lmdb_prefix']}/bin/lmdb"
-cuda_local_filename = "/tmp/cuda-repo-ubuntu1204-7-0-local_7.0-28_amd64.deb"
+cuda_local_filename = "/tmp/{#{cuda_filename}}"
 
 # remote filenames
 #glog_pre_filename = "#{node['caffe']['glog_pre_deb_file']}.deb"
@@ -65,7 +65,9 @@ package_deps.each do |pkg|
   end
 end
 
-# let's attempt to install glog, in the same vein as cudnn
+###################################################################
+# INSTALL GLOG
+###################################################################
 remote_file "#{software_dir}/#{glog_filename}" do
     source "#{remote_dir}/#{glog_filename}"
     mode 0644
@@ -87,7 +89,9 @@ execute 'google-glog-make' do
     cwd "#{software_dir}/#{node['caffe']['glog_tarball_name_wo_tgz']}"
     command "make && make install"
 end
-
+###################################################################
+# INSTALL LMDB
+###################################################################
 # now, we're going to adapt libvpx source.rb recipe to install lmdb
 file "#{creates_lmdb}" do
     action :nothing
@@ -122,18 +126,9 @@ bash "compile_lmdb" do
     not_if {  ::File.exists?(creates_lmdb) }
 end
 
-# install CUDA
-
-remote_file "#{cuda_local_filename}" do
-  source "#{cuda_filename}"
-  mode 0644
-end
-
-dpkg_package "cuda" do
-  source "#{cuda_local_filename}"
-  action :install
-end
-
+###################################################################
+# INSTALL CUDA
+###################################################################
 remote_file "#{cuda_local_filename}" do
     source "#{cuda_filename}"
     action :create_if_missing
