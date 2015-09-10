@@ -52,21 +52,37 @@ end
 ###################################################################
 # caffe dependencies that can be installed automagically on 12.04
 ###################################################################
-package_deps = [
-                "libprotobuf-dev",
-                "libleveldb-dev",
-                "libhdf5-serial-dev",
-                "protobuf-compiler",
-                "libjpeg62",
-                "libfreeimage-dev",
-                "libatlas-base-dev"]
+# package_deps = [
+#                 "libprotobuf-dev",
+#                 "libleveldb-dev",
+#                 "libhdf5-serial-dev",
+#                 "protobuf-compiler",
+#                 "libjpeg62",
+#                 "libfreeimage-dev",
+#                 "libatlas-base-dev"]
 
+# package_deps.each do |pkg|
+#   package pkg do
+#     action :install
+#   end
+# end
+
+package_deps = ["libprotobuf-dev",
+                "libleveldb-dev",
+                "libsnappy-dev",
+                "libhdf5-serial-dev",
+                "protobuf-compiler"]
 package_deps.each do |pkg|
   package pkg do
     action :install
+    #options("-f")
   end
 end
 
+package "libboost-all-dev" do
+  action :install
+  options("--no-install-recommends")
+end
 ###################################################################
 # INSTALL GLOG
 ###################################################################

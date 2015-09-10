@@ -9,39 +9,28 @@ include_recipe "neon::repo"
 include_recipe "python::virtualenv"
 
 # Install packages that are needed
-# package_deps = [
-#                 "libfreetype6-dev",
-#                 "libatlas-base-dev",
-#                 "libyaml-0-2",
-#                 "libcurl4-openssl-dev",
-#                 "libboost1.46-dev",
-#                 "libboost1.46-dbg",
-#                 "fftw3-dev",
-#                 "gfortran",
-#                 "cmake",
-#                 "libpcre3",
-#                 "libpcre3-dev",
-#                 "libgtest-dev",
-#                 "cython",
-#                 "libsnappy-dev",
-#                 "libsnappy1",
-#                 "python-snappy"
-#                ]
-package_deps = ["libprotobuf-dev",
-                "libleveldb-dev",
+package_deps = [
+                "libfreetype6-dev",
+                "libatlas-base-dev",
+                "libyaml-0-2",
+                "libcurl4-openssl-dev",
+                "libboost1.46-dev",
+                "libboost1.46-dbg",
+                "fftw3-dev",
+                "gfortran",
+                "cmake",
+                "libpcre3",
+                "libpcre3-dev",
+                "libgtest-dev",
+                "cython",
                 "libsnappy-dev",
-                "libhdf5-serial-dev",
-                "protobuf-compiler"]
+                "libsnappy1",
+                "python-snappy"
+               ]
 package_deps.each do |pkg|
   package pkg do
     action :install
-    #options("-f")
   end
-end
-
-package "libboost-all-dev" do
-  action :install
-  options("--no-install-recommends")
 end
 
 # Install redis and make sure the service is turned off
