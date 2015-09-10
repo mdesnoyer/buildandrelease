@@ -49,7 +49,9 @@ directory software_dir do
   group local_group
 end
 
-# caffe dependencies
+###################################################################
+# caffe dependencies that can be installed automagically on 12.04
+###################################################################
 package_deps = [
                 "libprotobuf-dev",
                 "libleveldb-dev",
@@ -113,7 +115,7 @@ end
 
 # apparently this just gets executed like, as a thing.
 bash "compile_lmdb" do
-    cwd node['caffe']['lmdb_build_dir']
+    cwd "#{node['caffe']['lmdb_build_dir']}/libraries/liblmdb"
     code <<-EOH
         make clean && make && make install
     EOH
