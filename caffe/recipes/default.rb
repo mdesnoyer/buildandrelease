@@ -75,8 +75,15 @@ package_deps = ["libprotobuf-dev",
 package_deps.each do |pkg|
   package pkg do
     action :install
+    notifies :run, 'bash[fix-apt-get]', :immediately
     #options("-f")
   end
+end
+
+bash "fix-apt-get" do
+    code <<-EOH
+        apt-get -f -y install
+    EOH
 end
 
 package "libboost-all-dev" do
