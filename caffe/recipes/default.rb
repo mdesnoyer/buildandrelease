@@ -197,7 +197,20 @@ execute 'cp cudnn.h /usr/local/include' do
     not_if { FileTest.exists? "/usr/local/include/cudnn.h" }
 end
 
-[ 'libcudnn_static.a', 'libcudnn.so.6.5.18' ].each do |lib|
+# # below works with cuDNN v1
+# [ 'libcudnn_static.a', 'libcudnn.so.6.5.18' ].each do |lib|
+#     execute "cp #{lib} /usr/local/lib" do
+#         cwd "#{software_dir}/#{node['caffe']['cudnn_tarball_name_wo_tgz']}"
+#         not_if { FileTest.exists? "/usr/local/lib/#{lib}" }
+#     end
+# end
+
+# link "/usr/local/lib/libcudnn.so.6.5" do
+#     to "/usr/local/lib/libcudnn.so.6.5.18"
+# end
+
+# below works with cuDNN v2 (?)
+[ 'libcudnn_static.a', 'libcudnn.so.6.5.45' ].each do |lib|
     execute "cp #{lib} /usr/local/lib" do
         cwd "#{software_dir}/#{node['caffe']['cudnn_tarball_name_wo_tgz']}"
         not_if { FileTest.exists? "/usr/local/lib/#{lib}" }
@@ -205,7 +218,7 @@ end
 end
 
 link "/usr/local/lib/libcudnn.so.6.5" do
-    to "/usr/local/lib/libcudnn.so.6.5.18"
+    to "/usr/local/lib/libcudnn.so.6.5.45"
 end
 
 link "/usr/local/lib/libcudnn.so" do
@@ -291,3 +304,6 @@ end
 magic_shell_environment 'PYTHONPATH' do
   value "$PYTHONPATH:#{software_dir}/caffe/python"
 end
+
+
+cudnn-6.5-linux-x64-v2.tgz
