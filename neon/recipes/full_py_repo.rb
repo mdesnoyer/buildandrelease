@@ -34,9 +34,10 @@ package_deps = ["libprotobuf-dev",
                 "libhdf5-serial-dev",
                 "protobuf-compiler"]
 package_deps.each do |pkg|
-  package pkg do
-    action :upgrade
-  end
+  # package pkg do
+  #   action :upgrade
+  # end
+  package pkg
 end
 
 package "libboost-all-dev" do
