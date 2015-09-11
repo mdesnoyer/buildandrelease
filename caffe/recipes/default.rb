@@ -9,7 +9,7 @@ include_recipe "neon::default"
 include_recipe "build-essential"
 include_recipe "git"
 include_recipe "neon::full_py_repo"
-
+include_recipe "python::virtualenv"
 
 software_dir = node[:caffe][:software_dir]
 remote_dir = node[:caffe][:remote_dir]
@@ -78,11 +78,11 @@ end
 # can't imagine why this is, but apparently it is so,
 # so we're just going to run this *in case* something
 # fails to work properly downstream. Lovely.
-bash "fix-apt-get" do
-    code <<-EOH
-        apt-get -f -y install
-    EOH
-end
+# bash "fix-apt-get" do
+#     code <<-EOH
+#         apt-get -f -y install
+#     EOH
+# end
 
 package_deps = ["libprotobuf-dev",
                 "libleveldb-dev",
@@ -257,10 +257,20 @@ template "#{software_dir}/caffe/Makefile.config" do
   })
 end
 
+execute "this" do
+  cwd "#{node[:neon][:home]}"
+  user "neon"
+  group "neon"
+  code <<-EOH
+     . enable_env
+     make clean BUILD_TYPE=Release && make release
+  EOH
+end
+
 # install python requirements
 execute 'install-python-reqs' do
   cwd "#{software_dir}/caffe/python"
-  command "(for req in $(cat requirements.txt); do pip install $req; done) && touch /home/#{local_user}/.caffe-python-reqs-installed && chown #{local_user}:#{local_group} /home/#{local_user}/.caffe-python-reqs-installed"
+  command "(for req in $(cat requirements.txt); do pip install --no-index --find-links http://s3-us-west-1.amazonaws.com/neon-dependencies/index.html $req; done) && touch /home/#{local_user}/.caffe-python-reqs-installed && chown #{local_user}:#{local_group} /home/#{local_user}/.caffe-python-reqs-installed"
   creates "/home/#{local_user}/.caffe-python-reqs-installed"
 end
 
@@ -304,5 +314,3 @@ end
 magic_shell_environment 'PYTHONPATH' do
   value "$PYTHONPATH:#{software_dir}/caffe/python"
 end
-
-execute "pip install ipython"
