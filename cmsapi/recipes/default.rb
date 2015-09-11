@@ -69,25 +69,6 @@ node[:deploy].each do |app_name, deploy|
   if app_name == "cmsapi" then 
     repo_path = get_repo_path(app_name)
     Chef::Log.info("Deploying app #{app_name} using code path #{repo_path}")
-    #app_tested = "#{repo_path}/TEST_DONE"
-    #file app_tested do
-    #  user "neon"
-    #  group "neon"
-    #  action :nothing
-    #  subscribes :delete, "bash[compile_cmsapi]", :immediately
-    #end
-    #bash "test_cmsapi" do
-    #  cwd repo_path
-    #  user "neon"
-    #  group "neon"
-    #  code <<-EOH
-    #     . enable_env
-    #     nosetests --exe api cmsapi cmsdb utils
-    #  EOH
-    #  not_if {  ::File.exists?(app_tested) }
-    #  notifies :restart, "service[cmsapi]", :delayed
-    #  notifies :create, "file[#{app_tested}]"
-    #end
     template "/etc/init/cmsapi.conf" do
       source "cmsapi_service.conf.erb"
       owner "root"

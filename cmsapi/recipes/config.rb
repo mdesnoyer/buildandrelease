@@ -60,6 +60,7 @@ template node[:cmsapiv2][:config] do
               :video_server_port => node[:cmsapiv2][:video_server_port],
               :video_server_host => video_server_host, 
               :cmsapiv2_port => node[:cmsapiv2][:port],
+              :cmsapiv1_port => node[:cmsapi][:port],
               :video_db_host => video_db_host,
               :video_db_port => node[:cmsdb][:master_port],
               :log_file => node[:cmsapiv2][:log_file],
