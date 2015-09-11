@@ -304,6 +304,3 @@ end
 magic_shell_environment 'PYTHONPATH' do
   value "$PYTHONPATH:#{software_dir}/caffe/python"
 end
-
-
-cudnn-6.5-linux-x64-v2.tgz
