@@ -15,7 +15,7 @@ software_dir = node[:caffe][:software_dir]
 remote_dir = node[:caffe][:remote_dir]
 local_user = node[:caffe][:local_user]
 local_group = node[:caffe][:local_group]
-
+install_interactive = node[:caffe][:install_interactive]
 # remote files
 glog_filename = "#{node["caffe"]["glog_tarball_name_wo_tgz"]}.tar.gz"
 cudnn_filename = "#{node['caffe']['cudnn_tarball_name_wo_tgz']}.tgz"
