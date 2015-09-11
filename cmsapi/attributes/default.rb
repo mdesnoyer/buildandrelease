@@ -37,6 +37,8 @@ default[:nginx][:worker_rlimit_nofile] = 65536
 default[:nginx][:source][:modules] = %w(
   neon-nginx::http_realip_module
   neon-nginx::http_geoip_module
+  neon-nginx::http_spdy_module 
+  neon-nginx::http_ssl_module 
 )
 # Force_Default is needed because these parameters are set in the nginx recipe
 force_default[:nginx][:realip][:header] = "X-Forwarded-For"
