@@ -7,13 +7,13 @@ node.default[:neon_logs][:flume_streams][:cmsapi_flume_logs] = \
   get_fileagent_config("#{get_log_dir()}/flume.log",
                        "cmsapi-flume")
 
-#node.default[:neon_logs][:flume_streams][:cmsapiv2_logs] = 
-#  get_jsonagent_config(node[:neon_logs][:json_http_source_port],
-#                       "cmsapiv2")
+node.default[:neon_logs][:flume_streams][:cmsapiv2_logs] = 
+  get_jsonagent_config(node[:neon_logs][:json_http_source_port],
+                       "cmsapiv2")
 
-#node.default[:neon_logs][:flume_streams][:cmsapiv2_flume_logs] = \
-#  get_fileagent_config("#{get_log_dir()}/flume.log",
-#                       "cmsapiv2-flume")
+node.default[:neon_logs][:flume_streams][:cmsapiv2_flume_logs] = \
+  get_fileagent_config("#{get_log_dir()}/flume.log",
+                       "cmsapiv2-flume")
 
 if node[:opsworks][:activity] == "config" then
   include_recipe "neon_logs::flume_core_config"
