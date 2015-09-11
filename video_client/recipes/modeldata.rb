@@ -44,17 +44,49 @@ template "#{node[:neon][:home]}/.ssh/config" do
   })
 end
 
-bash "get_model_file" do
+template "#{node[:neon][:code_root]}/model_data-wrap-ssh4git.sh" do
+  owner "neon"
+  group "neon"
+  source "wrap-ssh4git.sh.erb"
+  mode "0755"
+  cookbook "neon"
+  variables({:ssh_key => "#{node[:neon][:home]}/.ssh/model_data.pem"})
+end
+
+
+git node[:video_client][:model_data_folder] do
+  repository node[:video_client][:model_data_repo]
+  revision node[:video_client][:model_data_repo_rev]
+  action :sync
   user "neon"
-  cwd node[:video_client][:model_data_folder]
-  code <<-EOH
-  git clone #{node[:video_client][:model_data_repo]} .
-  git config user.email ops@neon-lab.com
-  git config user.name #{node[:opsworks][:instance][:hostname]}
-  git annex sync
-  git annex get #{node[:video_client][:model_file]}
-  EOH
-  action :run
+  group "neon"
+  ssh_wrapper "#{node[:neon][:code_root]}/model_data-wrap-ssh4git.sh"
+end
+
+# bash "sync_annex" do
+#   user "neon"
+#   cwd node[:video_client][:model_data_folder]
+#   group "neon"
+#   environment "GIT_SSH" => "#{node[:neon][:code_root]}/model_data-wrap-ssh4git.sh"
+#   code <<-EOH
+#   git annex sync
+#   EOH
+#   action :run
+# end
+
+node[:video_client][:model_files].each do |file|
+  # iterate through the model files
+  bash "get_model_file #{file}" do
+    user "neon"
+    cwd node[:video_client][:model_data_folder]
+    group "neon"
+    code <<-EOH
+    git config user.email "ops@neon-lab.com"
+    git config user.name "ops"
+    git annex get #{file}
+    EOH
+    action :run
+  end
 end
 
 # Use an md5 of the model file to see if it has changed and trigger a
