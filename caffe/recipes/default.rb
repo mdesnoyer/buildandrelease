@@ -257,13 +257,12 @@ template "#{software_dir}/caffe/Makefile.config" do
   })
 end
 
-execute "this" do
+bash "enter_env" do
   cwd "#{node[:neon][:home]}"
   user "neon"
   group "neon"
   code <<-EOH
      . enable_env
-     make clean BUILD_TYPE=Release && make release
   EOH
 end
 
