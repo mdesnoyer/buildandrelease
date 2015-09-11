@@ -16,6 +16,8 @@ remote_dir = node[:caffe][:remote_dir]
 local_user = node[:caffe][:local_user]
 local_group = node[:caffe][:local_group]
 install_interactive = node[:caffe][:install_interactive]
+code_path = get_repo_path(nil)
+
 # remote files
 glog_filename = "#{node["caffe"]["glog_tarball_name_wo_tgz"]}.tar.gz"
 cudnn_filename = "#{node['caffe']['cudnn_tarball_name_wo_tgz']}.tgz"
@@ -258,7 +260,7 @@ template "#{software_dir}/caffe/Makefile.config" do
 end
 
 bash "enter_env" do
-  cwd "#{node[:neon][:home]}"
+  cwd "#{code_path}"
   user "neon"
   group "neon"
   code <<-EOH
