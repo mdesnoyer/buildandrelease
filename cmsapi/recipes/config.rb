@@ -7,14 +7,6 @@ node.default[:neon_logs][:flume_streams][:cmsapi_flume_logs] = \
   get_fileagent_config("#{get_log_dir()}/flume.log",
                        "cmsapi-flume")
 
-node.default[:neon_logs][:flume_streams][:cmsapiv2_logs] = 
-  get_jsonagent_config(node[:neon_logs][:json_http_source_port],
-                       "cmsapiv2")
-
-node.default[:neon_logs][:flume_streams][:cmsapiv2_flume_logs] = \
-  get_fileagent_config("#{get_log_dir()}/flume.log",
-                       "cmsapiv2-flume")
-
 if node[:opsworks][:activity] == "config" then
   include_recipe "neon_logs::flume_core_config"
 else
@@ -57,7 +49,7 @@ template node[:cmsapiv2][:config] do
   group "cmsapi"
   mode "0644"
   variables({
-              :video_server_port => node[:cmsapiv2][:video_server_port],
+              :video_server_port => node[:cmsapi][:video_server_port],
               :video_server_host => video_server_host, 
               :cmsapiv2_port => node[:cmsapiv2][:port],
               :cmsapiv1_port => node[:cmsapi][:port],

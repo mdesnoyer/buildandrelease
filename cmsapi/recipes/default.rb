@@ -38,35 +38,30 @@ file node[:cmsapiv2][:log_file] do
   group "neon"
   mode "0644"
 end
-
-base_installs = false
  
 node[:deploy].each do |app_name, deploy|
-  if app_name == "cmsapi" or app_name == "cmsapiv2" then
-    if not base_installs then 
-      Chef::Log.info("Deploying app base installs.")
-      include_recipe "neon::full_py_repo"
-      include_recipe "neon-nginx::default"
-      template "/etc/init/nginx-email.conf" do
-        source "mail-on-restart.conf.erb"
-        cookbook "neon"
-        owner "root"
-        group "root"
-        mode "0644"
-        variables({
-                    :service => "nginx",
-                    :host => node[:hostname],
-                    :email => node[:neon][:ops_email],
-                    :log_file => "#{node[:nginx][:log_dir]}/error.log"
-                  })
-      end
-      service "nginx" do
-        action [:enable, :start]
-      end
-      base_installs = true
-    end 
-  end
-  if app_name == "cmsapi" then 
+  if app_name == "cmsapi" then
+    Chef::Log.info("Deploying app base installs.")
+    include_recipe "neon::full_py_repo"
+    include_recipe "neon-nginx::default"
+    template "/etc/init/nginx-email.conf" do
+      source "mail-on-restart.conf.erb"
+      cookbook "neon"
+      owner "root"
+      group "root"
+      mode "0644"
+      variables({
+                  :service => "nginx",
+                  :host => node[:hostname],
+                  :email => node[:neon][:ops_email],
+                  :log_file => "#{node[:nginx][:log_dir]}/error.log"
+                })
+    end
+
+    service "nginx" do
+      action [:enable, :start]
+    end
+
     repo_path = get_repo_path(app_name)
     Chef::Log.info("Deploying app #{app_name} using code path #{repo_path}")
     template "/etc/init/cmsapi.conf" do
@@ -101,8 +96,7 @@ node[:deploy].each do |app_name, deploy|
       action [:enable, :start]
       subscribes :restart, "git[#{repo_path}]", :delayed
     end
-    #repo_path = get_repo_path(app_name)
-    Chef::Log.info("Deploying app #{app_name} using code path #{repo_path}")
+    # start cmsapiv2
     app_tested = "#{repo_path}/TEST_DONE"
     file app_tested do
       user "neon"
@@ -134,7 +128,6 @@ node[:deploy].each do |app_name, deploy|
                   :group => "neon",
                 })
     end
-    # Write a script that will send a mail when the service dies
     template "/etc/init/cmsapiv2-email.conf" do
       source "mail-on-restart.conf.erb"
       cookbook "neon"
