@@ -13,7 +13,7 @@ directory node[:airflow][:airflow_logs] do
   recursive true
 end
 
-directory default[:airflow][:home] do
+directory node[:airflow][:home] do
   user node[:airflow][:user]
   group node[:airflow][:group]
   mode "2775"
