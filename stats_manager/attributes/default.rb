@@ -40,6 +40,7 @@ default[:stats_manager][:cleaning_mr_memory] = 2048
 default[:airflow][:user] = node[:stats_manager][:user]
 default[:airflow][:group] = node[:stats_manager][:group]
 default[:airflow][:home] = "#{node[:neon][:config_dir]}/airflow"
+default[:airflow][:config_file] = "#{node[:airflow][:home]}/airflow.cfg"
 default[:airflow][:airflow_logs] = "#{node[:stats_manager][:log_dir]}/airflow"
 default[:airflow][:dags_folder] = "Set to the correct location"
 # TODO: set the sql parameters to hold the state
