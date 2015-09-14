@@ -1,10 +1,10 @@
 # Installs Airflow for cleaning and loading click logs via stats modules
 
-include_recipe "neon::default"
-
-repo_path = get_repo_path("stats_manager")
-airflow_home = "#{repo_path}/stats/airflow"
-Chef::Log.info("Using #{airflow_home} as AIRFLOW_HOME.")
+user node[:airflow][:user] do
+  action :create
+  shell '/bin/false'
+  home node[:airflow][:home]
+end
 
 directory node[:airflow][:airflow_logs] do
   user node[:airflow][:user]
@@ -12,6 +12,8 @@ directory node[:airflow][:airflow_logs] do
   mode "2775"
   recursive true
 end
+
+include_recipe "airflow::config"
 
 # Build dependencies
 deps = [
@@ -39,42 +41,6 @@ py_deps.each do |dep|
   python_pip dep do
     version node[:airflow][:version]
   end
-end
-
-
-# Airflow configuration
-template "#{airflow_home}/airflow.cfg" do
-  source "airflow.cfg.erb"
-  owner "root"
-  group "root"
-  mode "0644"
-  variables({
-              :airflow_home => airflow_home,
-              :airflow_logs => node[:airflow][:airflow_logs],
-              :db_user => node[:airflow][:db_user],
-              :db_password => node[:airflow][:db_password],
-              :db_host => node[:airflow][:db_host],
-              :db_port => node[:airflow][:db_port],
-              :db_name => node[:airflow][:db_name],
-              :webserver_host => node[:airflow][:webserver_host],
-              :webserver_port => node[:airflow][:webserver_port],
-              :smtp_user => node[:airflow][:smtp_user],
-              :smtp_password => node[:airflow][:smtp_password],
-              :smtp_host => node[:airflow][:smtp_host],
-              :smtp_port => node[:airflow][:smtp_port],
-              :smtp_from => node[:airflow][:smtp_from]
-            })
-end
-
-# Setup login shell environment for users
-template "/etc/profile.d/airflow.sh" do
-  source "airflow.sh.erb"
-  owner "root"
-  group "root"
-  mode "0644"
-  variables({
-              :airflow_home => airflow_home
-            })
 end
 
 
@@ -110,65 +76,28 @@ end
 # Airflow services
 # ----------------------------
 
-# Airflow Webserver service
-template "/etc/init/airflow-web.conf" do
-  source "airflow-web.conf.erb"
-  owner "root"
-  group "root"
-  mode "0644"
-  variables({
-              :user => node[:airflow][:user],
-              :group => node[:airflow][:group],
-              :airflow_home => airflow_home,
-              :webserver_port => node[:airflow][:webserver_port]
-            })
-end
-
-# Airflow Scheduler service
-template "/etc/init/airflow-scheduler.conf" do
-  source "airflow-scheduler.conf.erb"
-  owner "root"
-  group "root"
-  mode "0644"
-  variables({
-              :user => node[:airflow][:user],
-              :group => node[:airflow][:group],
-              :airflow_home => airflow_home
-            })
-end
-
-# Airflow Worker (Celery-based)
-template "/etc/init/airflow-worker.conf" do
-  source "airflow-worker.conf.erb"
-  owner "root"
-  group "root"
-  mode "0644"
-  variables({
-              :user => node[:airflow][:user],
-              :group => node[:airflow][:group],
-              :airflow_home => airflow_home
-            })
-end
-
 service "airflow-web" do
-    provider Chef::Provider::Service::Upstart
-    supports :status => true, :restart => true, :start => true, :stop => true
-    action [:enable, :start]
-    subscribes :restart, "template[/etc/init/airflow-web.conf]", :delayed
+  provider Chef::Provider::Service::Upstart
+  supports :status => true, :restart => true, :start => true, :stop => true
+  action [:enable, :start]
+  subscribes :restart, "template[/etc/init/airflow-web.conf]", :delayed
+  subscribes :restart, "template[#{node[:airflow][:config_file]}]", :delayed
 end
 
 service "airflow-scheduler" do
-    provider Chef::Provider::Service::Upstart
-    supports :status => true, :restart => true, :start => true, :stop => true
-    action [:enable, :start]
-    subscribes :restart, "template[/etc/init/airflow-scheduler.conf]", :delayed
+  provider Chef::Provider::Service::Upstart
+  supports :status => true, :restart => true, :start => true, :stop => true
+  action [:enable, :start]
+  subscribes :restart, "template[/etc/init/airflow-scheduler.conf]", :delayed
+  subscribes :restart, "template[#{node[:airflow][:config_file]}]", :delayed
 end
 
 service "airflow-worker" do
-    provider Chef::Provider::Service::Upstart
-    supports :status => true, :restart => true, :start => true, :stop => true
-    action [:enable, :start]
-    subscribes :restart, "template[/etc/init/airflow-worker.conf]", :delayed
+  provider Chef::Provider::Service::Upstart
+  supports :status => true, :restart => true, :start => true, :stop => true
+  action [:enable, :start]
+  subscribes :restart, "template[/etc/init/airflow-worker.conf]", :delayed
+  subscribes :restart, "template[#{node[:airflow][:config_file]}]", :delayed
 end
 
 
@@ -185,5 +114,3 @@ if ['shutdown'].include? node[:opsworks][:activity] then
   end
 end
 
-# template the cluster.conf
-#              :mr_jar => "#{repo_path}/stats/java/target/neon-stats-1.0-job.jar"

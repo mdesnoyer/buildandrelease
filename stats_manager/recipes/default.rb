@@ -4,7 +4,7 @@ include_recipe "neon::default"
 include_recipe "java"
 
 # Create a statsmanager user
-user "statsmanager" do
+user node[:stats_manager][:user] do
   action :create
   system true
   shell "/bin/false"
@@ -58,8 +58,8 @@ end
 
 # Create the log dir
 directory node[:stats_manager][:log_dir] do
-  owner "statsmanager"
-  group "statsmanager"
+  owner node[:stats_manager][:user]
+  group node[:stats_manager][:group]
   action :create
   mode "0755"
   recursive true
@@ -85,16 +85,16 @@ node[:deploy].each do |app_name, deploy|
 
   # Grab the ssh identity file to talk to the cluster with
   directory "#{node[:neon][:home]}/statsmanager/.ssh" do
-    owner "statsmanager"
-    group "statsmanager"
+    owner node[:stats_manager][:user]
+    group node[:stats_manager][:group]
     action :create
     mode "0700"
     recursive true
   end
   s3_file "#{node[:neon][:home]}/statsmanager/.ssh/emr.pem" do
     source node[:stats_manager][:emr_key]
-    owner "statsmanager"
-    group "statsmanager"
+    owner node[:stats_manager][:user]
+    group node[:stats_manager][:group]
     action :create
     mode "0600"
   end
@@ -106,61 +106,55 @@ node[:deploy].each do |app_name, deploy|
     user "neon"
   end
 
+  node.default[:airflow][:dags_folder] = "#{repo_path}/stats/dags/"
+
   # Setup Airflow
   include_recipe "airflow"
 
   # Write the daemon service wrapper
-  template "/etc/init/neon-statsmanager.conf" do
-    source "statsmanager_service.conf.erb"
+  template "/etc/init/cluster_manager.conf" do
+    source "cluster_manager_service.conf.erb"
     owner "root"
     group "root"
     mode "0644"
     variables({
                 :neon_root_dir => repo_path,
                 :config_file => node[:stats_manager][:config],
-                :user => "statsmanager",
-                :group => "statsmanager",
-                :mr_jar => "#{repo_path}/stats/java/target/neon-stats-1.0-job.jar"
+                :user => node[:stats_manager][:user],
+                :group => node[:stats_manager][:group],
+                :airflow_home => node[:airflow][:home]
               })
   end
-  template "/etc/init/neon-statsmanager-email.conf" do
+  template "/etc/init/cluster_manager-email.conf" do
     source "mail-on-restart.conf.erb"
     cookbook "neon"
     owner "root"
     group "root"
     mode "0644"
     variables({
-                :service => "neon-statsmanager",
+                :service => "cluster_manager",
                 :host => node[:hostname],
                 :email => node[:neon][:ops_email],
                 :log_file => node[:stats_manager][:log_file]
               })
   end
 
-  if node[:stats_manager][:service_enabled] then
-    service "neon-statsmanager" do
-      provider Chef::Provider::Service::Upstart
-      supports :status => true, :restart => true, :start => true, :stop => true
-      action [:enable, :start]
-      subscribes :restart, "git[#{repo_path}]", :delayed
-    end
-  else
-    service "neon-statsmanager" do
-      provider Chef::Provider::Service::Upstart
-      supports :status => true, :restart => true, :start => true, :stop => true
-      action [:disable, :stop]
-    end
+  service "cluster_manager" do
+    provider Chef::Provider::Service::Upstart
+    supports :status => true, :restart => true, :start => true, :stop => true
+    action [:enable, :start]
+    subscribes :restart, "git[#{repo_path}]", :delayed
   end
 end
 
 
 if ['undeploy', 'shutdown'].include? node[:opsworks][:activity] then
   # Turn off the statsmanager
-  service "neon-statsmanager" do
+  service "cluster_manager" do
     action :stop
   end
 
-  file "/etc/init/neon-statsmanager.conf" do
+  file "/etc/init/cluster_manager.conf" do
     action :delete
   end
 end

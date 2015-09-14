@@ -13,8 +13,8 @@ end
 # Write the configuration file for the statsmanager
 template node[:stats_manager][:config] do
   source "statsmanager.conf.erb"
-  owner "statsmanager"
-  group "statsmanager"
+  owner node[:stats_manager][:user]
+  group node[:stats_manager][:group]
   mode "0644"
   variables({ 
               :batch_period => node[:stats_manager][:batch_period],
@@ -33,4 +33,3 @@ template node[:stats_manager][:config] do
               :flume_log_port => node[:neon_logs][:json_http_source_port],
             })
 end
-

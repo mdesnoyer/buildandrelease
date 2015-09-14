@@ -1,20 +1,29 @@
 stats:
-  cluster_manager:
-    cluster_type: <%= @cluster_type %>
-    input_path: "<%= @input_path %>"
-    cleaned_output_path: "<%= @cleaned_output_path %>"
-    batch_period: <%= @batch_period %>
-    cluster_ip: <%= @cluster_ip %>
-    max_task_instances: <%= @max_task_instances %>
-
-  batch_processor:
-    schema_bucket: neon-avro-schema
+  airflow:
+    dags:
+      neon:
+        quiet_period: <%= @node[:stats_manager][:quiet_period] %>
+        mr_jar: <%= @node[:stats_manager][:mr_jar] %>
+        input_path: "<%= @input_path %>"
+        staging_path: "<%= @node[:stats_manager][:staging_path] %>"
+        output_path: "<%= @node[:stats_manager][:cleaned_output_path] %>"
+        cleaning_mr_memory: <%= @node[:stats_manager][:cleaning_mr_memory] %>
+        clicklog_period: <%= @node[:stats_manager][:clicklog_period] %>
 
   cluster:
     ssh_key: <%= @emr_key %>    
     cluster_subnet_id: <%= @cluster_subnet_id %>
     cluster_name: <%= @cluster_name %>
     cluster_log_uri: <%= @cluster_log_uri %>
+    cluster_type: <%= @cluster_type %>
+    public_ip: <%= @cluster_ip %>
+    min_hdd_space: <%= @node[:stats_manager][:min_cluster_hdd] %>
+    min_memory: <%= @node[:stats_manager][:min_cluster_memory] %>
+    yarn_max_memory_allocation: <%= @node[:stats_manager][:yarn_max_memory_allocation] %>
+
+  impala_table:
+    schema_bucket: neon-avro-schema
+    parquet_memory: <%= @node[:stats_manager][:parquet_memory] %>
 
 utils:
   logs:

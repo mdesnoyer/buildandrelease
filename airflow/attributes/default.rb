@@ -1,14 +1,19 @@
-include_attribute "neon"
-include_attribute "neon::repo"
-include_attribute "neon_logs::default"
+default[:airflow][:home] = "/home/airflow"
+default[:airflow][:dags_folder] = "/tmp"
+default[:airflow][:airflow_logs] = "/var/log/airflow"
+default[:ariflow][:config_file] = "#{node[:airflow][:home]}/airflow.cfg"
 
-# Neon's Airflow configuration and DAG files are in stats/airflow
-#default[:airflow][:airflow_home] = "#{repo_path}/stats/airflow"
-default[:airflow][:airflow_logs] = "#{node[:neon][:log_dir]}/airflow"
+# User to run airflow with
+default[:airflow][:user] = 'airflow'
+default[:airflow][:group] = 'airflow'
 
-# Run as the Neon user
-default[:airflow][:user] = 'statsmanager'
-default[:airflow][:group] = 'statsmanager'
+# Extra configuration parameters that will be written to the airflow
+# ini. It is a nested dictionary so
+# node[:airflow][:params][:section][:key] = 'value' will generate:
+#
+# [section]
+# key = value
+default[:airflow][:params] = {}
 
 # Webserver
 default[:airflow][:webserver_host] = node[:hostname]
@@ -24,8 +29,8 @@ default[:airflow][:db_name] = "airflow"
 # SMTP Mail for task failures and SLA violations
 default[:airflow][:smtp_user] = "AKIAJZLS2HPKH33MY5RA"
 default[:airflow][:smtp_password] = "AtpM77bc0orv6qT+e0G3Hrazz3cs1gn9Kk9TWZF+A19j"
-default[:airflow][:smtp_host] = "email-smtp.us-east-1.amazonaws.com"
+default[:airflow][:smtp_host] = "some_host"
 default[:airflow][:smtp_port] = 25
-default[:airflow][:smtp_from] = "ops@neon-lab.com"
+default[:airflow][:smtp_from] = "airflow@neon-lab.com"
 
 default[:airflow][:version] = "1.3.0"
