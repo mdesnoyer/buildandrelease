@@ -1,7 +1,7 @@
 default[:airflow][:home] = "/home/airflow"
 default[:airflow][:dags_folder] = "/tmp"
 default[:airflow][:airflow_logs] = "/var/log/airflow"
-default[:ariflow][:config_file] = "#{node[:airflow][:home]}/airflow.cfg"
+default[:airflow][:config_file] = "#{node[:airflow][:home]}/airflow.cfg"
 
 # User to run airflow with
 default[:airflow][:user] = 'airflow'
