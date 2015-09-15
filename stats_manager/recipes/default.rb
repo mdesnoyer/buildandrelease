@@ -106,7 +106,7 @@ node[:deploy].each do |app_name, deploy|
     user "neon"
   end
 
-  node.default[:airflow][:dags_folder] = "#{repo_path}/stats/dags/"
+  node.default[:airflow][:dags_folder] = "#{repo_path}/stats/"
   node.default[:airflow][:db_user] = node[:deploy][:stats_manager][:database][:username]
   node.default[:airflow][:db_password] = node[:deploy][:stats_manager][:database][:password]
   node.default[:airflow][:db_port] = node[:deploy][:stats_manager][:database][:port]
