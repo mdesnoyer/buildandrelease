@@ -16,5 +16,5 @@ export AIRFLOW_HOME
 console log
 
 chdir <%= @neon_root_dir %>
-exec <%= @neon_root_dir %>/stats/cluster_manager.py -c <%= @config_file%>
+exec <%= @neon_root_dir %>/stats/cluster_manager.py -c <%= @config_file%> --utils.logs.file <%= @log_file %>
 respawn

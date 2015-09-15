@@ -128,7 +128,8 @@ node[:deploy].each do |app_name, deploy|
                 :config_file => node[:stats_manager][:config],
                 :user => node[:stats_manager][:user],
                 :group => node[:stats_manager][:group],
-                :airflow_home => node[:airflow][:home]
+                :airflow_home => node[:airflow][:home],
+                :log_file => node[:stats_manager][:cluster_log_file]
               })
   end
   template "/etc/init/cluster_manager-email.conf" do
