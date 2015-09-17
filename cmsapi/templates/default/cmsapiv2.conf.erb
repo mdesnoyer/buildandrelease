@@ -1,0 +1,32 @@
+api:
+  brightcove_api:
+    max_write_connections: 1
+    max_read_connections: 50
+    max_retries: 5
+ 
+cmsdb:
+  neondata:
+    accountDB: <%= @video_db_host %>
+    videoDB: <%= @video_db_host %>
+    thumbnailDB: <%= @video_db_host %>
+    dbPort: <%= @video_db_port %>
+    video_server: <%= @video_server_host %>
+
+cmsapiv2:
+  controllers:
+    video_server: <%= @video_server_host %>
+    video_server_port: <%= @video_server_port %>
+    cmsapiv1_port: <%= @cmsapiv1_port %>
+
+utils:
+  logs:
+    file: <%= @log_file %>
+    access_log_file: <%= @access_log_file %>
+    do_stderr: 0
+    do_stdout: 1
+    level: info
+    flume_url: http://localhost:<%= @flume_log_port %>
+    loggly_tag: cmsapiv2 
+  monitor:
+    carbon_server: <%= @carbon_host %>
+    carbon_port: <%= @carbon_port %>
