@@ -64,6 +64,7 @@ mountable_drives.each do |drive|
     mount drive[:loc]
     mkfs_options drive[:mkfs_options]
     options drive[:mount_options]
-    action [:create, :enable, :mount]
+    #action [:create, :enable, :mount]
+    action [:create, :mount, :enable]
   end
 end
