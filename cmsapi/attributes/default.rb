@@ -11,8 +11,16 @@ default[:cmsapi][:video_server_port] = 8081
 default[:cmsapi][:video_server_fallbackhost] = "video-server1"
 default[:cmsapi][:video_server_layer] = "video_server"
 
+# Parameters for cmsapiv2
+default[:cmsapiv2][:log_dir] = "#{node[:neon][:log_dir]}/cmsapiv2"
+default[:cmsapiv2][:config] = "#{node[:neon][:config_dir]}/cmsapiv2.conf"
+default[:cmsapiv2][:log_file] = "#{node[:cmsapiv2][:log_dir]}/cmsapiv2.log"
+default[:cmsapiv2][:access_log_file] = "#{node[:cmsapiv2][:log_dir]}/access.log"
+default[:cmsapiv2][:port] = 8084 
+
 # Specify the repos to user
 default[:neon][:repos]["cmsapi"] = true
+default[:neon][:repos]["cmsapiv2"] = true
 default[:neon][:repos]["core"] = true
 
 # Nginx parameters
@@ -25,6 +33,8 @@ default[:nginx][:worker_rlimit_nofile] = 65536
 default[:nginx][:source][:modules] = %w(
   neon-nginx::http_realip_module
   neon-nginx::http_geoip_module
+  neon-nginx::http_spdy_module 
+  neon-nginx::http_ssl_module 
 )
 # Force_Default is needed because these parameters are set in the nginx recipe
 force_default[:nginx][:realip][:header] = "X-Forwarded-For"
