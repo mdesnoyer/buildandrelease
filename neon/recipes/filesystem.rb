@@ -52,7 +52,7 @@ mountable_drives = []
       :device => drive,
       :loc => mount_point,
       :mkfs_options => trim ? "-E nodiscard" : nil,
-      :mount_options => trim ? "-o discard" : nil,
+      :mount_options => trim ? "discard" : nil,
     }
   end
 end
@@ -64,6 +64,7 @@ mountable_drives.each do |drive|
     mount drive[:loc]
     mkfs_options drive[:mkfs_options]
     options drive[:mount_options]
-    action [:create, :enable, :mount]
+    #action [:create, :enable, :mount]
+    action [:create, :mount, :enable]
   end
 end
