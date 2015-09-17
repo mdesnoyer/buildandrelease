@@ -52,7 +52,7 @@ mountable_drives = []
       :device => drive,
       :loc => mount_point,
       :mkfs_options => trim ? "-E nodiscard" : nil,
-      :mount_options => trim ? "-o discard" : nil,
+      :mount_options => trim ? "discard" : nil,
     }
   end
 end
