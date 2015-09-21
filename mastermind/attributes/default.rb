@@ -17,7 +17,7 @@ default[:mastermind][:directive_filename] = "mastermind"
 default[:mastermind][:publishing_period] = 300
 default[:mastermind][:expiry_buffer] = 30
 default[:mastermind][:serving_update_delay] = 120
-
+default[:mastermind][:send_callbacks] = 0
 
 # Specify the repos to user
 default[:neon][:repos]["mastermind"] = true
