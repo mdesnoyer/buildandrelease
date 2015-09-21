@@ -15,7 +15,7 @@ include_recipe "stats_manager::config"
 pydeps = {
   "numpy" => "1.6.1",
   "futures" => "2.1.5",
-  "tornado" => "4.1",
+  "tornado" => "4.2.1",
   "setuptools" => "4.0.1",
   "avro" => "1.7.6",
   "boto" => "2.32.1",
