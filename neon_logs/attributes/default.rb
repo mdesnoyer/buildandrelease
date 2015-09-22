@@ -1,3 +1,4 @@
+include_attribute "neon::default"
 
 # Java specific definitions
 default["neon_logs"]["classpath"] = []
