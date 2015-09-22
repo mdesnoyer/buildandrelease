@@ -1,4 +1,9 @@
-include_attribute "neon::default"
+include_attribute "java"
+
+# set the desired java version
+default[:java][:install_flavor] = 'oracle'
+default[:java][:jdk_version] = '7'
+default[:java][:oracle][:accept_oracle_download_terms] = true
 
 # Java specific definitions
 default["neon_logs"]["classpath"] = []
