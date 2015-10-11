@@ -8,10 +8,10 @@
 #
 
 # Location of the OpenCV repo
-default[:opencv][:repo] = "https://github.com/Itseez/opencv.git"
+default[:opencv][:repo] = "https://github.com/neon-lab/opencv.git"
 
 # The version of OpenCV to install. This will be a tag from the repo
-default[:opencv][:version] = "2.4.9"
+default[:opencv][:version] = "2.4.9-patch"
 
 # Where to install opencv
 default[:opencv][:install_prefix] = "/usr/local"
