@@ -11,7 +11,7 @@
 default[:opencv][:repo] = "https://github.com/neon-lab/opencv.git"
 
 # The version of OpenCV to install. This will be a tag from the repo
-default[:opencv][:version] = "2.4.9-patch"
+default[:opencv][:version] = "2.4.9-neon-fix4939"
 
 # Where to install opencv
 default[:opencv][:install_prefix] = "/usr/local"
