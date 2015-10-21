@@ -21,7 +21,7 @@ include_recipe "trackserver::config"
 # quickly
 pydeps = {
   "futures" => "2.1.5",
-  "tornado" => "4.1",
+  "tornado" => "4.2.1",
   "shortuuid" => "0.3",
   "PyYAML" => "3.10",
   "boto" => "2.32.1",
@@ -33,7 +33,8 @@ pydeps = {
   "avro" => "1.7.6",
   "thrift" => "0.9.1",
   "psutil" => "1.2.1",
-  "winpdb" => "1.4.8"
+  "winpdb" => "1.4.8", 
+  "python-dateutil" => "2.4.2" 
 }
 
 pydeps.each do |package, vers|
