@@ -38,7 +38,7 @@ default[:trackserver][:collector][:s3_path] = "s3n://neon-tracker-logs-v2/v%{tra
 default[:trackserver][:collector][:channel_dir] = "/mnt/neon/channels/clicklog"
 default[:trackserver][:collector][:max_log_rolltime] = 43200 # 12 hours
 default[:trackserver][:collector][:s3_serializer] = \
-  "org.apache.flume.sink.hdfs.AvroEventSerializer$Builder"
+  "com.neon.flume.NeonAvroEventSerializer$Builder"
 default[:trackserver][:collector][:do_hbase_sink] = false
 default[:trackserver][:collector][:hbase_serializer] = \
   "com.neon.flume.NeonGenericSerializer"
