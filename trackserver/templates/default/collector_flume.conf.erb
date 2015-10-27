@@ -27,7 +27,7 @@ agent.sinks.<%= @ck %>.hdfs.callTimeout = 600000
 agent.sinks.<%= @ck %>.hdfs.batchSize = <%= @s3_flush_batch_size %>
 agent.sinks.<%= @ck %>.serializer = <%= @s3_output_serializer %>
 
-<% if @s3_output_serializer == ['org.apache.flume.sink.hdfs.AvroEventSerializer$Builder', 'com.neon.flume.NeonAvroEventSerializer$Builder'].include? @s3_output_serializer %>
+<% if @s3_output_serializer == ['org.apache.flume.sink.hdfs.AvroEventSerializer$Builder', 'com.neon.flume.NeonAvroEventSerializer$Builder'].include? @s3_output_serializer; %>
 agent.sinks.<%= @ck %>.serializer.compressionCodec = snappy
 agent.sinks.<%= @ck %>.hdfs.fileSuffix = .avro
 # Avro data shouldn't be compressed again, so force it to be a datastream
