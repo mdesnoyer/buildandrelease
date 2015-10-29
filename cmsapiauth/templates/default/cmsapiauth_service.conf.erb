@@ -1,0 +1,17 @@
+description "Neon CMS API AUTH (SupportServices)"
+
+start on runlevel [234]
+stop on runlevel [0156]
+
+kill timeout 30
+limit nofile 65536 65536
+
+setuid <%= @user %>
+setgid <%= @group %>
+
+chdir <%= @neon_root_dir %>
+env VIRTUAL_ENV=<%= @neon_root_dir %>/.pyenv
+env PATH="${VIRTUAL_ENV}/bin:$PATH"
+exec ${VIRTUAL_ENV}/bin/python <%= @neon_root_dir %>/cmsapiv2/authentication.py -c <%= @config_file%>
+
+respawn

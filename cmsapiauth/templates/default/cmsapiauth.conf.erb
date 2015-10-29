@@ -1,0 +1,19 @@
+cmsdb:
+  neondata:
+    accountDB: <%= @db_host %>
+    videoDB: <%= @db_host %>
+    thumbnailDB: <%= @db_host %>
+    dbPort: <%= @db_port %>
+
+utils:
+  logs:
+    file: <%= @log_file %>
+    access_log_file: <%= @access_log_file %>
+    do_stderr: 0
+    do_stdout: 1
+    level: info
+    flume_url: http://localhost:<%= @flume_log_port %>
+    loggly_tag: cmsapiv2 
+  monitor:
+    carbon_server: <%= @carbon_host %>
+    carbon_port: <%= @carbon_port %>
