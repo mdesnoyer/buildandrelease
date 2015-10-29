@@ -29,7 +29,7 @@ file node[:cmsapiauth][:log_file] do
 end
  
 node[:deploy].each do |app_name, deploy|
-  if app_name == "cmsapiauth" then
+  if app_name == "cmsapi_auth" then
     Chef::Log.info("Deploying app base installs.")
     include_recipe "neon::full_py_repo"
     include_recipe "neon-nginx::default"
