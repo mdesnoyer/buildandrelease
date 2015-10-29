@@ -1,11 +1,11 @@
 # set the flume sources
-node.default[:neon_logs][:flume_streams][:cmsapi_logs] = 
+node.default[:neon_logs][:flume_streams][:cmsapiauth_logs] = 
   get_jsonagent_config(node[:neon_logs][:json_http_source_port],
-                       "cmsapi")
+                       "cmsapiauth")
 
-node.default[:neon_logs][:flume_streams][:cmsapi_flume_logs] = \
+node.default[:neon_logs][:flume_streams][:cmsapiauth_flume_logs] = \
   get_fileagent_config("#{get_log_dir()}/flume.log",
-                       "cmsapi-flume")
+                       "cmsapiauth-flume")
 
 if node[:opsworks][:activity] == "config" then
   include_recipe "neon_logs::flume_core_config"
