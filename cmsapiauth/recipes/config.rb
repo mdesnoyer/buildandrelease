@@ -17,14 +17,14 @@ db_host = get_master_cmsdb_ip()
 Chef::Log.info("Connecting to db at #{db_host}")
 
 # Write the configuration file for CMS API AUTH 
-template node[:cmsapi][:config] do
+template node[:cmsapiauth][:config] do
   source "cmsapiauth.conf.erb"
   owner "cmsapi"
   group "cmsapi"
   mode "0644"
   variables({
               :cmsapiauth_port => node[:cmsapiauth][:port],
-              :log_file => node[:cmsapi][:log_file],
+              :log_file => node[:cmsapiauth][:log_file],
               :access_log_file => node[:cmsapiauth][:access_log_file],
               :db_port => node[:cmsdb][:master_port],
               :db_host => db_host,
