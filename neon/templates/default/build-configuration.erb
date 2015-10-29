@@ -1,0 +1,13 @@
+# Generated automatically by Chef
+# Removing or modifying this file will cause somethign to be restarted or 
+# recompiled
+
+# Packages installed
+<% @package_deps.each do |pkg| %>
+<%= pkg %>
+<% end %>
+
+# Parameters
+<% @params.each do |k,v| %>
+<%= k %> = <%= v %>
+<% end %>
