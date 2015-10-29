@@ -33,6 +33,7 @@ node[:deploy].each do |app_name, deploy|
     Chef::Log.info("Deploying app base installs.")
     include_recipe "neon::full_py_repo"
     include_recipe "neon-nginx::default"
+
     template "/etc/init/nginx-email.conf" do
       source "mail-on-restart.conf.erb"
       cookbook "neon"
@@ -50,9 +51,31 @@ node[:deploy].each do |app_name, deploy|
     service "nginx" do
       action [:enable, :start]
     end
-
+    
     repo_path = get_repo_path(app_name)
     Chef::Log.info("Deploying app #{app_name} using code path #{repo_path}")
+    
+    app_tested = "#{repo_path}/TEST_DONE"
+
+    file app_tested do
+      user "neon"
+      group "neon"
+      action :nothing
+      subscribes :delete, "bash[compile_cmsapiauth]", :immediately
+    end
+    bash "test_cmsapiauth" do
+      cwd repo_path
+      user "neon"
+      group "neon"
+      code <<-EOH
+         . enable_env
+         nosetests --exe cmsapiv2 cmsdb utils
+      EOH
+      not_if {  ::File.exists?(app_tested) }
+      notifies :restart, "service[cmsapiauth]", :delayed
+      notifies :create, "file[#{app_tested}]"
+    end
+
     template "/etc/init/cmsapiauth.conf" do
       source "cmsapiauth_service.conf.erb"
       owner "root"
@@ -84,25 +107,6 @@ node[:deploy].each do |app_name, deploy|
       supports :status => true, :restart => true, :start => true, :stop => true
       action [:enable, :start]
       subscribes :restart, "git[#{repo_path}]", :delayed
-    end
-    app_tested = "#{repo_path}/TEST_DONE"
-    file app_tested do
-      user "neon"
-      group "neon"
-      action :nothing
-      subscribes :delete, "bash[compile_cmsapiauth]", :immediately
-    end
-    bash "test_cmsapiauth" do
-      cwd repo_path
-      user "neon"
-      group "neon"
-      code <<-EOH
-         . enable_env
-         nosetests --exe cmsapiv2 cmsdb utils
-      EOH
-      not_if {  ::File.exists?(app_tested) }
-      notifies :restart, "service[cmsapiauth]", :delayed
-      notifies :create, "file[#{app_tested}]"
     end
   end 
 end
