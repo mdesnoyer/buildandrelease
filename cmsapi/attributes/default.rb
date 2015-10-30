@@ -1,6 +1,10 @@
 include_attribute "neon::default"
 include_attribute "cmsdb::default"
 
+# Which repos to install
+default[:neon][:repos]["cmsapi_auth"] = true
+default[:neon][:repos]["core"] = true
+
 # Parameters for cmsapi/ supportServices
 default[:cmsapi][:log_dir] = "#{node[:neon][:log_dir]}/cmsapi"
 default[:cmsapi][:config] = "#{node[:neon][:config_dir]}/cmsapi.conf"
