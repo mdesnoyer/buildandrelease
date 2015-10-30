@@ -1,10 +1,6 @@
 include_attribute "neon::default"
 include_attribute "cmsdb::default"
 
-# Which repos to install
-default[:neon][:repos]["cmsapi_auth"] = true
-default[:neon][:repos]["core"] = true
-
 # Parameters for cmsapi/ supportServices
 default[:cmsapi][:log_dir] = "#{node[:neon][:log_dir]}/cmsapi"
 default[:cmsapi][:config] = "#{node[:neon][:config_dir]}/cmsapi.conf"
@@ -20,7 +16,12 @@ default[:cmsapiv2][:log_dir] = "#{node[:neon][:log_dir]}/cmsapiv2"
 default[:cmsapiv2][:config] = "#{node[:neon][:config_dir]}/cmsapiv2.conf"
 default[:cmsapiv2][:log_file] = "#{node[:cmsapiv2][:log_dir]}/cmsapiv2.log"
 default[:cmsapiv2][:access_log_file] = "#{node[:cmsapiv2][:log_dir]}/access.log"
-default[:cmsapiv2][:port] = 8084 
+default[:cmsapiv2][:port] = 8084
+
+# Specify the repos to user
+default[:neon][:repos]["cmsapi"] = true
+default[:neon][:repos]["cmsapiv2"] = true
+default[:neon][:repos]["core"] = true 
 
 # Nginx parameters
 default[:nginx][:init_style] = "upstart"

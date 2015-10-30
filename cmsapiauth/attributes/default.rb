@@ -9,7 +9,7 @@ default[:cmsapiauth][:access_log_file] = "#{node[:cmsapiauth][:log_dir]}/access.
 default[:cmsapiauth][:port] = 8084 
 
 # Specify the repos to user
-default[:neon][:repos]["cmsapiv2"] = true
+default[:neon][:repos]["cmsapi_auth"] = true
 default[:neon][:repos]["core"] = true
 
 # Nginx parameters
