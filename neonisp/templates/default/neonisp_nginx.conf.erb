@@ -39,6 +39,14 @@ server {
     add_header 'Access-Control-Allow-Credentials' 'true';
 
   }
+   
+  location ~ ^/v1/video/?$ {
+    v1_video;
+    add_header 'Access-Control-Allow-Origin' '*';
+    add_header 'Access-Control-Allow-Credentials' 'true';
+    add_header 'Access-Control-Allow-Methods' 'GET,POST,PUT,OPTIONS';
+    add_header 'Access-Control-Allow-Headers' 'DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type';
+  }
 
   location ~ ^/v1/server/(.+\.*)$ {
     v1_server;
