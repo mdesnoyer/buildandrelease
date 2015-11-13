@@ -26,4 +26,9 @@ default[:opencv][:with_v4l] = false
 default[:opencv][:with_tbb] = true
 
 # Options for where to build OpenCV
-default[:opencv][:build_path] = "/tmp/opencv"
+default[:opencv][:build_dir] = "/tmp/opencv"
+
+# Options for opencv_contrib
+default[:opencv][:include_contrib] = true
+default[:opencv][:contrib_repo] = "https://github.com/neon-lab/opencv_contrib.git"
+default[:opencv][:contrib_version] = "3.0.0"

@@ -130,6 +130,9 @@ directory "#{node[:opencv][:build_dir]}/build" do
   action :create
 end
 
+if node[:opencv][:include_contrib] then
+end
+
 # Write the build configuration to a file - if it changes, we recompile
 template "#{node[:opencv][:build_dir]}/opencv-build-configuration" do
     source "build-configuration.erb"
