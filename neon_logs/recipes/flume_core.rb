@@ -72,3 +72,7 @@ cron "monitor_flume_cron" do
   mailto "ops@neon-lab.com"
   command "#{conf_dir}/monitor_flume.py"
 end
+
+file '/usr/lib/flume-ng/lib/jets3t-0.6.1.jar' do
+  action :delete
+end
