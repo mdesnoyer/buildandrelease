@@ -24,3 +24,5 @@ default["caffe"]['lmdb_compile_flags'] = []
 #default["caffe"]["lmdb_deb_file"] = "https://neon-dependencies.s3.amazonaws.com/liblmdb-dev_0.9.15-1_amd64"
 # decide whether or not it will launch interactive tools
 default["caffe"]["interactive"] = true
+
+default["caffe"]["log_dir"] = "#{node[:caffe][:log_dir]}/gpu_video_client"
