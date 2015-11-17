@@ -26,7 +26,7 @@ package_deps = [
                 "libsnappy-dev",
                 "libsnappy1",
                 "python-snappy",
-                "libboost-python1.54-dev"
+                "libboost-python1.46-dev"
                ]
 package_deps.each do |pkg|
   package pkg do
