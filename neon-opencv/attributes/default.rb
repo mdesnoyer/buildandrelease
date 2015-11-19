@@ -30,6 +30,6 @@ default[:opencv][:build_dir] = "/tmp/opencv"
 
 # Options for opencv_contrib
 default[:opencv][:include_contrib] = true
-default[:opencv][:contrib_dir] = "/tmp/opencv_contrib"
+default[:opencv][:contrib_dir] = "/opt/neon/opencv_contrib"
 default[:opencv][:contrib_repo] = "https://github.com/neon-lab/opencv_contrib.git"
 default[:opencv][:contrib_version] = "neon-3.0"
