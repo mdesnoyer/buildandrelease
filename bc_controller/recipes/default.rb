@@ -87,7 +87,7 @@ node[:deploy].each do |app_name, deploy|
               })
   end
 
-  template "/etc/init/bc_ingester.conf" do
+  template "/etc/init/cnn_ingester.conf" do
     source "cnn_ingester_service.conf.erb"
     owner "root"
     group "root"
