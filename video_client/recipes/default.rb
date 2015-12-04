@@ -16,7 +16,7 @@ include_recipe "video_client::config"
 
 # Install the python dependencies
 
-# Make directories 
+# Make directories
 directory node[:video_client][:log_dir] do
   user "neon"
   group "neon"
@@ -42,7 +42,7 @@ node[:deploy].each do |app_name, deploy|
   repo_path = get_repo_path("video_client")
 
   Chef::Log.info("Deploying app #{app_name} using code path #{repo_path}")
-  
+
   # Configure model data
   include_recipe "video_client::modeldata"
 
@@ -64,7 +64,6 @@ node[:deploy].each do |app_name, deploy|
     code <<-EOH
        . enable_env
        nosetests --exe utils cmsdb model video_processor
-       model/bin/TextDetectionTest
     EOH
     not_if {  ::File.exists?(app_tested) }
     notifies :restart, "service[video_client]", :delayed
