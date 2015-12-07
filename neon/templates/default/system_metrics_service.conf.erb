@@ -10,5 +10,7 @@ setuid <%= @user %>
 setgid <%= @group %>
 
 chdir <%= @neon_root_dir %>
-exec <%= @neon_root_dir %>/monitoring/check_system_health.py --carbon_server <%= @carbon_host %> --carbon_port <%= @carbon_port %>
+env VIRTUAL_ENV=<%= @neon_root_dir %>/.pyenv
+env PATH="${VIRTUAL_ENV}/bin:$PATH"
+exec ${VIRTUAL_ENV}/bin/python <%= @neon_root_dir %>/monitoring/check_system_health.py --carbon_server <%= @carbon_host %> --carbon_port <%= @carbon_port %>
 respawn
