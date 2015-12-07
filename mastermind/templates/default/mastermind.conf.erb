@@ -7,7 +7,6 @@ publishing_period: <%= @publishing_period %>
 expiry_buffer: <%= @expiry_buffer %>
 serving_update_delay: <%= @serving_update_delay %>
 incr_stats_host: <%= @incr_stats_host %>
-send_callbacks: <%= @send_callbacks %>
 tmp_dir: <%= @tmp_dir %>
 
 stats:
@@ -20,6 +19,7 @@ cmsdb:
     videoDB: <%= @video_db_host %>
     thumbnailDB: <%= @video_db_host %>
     dbPort: <%= @video_db_port %>
+    send_callbacks: <%= @send_callbacks %>
 
 utils:
   logs:

@@ -130,6 +130,16 @@ directory "#{node[:opencv][:build_dir]}/build" do
   action :create
 end
 
+if node[:opencv][:include_contrib] then
+  git node[:opencv][:contrib_dir] do
+    repository node[:opencv][:contrib_repo]
+    revision node[:opencv][:contrib_version]
+    action :sync
+    notifies :delete, "file[#{opencv_include}]", :immediately
+  end
+  cmake_params["OPENCV_EXTRA_MODULES_PATH"] = "#{node[:opencv][:contrib_dir]}/modules"
+end
+
 # Write the build configuration to a file - if it changes, we recompile
 template "#{node[:opencv][:build_dir]}/opencv-build-configuration" do
     source "build-configuration.erb"

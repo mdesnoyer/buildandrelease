@@ -1,4 +1,4 @@
-description "Neon system metrics"
+description "Neon CNN Ingester" 
 
 start on runlevel [234]
 stop on runlevel [0156]
@@ -12,5 +12,6 @@ setgid <%= @group %>
 chdir <%= @neon_root_dir %>
 env VIRTUAL_ENV=<%= @neon_root_dir %>/.pyenv
 env PATH="${VIRTUAL_ENV}/bin:$PATH"
-exec ${VIRTUAL_ENV}/bin/python <%= @neon_root_dir %>/monitoring/check_system_health.py --carbon_server <%= @carbon_host %> --carbon_port <%= @carbon_port %>
+exec ${VIRTUAL_ENV}/bin/python <%= @neon_root_dir %>/integrations/cnn_ingester.py -c <%= @config_file%>
+
 respawn
