@@ -11,7 +11,8 @@ pydeps = {
   "PyYAML" => "3.10",
   "boto" => "2.32.1",
   "psutil" => "1.2.1",
-  "winpdb" => "1.4.8"
+  "winpdb" => "1.4.8",
+  "futures" => "2.1.5"
 }
 
 # Install the python dependencies
