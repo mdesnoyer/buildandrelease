@@ -10,5 +10,5 @@ setuid <%= @user %>
 setgid <%= @group %>
 
 chdir <%= @neon_root_dir %>
-exec <%= @neon_root_dir %>/imageservingplatform/neon_isp/neon_isp_monitoring.py --port <%= @isp_port %> --carbon_host <%= @node[:neon][:carbon_host] %>
+exec <%= @neon_root_dir %>/imageservingplatform/neon_isp/neon_isp_monitoring.py --port <%= @isp_port %> --carbon_server <%= @node[:neon][:carbon_host] %>
 respawn
