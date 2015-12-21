@@ -94,7 +94,7 @@ node[:deploy].each do |app_name, deploy|
     mode "0644"
     variables({
                 :neon_root_dir => "#{repo_path}",
-                :config_file => node[:bc_controller][:ingester_config],
+                :config_file => node[:bc_controller][:cnn_ingester_config],
                 :user => "neon",
                 :group => "neon",
               })
