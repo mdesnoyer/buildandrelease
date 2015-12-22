@@ -5,13 +5,19 @@ api:
     max_retries: 5
 
 integrations:
+  brightcove_ingester:
+    poll_period: <%= @node[:bc_controller][:ingester_poll_period] %>
+
+  brightcove:
+    max_vids_for_new_account: <%= @node[:bc_controller][:max_vids_in_new_account] %>
+
   ovp:
     cmsapi_host: <%= @cmsapi_host %>
     cmsapi_port: <%= @cmsapi_port %>
 
   cnn_ingester:
     poll_period: <%= @node[:bc_controller][:ingester_poll_period] %>
-    
+
 cmsdb:
   neondata:
     accountDB: <%= @video_db_host %>
@@ -30,4 +36,4 @@ utils:
   monitor:
     carbon_server: <%= @carbon_host %>
     carbon_port: <%= @carbon_port %>
-    service_name: cnn
+    service_name: <%= @service_name %>
