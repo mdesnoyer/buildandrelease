@@ -46,6 +46,7 @@ template node[:mastermind][:config] do
               :carbon_port => node[:neon][:carbon_port],
               :flume_log_port => node[:neon_logs][:json_http_source_port],
               :tmp_dir => node[:mastermind][:tmp_dir],
-              :send_callbacks => node[:mastermind][:send_callbacks]
+              :send_callbacks => node[:mastermind][:send_callbacks],
+              :isp_host => node[:mastermind][:isp_host]
             })
 end
