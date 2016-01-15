@@ -5,8 +5,9 @@ api:
     max_retries: 5
 
 integrations:
-  brightcove_ingester:
+  ingester:
     poll_period: <%= @node[:bc_controller][:ingester_poll_period] %>
+    service_name: <%= @service_name %>
 
   brightcove:
     max_vids_for_new_account: <%= @node[:bc_controller][:max_vids_in_new_account] %>
@@ -14,9 +15,6 @@ integrations:
   ovp:
     cmsapi_host: <%= @cmsapi_host %>
     cmsapi_port: <%= @cmsapi_port %>
-
-  cnn_ingester:
-    poll_period: <%= @node[:bc_controller][:ingester_poll_period] %>
 
 cmsdb:
   neondata:
