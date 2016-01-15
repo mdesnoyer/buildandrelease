@@ -17,7 +17,7 @@ integrations:
 
   cnn_ingester:
     poll_period: <%= @node[:bc_controller][:ingester_poll_period] %>
-    
+
 cmsdb:
   neondata:
     accountDB: <%= @video_db_host %>
@@ -36,3 +36,4 @@ utils:
   monitor:
     carbon_server: <%= @carbon_host %>
     carbon_port: <%= @carbon_port %>
+    service_name: <%= @service_name %>

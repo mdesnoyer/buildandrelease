@@ -100,6 +100,7 @@ node[:deploy].each do |app_name, deploy|
   # format/setup the hdfs rootdir for hbase
   execute 'hbase-hdfs-rootdir' do
     action :run
+    not_if "hdfs dfs -test -d #{node['hbase']['hbase_site']['hbase.rootdir']}", :user => 'hdfs'
   end
 
   # Initialize zookeeper
