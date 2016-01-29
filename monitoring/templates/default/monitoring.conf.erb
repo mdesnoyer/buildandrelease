@@ -1,8 +1,8 @@
-cmsapi_host: <%= @cmsapi_host %>
-isp_host: <%= @isp_host %>
 sleep: <%= @sleep %>
 account: "<%= @account %>"
 api_key: <%= @api_key %>
+cmsapi_user: <%= @node[:monitoring][:cmsapi_user] %>
+cmsapi_pass: <%= @node[:monitoring][:cmsapi_pass] %>
 
 cmsdb:
   neondata:
