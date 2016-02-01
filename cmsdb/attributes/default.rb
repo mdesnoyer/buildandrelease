@@ -9,7 +9,6 @@ default[:redis][:log_file] = "#{node[:redis][:db_dir]}/redis.log"
 default[:redis][:appendonly] = 'yes'
 default[:redis][:notify_keyspace_events] = 'Kgsz$'
 
-
 # Master/slave options
 default[:cmsdb][:is_slave] = false
 default[:cmsdb][:master_layer] = "redis"
@@ -20,3 +19,10 @@ default[:cmsdb][:master_ip] = nil
 # Configuration for the backup cron
 default[:cmsdb][:backup_s3_bucket] = 'neon-db-backup'
 default[:cmsdb][:backup_log] = '/mnt/neon/redis_backup.log'
+
+# Postgres
+default[:cmsdb][:postgres_host] = nil
+default[:cmsdb][:postgres_port] = 5432 
+default[:cmsdb][:postgres_user] = "pgadmin" 
+default[:cmsdb][:postgres_password] = "pgadmin123" 
+default[:cmsdb][:postgres_db_name] = "cmsdb" 
