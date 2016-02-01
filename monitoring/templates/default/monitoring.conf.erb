@@ -4,6 +4,11 @@ api_key: <%= @api_key %>
 cmsapi_user: <%= @node[:monitoring][:cmsapi_user] %>
 cmsapi_pass: <%= @node[:monitoring][:cmsapi_pass] %>
 
+cmsapiv2:
+  client:
+    auth_host: <%= @node[:monitoring][:auth_host] %>
+    api_host: <%= @node[:monitoring][:api_host] %>
+
 cmsdb:
   neondata:
     accountDB: <%= @video_db_host %>

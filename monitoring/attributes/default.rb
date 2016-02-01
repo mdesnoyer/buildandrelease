@@ -9,6 +9,8 @@ default[:monitoring][:account] = "3hr5242g1ho5jcfogz8fec53"
 default[:monitoring][:api_key] = "grtxcau33l5adas92bhtn5zu"
 default[:monitoring][:cmsapi_user] = "admin_neon_benchmark"
 default[:monitoring][:cmsapi_pass] = nil
+default[:monitoring][:auth_host] = "auth.neon-lab.com"
+default[:monitoring][:api_host] = "services.neon-lab.com"
 default[:monitoring][:sleep] = 10
 
 # Specify the repos to use
