@@ -17,6 +17,7 @@ include_recipe "monitoring::config"
 # Install the python dependencies
 
 pydeps = {
+  "numpy"=="1.9.2",
   "futures" => "2.1.5",
   "tornado" => "4.2.1",
   "shortuuid" => "0.3",
@@ -28,7 +29,10 @@ pydeps = {
   "httpagentparser" => "1.6.0",
   "psutil" => "1.2.1",
   "winpdb" => "1.4.8", 
-  "python-dateutil" => "2.4.2" 
+  "python-dateutil" => "2.4.2",
+  "redis" => "2.10.3",
+  "imagehash" => "0.3",
+  "poster" => "0.8.1"
 }
 
 pydeps.each do |package, vers|
