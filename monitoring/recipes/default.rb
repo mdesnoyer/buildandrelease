@@ -17,7 +17,7 @@ include_recipe "monitoring::config"
 # Install the python dependencies
 
 pydeps = {
-  "numpy"=="1.9.2",
+  "numpy" => "1.9.2",
   "futures" => "2.1.5",
   "tornado" => "4.2.1",
   "shortuuid" => "0.3",
