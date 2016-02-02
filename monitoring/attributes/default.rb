@@ -10,7 +10,7 @@ default[:monitoring][:cmsapi_user] = "admin_neon_benchmark"
 default[:monitoring][:cmsapi_pass] = nil
 default[:monitoring][:auth_host] = "auth.neon-lab.com"
 default[:monitoring][:api_host] = "services.neon-lab.com"
-default[:monitoring][:sleep] = 54000000
+default[:monitoring][:sleep] = 900000
 
 # Specify the repos to use
 default[:neon][:repos]["monitoring"] = true
