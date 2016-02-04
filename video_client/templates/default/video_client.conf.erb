@@ -15,6 +15,12 @@ cmsdb:
     videoDB: <%= @video_db_host %>
     thumbnailDB: <%= @video_db_host %>
     dbPort: <%= @video_db_port %>
+    db_address: <%= @postgres_db_host %> 
+    db_port: <%= @postgres_db_port %> 
+    db_user: <%= @postgres_db_user %> 
+    db_password: <%= @postgres_db_password %> 
+    db_name: <%= @postgres_db_name %>
+    wants_postgres: 1 
 
 utils:
   logs:
