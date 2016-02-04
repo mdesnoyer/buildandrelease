@@ -75,7 +75,7 @@ node[:deploy].each do |app_name, deploy|
               })
   end
   template "/etc/init/bc_ingester.conf" do
-    source "bc_ingester_service.conf.erb"
+    source "ingester_service.conf.erb"
     owner "root"
     group "root"
     mode "0644"
@@ -88,13 +88,26 @@ node[:deploy].each do |app_name, deploy|
   end
 
   template "/etc/init/cnn_ingester.conf" do
-    source "cnn_ingester_service.conf.erb"
+    source "ingester_service.conf.erb"
     owner "root"
     group "root"
     mode "0644"
     variables({
                 :neon_root_dir => "#{repo_path}",
                 :config_file => node[:bc_controller][:cnn_ingester_config],
+                :user => "neon",
+                :group => "neon",
+              })
+  end
+
+  template "/etc/init/fox_ingester.conf" do
+    source "ingester_service.conf.erb"
+    owner "root"
+    group "root"
+    mode "0644"
+    variables({
+                :neon_root_dir => "#{repo_path}",
+                :config_file => node[:bc_controller][:fox_ingester_config],
                 :user => "neon",
                 :group => "neon",
               })
@@ -144,6 +157,13 @@ node[:deploy].each do |app_name, deploy|
   end
 
   service "cnn_ingester" do
+    provider Chef::Provider::Service::Upstart
+    supports :status => true, :restart => true, :start => true, :stop => true
+    action [:enable, :start]
+    subscribes :restart, "git[#{repo_path}]", :delayed
+  end
+
+  service "fox_ingester" do
     provider Chef::Provider::Service::Upstart
     supports :status => true, :restart => true, :start => true, :stop => true
     action [:enable, :start]

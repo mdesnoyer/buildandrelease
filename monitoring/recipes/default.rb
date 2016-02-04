@@ -14,8 +14,6 @@ end
 
 include_recipe "monitoring::config"
 
-# Install the python dependencies
-
 # Make directories 
 directory node[:monitoring][:log_dir] do
   user "neon"
