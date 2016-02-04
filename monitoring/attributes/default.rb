@@ -5,12 +5,13 @@ include_attribute "cmsdb::default"
 default[:monitoring][:log_dir] = "#{node[:neon][:log_dir]}/monitoring"
 default[:monitoring][:config] = "#{node[:neon][:config_dir]}/monitoring.conf"
 default[:monitoring][:log_file] = "#{node[:monitoring][:log_dir]}/monitoring.log"
-default[:monitoring][:isp_layer] = "neonisp"
-default[:monitoring][:cmsapi_layer] = "cmsapi"
-default[:monitoring][:account] = "159"
-default[:monitoring][:api_key] = "3yd7b8vmrj67b99f7a8o1n30"
-default[:monitoring][:sleep] = 10
+default[:monitoring][:account] = "3hr5242g1ho5jcfogz8fec53"
+default[:monitoring][:cmsapi_user] = "admin_neon_benchmark"
+default[:monitoring][:cmsapi_pass] = nil
+default[:monitoring][:auth_host] = "auth.neon-lab.com"
+default[:monitoring][:api_host] = "services.neon-lab.com"
+default[:monitoring][:sleep] = 900000
 
-# Specify the repos to user
+# Specify the repos to use
 default[:neon][:repos]["monitoring"] = true
 default[:neon][:repos]["core"] = true
