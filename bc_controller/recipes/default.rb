@@ -169,6 +169,13 @@ node[:deploy].each do |app_name, deploy|
     action [:enable, :start]
     subscribes :restart, "git[#{repo_path}]", :delayed
   end
+
+  service "microsoft_ingester" do
+    provider Chef::Provider::Service::Upstart
+    supports :status => true, :restart => true, :start => true, :stop => true
+    action [:enable, :start]
+    subscribes :restart, "git[#{repo_path}]", :delayed
+  end
 end
 
 
