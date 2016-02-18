@@ -113,6 +113,19 @@ node[:deploy].each do |app_name, deploy|
               })
   end
 
+  template "/etc/init/microsoft_ingester.conf" do
+    source "ingester_service.conf.erb"
+    owner "root"
+    group "root"
+    mode "0644"
+    variables({
+                :neon_root_dir => "#{repo_path}",
+                :config_file => node[:bc_controller][:microsoft_ingester_config],
+                :user => "neon",
+                :group => "neon",
+              })
+  end
+
   # Write a script that will send a mail when the service dies
   template "/etc/init/bc_controller-email.conf" do
     source "mail-on-restart.conf.erb"
@@ -164,6 +177,13 @@ node[:deploy].each do |app_name, deploy|
   end
 
   service "fox_ingester" do
+    provider Chef::Provider::Service::Upstart
+    supports :status => true, :restart => true, :start => true, :stop => true
+    action [:enable, :start]
+    subscribes :restart, "git[#{repo_path}]", :delayed
+  end
+
+  service "microsoft_ingester" do
     provider Chef::Provider::Service::Upstart
     supports :status => true, :restart => true, :start => true, :stop => true
     action [:enable, :start]
