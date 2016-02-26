@@ -21,6 +21,7 @@ cmsdb:
     db_user: <%= @node[:deploy][:brightcove_controller][:database][:username] %> 
     db_password: <%= @node[:deploy][:brightcove_controller][:database][:password] %> 
     db_name: <%= @node[:deploy][:brightcove_controller][:database][:database] %>
+    wants_postgres: 1 
 
 utils:
   logs:
