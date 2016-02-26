@@ -28,7 +28,6 @@ Chef::Log.info "Looking for the CMS API in layer: #{node[:bc_controller][:cmsapi
 cmsapi_host = get_host_in_layer(node[:bc_controller][:cmsapi_layer],
                                 node[:bc_controller][:cmsapi_fallbackhost])
 Chef::Log.info("Connecting to cmsapi at #{cmsapi_host}")
-Chef::Log.info("BLAM node hi #{node[:deploy]}")
 
 # Write the configuration file 
 template node[:bc_controller][:config] do
