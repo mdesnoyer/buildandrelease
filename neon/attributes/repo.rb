@@ -20,5 +20,7 @@ default[:neon][:repos] = {}
 # Default parameters for the repo if they are not specified in the
 # node[:deploy] structure.
 default[:neon][:repo_key] = "s3://neon-keys/neon-deploy.pem"
+default[:neon][:repo_key_bucket] = "neon-keys"
+default[:neon][:repo_key_path] = "neon-deploy.pem"
 default[:neon][:code_revision] = "HEAD" # Can also use tags or branches
 default[:neon][:repo_url] = "git@github.com:neon-lab/neon-codebase.git"
