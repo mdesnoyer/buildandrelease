@@ -33,8 +33,6 @@ node[:neon][:repos].each do |app_name, do_deploy|
       :app_name => nil,
       :code_folder => get_repo_path(nil),
       :repo_key => node[:neon][:repo_key],
-      :repo_key_bucket => node[:neon][:repo_key_bucket],
-      :repo_key_path => node[:neon][:repo_key_path],
       :repo_url => node[:neon][:repo_url],
       :revision => node[:neon][:code_revision]
     }
@@ -45,8 +43,6 @@ node[:neon][:repos].each do |app_name, do_deploy|
       :app_name => app_name,
       :code_folder => get_repo_path(app_name),
       :repo_key => scm_data[:ssh_key] || node[:neon][:repo_key],
-      :repo_key_bucket => node[:neon][:repo_key_bucket],
-      :repo_key_path => node[:neon][:repo_key_path],
       :repo_url => scm_data[:repository] || node[:neon][:repo_url],
       :revision => scm_data[:revision] || node[:neon][:code_revision]
     }
