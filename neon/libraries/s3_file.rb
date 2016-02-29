@@ -1,4 +1,3 @@
-
 #
 # Author:: Christopher Peplin (<peplin@bueda.com>)
 # Copyright:: Copyright (c) 2010 Bueda, Inc.
@@ -16,6 +15,47 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
+class Chef
+  class Provider
+    class S3File < Chef::Provider::RemoteFile
+      class Content < Chef::Provider::RemoteFile::Content
+
+        private
+
+        def grab_file_from_uri(uri)
+          uri.scheme == 's3' ? fetch(uri) : super
+        end
+
+        def fetch(uri)
+          require  'aws-sdk-core'
+          bucket = uri.host
+          key = uri.path[1..-1]
+          s3 = Aws.s3(
+              :region            => @new_resource.region,
+              :access_key_id     => @new_resource.access_key_id,
+              :secret_access_key => @new_resource.secret_access_key
+          )
+          Chef::Log.debug("Downloading #{key} from S3 bucket #{bucket}")
+          file = Chef::FileContentManagement::Tempfile.new(@new_resource).tempfile
+          begin
+            s3.get_object({ bucket: bucket, key: key }, target: file)
+            Chef::Log.debug("File #{key} is #{file.size} bytes on disk")
+          ensure
+            file.close
+          end
+          file
+        end
+      end
+
+      def initialize(new_resource, run_context)
+        super
+        @content_class = Chef::Provider::S3File::Content
+      end
+    end
+  end
+end
+
 class Chef
   class Resource
     class S3File < Chef::Resource::RemoteFile
@@ -27,64 +67,29 @@ class Chef
       def provider
         Chef::Provider::S3File
       end
-    end 
-  end
-end
 
-class Chef
-  class Provider
-    class S3File < Chef::Provider::RemoteFile
-      def action_create
-        Chef::Log.debug("Checking #{@new_resource} for changes")
-
-        if current_resource_matches_target_checksum?
-          Chef::Log.debug("File #{@new_resource} checksum matches target checksum (#{@new_resource.checksum}), not updating")
-        else
-          Chef::Log.debug("File #{@current_resource} checksum didn't match target checksum (#{@new_resource.checksum}), updating")
-          fetch_from_s3(@new_resource.source) do |raw_file|
-            if matches_current_checksum?(raw_file)
-              Chef::Log.debug "#{@new_resource}: Target and Source checksums are the same, taking no action"
-            else
-              backup_new_resource
-              Chef::Log.debug "copying remote file from origin #{raw_file.path} to destination #{@new_resource.path}"
-              FileUtils.cp raw_file.path, @new_resource.path
-              @new_resource.updated = true
-            end
-          end
-        end
-        enforce_ownership_and_permissions
-
-        @new_resource.updated
+      def region(args=nil)
+        set_or_return(
+          :region,
+          args,
+          :kind_of => String
+        )
       end
 
-      def fetch_from_s3(source)
-        require 'aws-sdk'
-        reg = /s3:\/\/(?<bucket>[A-Za-z0-9_\-\.]+)\/(?<name>.+)/x
-        parse = source[0].match(reg)
-        if parse.nil? then
-          Chef::Log.warn("Expected an S3 URL but found #{source}")
-          return nil
-        end
-        bucket = parse['bucket']
-        name = parse['name']
-        if not node[:aws][:access_key_id].nil? then
-          s3 = AWS.config(:access_key_id => node[:aws][:access_key_id],
-                          :secret_access_key => node[:aws][:secret_access_key])
-        end
-        s3 = AWS::S3.new
-        obj = s3.buckets[bucket].objects[name]
-        Chef::Log.debug("Downloading #{name} from S3 bucket #{bucket}")
-        file = Tempfile.new("chef-s3-file")
-        file.binmode
-        obj.read do |chunk|
-          file.write(chunk)
-        end
-        Chef::Log.debug("File #{name} is #{file.size} bytes on disk")
-        begin
-          yield file
-        ensure
-          file.close
-        end
+      def access_key_id(args=nil)
+        set_or_return(
+          :access_key_id,
+          args,
+          :kind_of => String
+        )
+      end
+
+      def secret_access_key(args=nil)
+        set_or_return(
+          :secret_access_key,
+          args,
+          :kind_of => String
+        )
       end
     end
   end
