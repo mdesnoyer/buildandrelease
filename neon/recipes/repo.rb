@@ -62,8 +62,10 @@ node[:neon][:repos].each do |app_name, do_deploy|
   # Install the ssh deploy key to get the repository
   if data[:repo_key].start_with?("s3://") then
     # The key is on s3, so go get it
+    buck, path = data[:repo_key].match(/s3:\/\/(.*)\/(.*)/).captures 
     s3_file "#{node[:neon][:home]}/.ssh/#{data[:name]}.pem" do
-      source data[:repo_key]
+      bucket buck
+      remote_path path
       owner "neon"
       group "neon"
       action :create

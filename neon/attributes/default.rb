@@ -4,7 +4,8 @@ include_attribute "java"
 default[:neon][:home] = "/opt/neon"
 
 # The ssh key to serving machines
-default[:neon][:serving_key] = "s3://neon-keys/neon-serving.pem"
+default[:neon][:serving_key_bucket] = "neon-keys"
+default[:neon][:serving_key_path] = "neon-serving.pem"
 
 # The python virtualenv
 default[:neon][:pyenv] = "#{node[:neon][:code_root]}/.pyenv"
