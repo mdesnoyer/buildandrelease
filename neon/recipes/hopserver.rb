@@ -21,7 +21,8 @@ package "netcat6" do
 end
 
 s3_file "/home/ubuntu/.ssh/neon-serving.pem" do
-  source node[:neon][:serving_key]
+  bucket node[:serving_key_bucket]
+  remote_path data[:serving_key_path]
   owner "ubuntu"
   group "ubuntu"
   action :create
