@@ -63,7 +63,7 @@ node[:neon][:repos].each do |app_name, do_deploy|
   if data[:repo_key].start_with?("s3://") then
     # The key is on s3, so go get it
     s3_file "#{node[:neon][:home]}/.ssh/#{data[:name]}.pem" do
-      s3_url data[:repo_key]
+      remote_path data[:repo_key]
       owner "neon"
       group "neon"
       action :create
