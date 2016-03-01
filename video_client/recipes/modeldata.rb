@@ -16,7 +16,8 @@ end
 if node[:video_client][:gitannex_key].start_with?("s3://") then
   # The key is on s3, so go get it
   s3_file "#{node[:neon][:home]}/.ssh/model_data.pem" do
-    source node[:video_client][:gitannex_key]
+    bucket node[:video_client][:gitannex_key_bucket]
+    remote_path node[:video_client][:gitannex_key_path]
     owner "neon"
     group "neon"
     action :create
