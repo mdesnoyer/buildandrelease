@@ -15,9 +15,10 @@ end
 # Install the ssh deploy key to get the repository
 if node[:video_client][:gitannex_key].start_with?("s3://") then
   # The key is on s3, so go get it
+  buck, path = node[:video_client][:gitannex_key].match(/s3:\/\/(.*)\/(.*)/).captures 
   s3_file "#{node[:neon][:home]}/.ssh/model_data.pem" do
-    bucket node[:video_client][:gitannex_key_bucket]
-    remote_path node[:video_client][:gitannex_key_path]
+    bucket buck
+    remote_path path
     owner "neon"
     group "neon"
     action :create
