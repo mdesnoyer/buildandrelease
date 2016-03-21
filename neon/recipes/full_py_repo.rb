@@ -22,9 +22,12 @@ package_deps = [
                 "libpcre3",
                 "libpcre3-dev",
                 "libgtest-dev",
+                "libpq-dev", 
                 "cython",
                 "libsnappy-dev",
                 "libsnappy1",
+                "postgresql-9.4", 
+                "postgresql-contrib-9.4", 
                 "python-snappy",
                 "libboost-python1.46-dev"
                ]

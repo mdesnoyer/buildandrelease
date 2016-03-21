@@ -4,6 +4,12 @@ cmsdb:
     videoDB: <%= @db_host %>
     thumbnailDB: <%= @db_host %>
     dbPort: <%= @db_port %>
+    db_address: <%= @node[:deploy][:cmsapi_auth][:database][:host] %> 
+    db_port: <%= @node[:deploy][:cmsapi_auth][:database][:port] %> 
+    db_user: <%= @node[:deploy][:cmsapi_auth][:database][:username] %> 
+    db_password: <%= @node[:deploy][:cmsapi_auth][:database][:password] %> 
+    db_name: <%= @node[:deploy][:cmsapi_auth][:database][:database] %>
+    wants_postgres: 1 
 
 utils:
   logs:

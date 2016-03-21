@@ -19,6 +19,12 @@ cmsdb:
     videoDB: <%= @video_db_host %>
     thumbnailDB: <%= @video_db_host %>
     dbPort: <%= @video_db_port %>
+    db_address: <%= @node[:deploy][:mastermind][:database][:host] %> 
+    db_port: <%= @node[:deploy][:mastermind][:database][:port] %> 
+    db_user: <%= @node[:deploy][:mastermind][:database][:username] %> 
+    db_password: <%= @node[:deploy][:mastermind][:database][:password] %> 
+    db_name: <%= @node[:deploy][:mastermind][:database][:database] %>
+    wants_postgres: 1 
     send_callbacks: <%= @send_callbacks %>
     isp_host: <%= @isp_host %> 
 
