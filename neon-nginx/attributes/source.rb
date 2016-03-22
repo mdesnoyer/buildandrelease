@@ -34,7 +34,7 @@ default['nginx']['source']['default_configure_flags'] = %W(
 default['nginx']['configure_flags']    = []
 default['nginx']['source']['version']  = node['nginx']['version']
 default['nginx']['source']['url']      = "http://nginx.org/download/nginx-#{node['nginx']['source']['version']}.tar.gz"
-default['nginx']['source']['checksum'] = '0510af71adac4b90484ac8caf3b8bd519a0f7126250c2799554d7a751a2db388'
+default['nginx']['source']['checksum'] = '8f4b3c630966c044ec72715754334d1fdf741caa1d5795fb4646c27d09f797b7'
 default['nginx']['source']['modules']  = %w(
   neon-nginx::http_ssl_module
   neon-nginx::http_gzip_static_module
