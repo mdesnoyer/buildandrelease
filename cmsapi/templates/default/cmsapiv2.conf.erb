@@ -17,13 +17,14 @@ cmsdb:
     db_password: <%= @node[:deploy][:cmsapi][:database][:password] %> 
     db_name: <%= @node[:deploy][:cmsapi][:database][:database] %>
     wants_postgres: 1
-    stripe_api_key: <%= @node[:cmsapiv2][:stripe_api_key] %>  
 
 cmsapiv2:
   controllers:
     video_server: <%= @video_server_host %>
     video_server_port: <%= @video_server_port %>
     cmsapiv1_port: <%= @cmsapiv1_port %>
+  apiv2: 
+    stripe_api_key: <%= @node[:cmsapiv2][:stripe_api_key] %>  
 
 utils:
   logs:
