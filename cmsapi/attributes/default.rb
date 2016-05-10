@@ -17,6 +17,7 @@ default[:cmsapiv2][:config] = "#{node[:neon][:config_dir]}/cmsapiv2.conf"
 default[:cmsapiv2][:log_file] = "#{node[:cmsapiv2][:log_dir]}/cmsapiv2.log"
 default[:cmsapiv2][:access_log_file] = "#{node[:cmsapiv2][:log_dir]}/access.log"
 default[:cmsapiv2][:port] = 8084
+default[:cmsapiv2][:stripe_api_key] = nil 
 
 # Specify the repos to user
 default[:neon][:repos]["cmsapi"] = true
