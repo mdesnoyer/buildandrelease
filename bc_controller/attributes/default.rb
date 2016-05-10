@@ -23,6 +23,8 @@ default[:bc_controller][:cmsapi_fallbackhost] = "cmsapi1"
 default[:bc_controller][:cmsapi_layer] = "cmsapi"
 default[:bc_controller][:ingester_poll_period] = 293
 default[:bc_controller][:max_vids_in_new_account] = 100
+default[:bc_controller][:cmsapi_user] = "admin_neon_ingester"
+default[:bc_controller][:cmsapi_pass] = nil
 
 # Specify the repos to user
 default[:neon][:repos]["brightcove_controller"] = true

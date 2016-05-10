@@ -15,6 +15,8 @@ integrations:
   ovp:
     cmsapi_host: <%= @cmsapi_host %>
     cmsapi_port: <%= @cmsapi_port %>
+    cmsapi_user: <%= @node[:ingester][:cmsapi_user] %>
+    cmsapi_pass: <%= @node[:ingester][:cmsapi_pass] %>
 
 cmsdb:
   neondata:
