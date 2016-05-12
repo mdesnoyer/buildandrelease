@@ -70,18 +70,18 @@ node[:deploy].each do |app_name, deploy|
   end
 
   # Write the daemon service wrapper
-  template "/etc/init/bc_controller.conf" do
-    source "bc_controller_service.conf.erb"
-    owner "root"
-    group "root"
-    mode "0644"
-    variables({
-                :neon_root_dir => "#{repo_path}",
-                :config_file => node[:bc_controller][:config],
-                :user => "neon",
-                :group => "neon",
-              })
-  end
+  #template "/etc/init/bc_controller.conf" do
+  #  source "bc_controller_service.conf.erb"
+  #  owner "root"
+  #  group "root"
+  #  mode "0644"
+  #  variables({
+  #              :neon_root_dir => "#{repo_path}",
+  #              :config_file => node[:bc_controller][:config],
+  #              :user => "neon",
+  #              :group => "neon",
+  #            })
+  #end
   template "/etc/init/bc_ingester.conf" do
     source "ingester_service.conf.erb"
     owner "root"

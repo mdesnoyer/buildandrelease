@@ -28,7 +28,7 @@ default[:bc_controller][:max_vids_in_new_account] = 100
 default[:bc_controller][:serving_url_pusher][:internal_port] = 8087
 default[:bc_controller][:serving_url_pusher][:host] = "internal-serving-url-pusher-164837995.us-east-1.elb.amazonaws.com"
 default[:bc_controller][:serving_url_pusher][:config] = "#{node[:neon][:config_dir]}/serving_url_pusher.conf"
-default[:bc_controller][:serving_url_pusher][:log_file] = "#{node[:neon][:config_dir]}/serving_url_pusher.log"
+default[:bc_controller][:serving_url_pusher][:log_file] = "#{node[:neon][:log_dir]}/serving_url_pusher.log"
 default[:bc_controller][:serving_url_pusher][:service_name] = "url_pusher"
 
 # Specify the repos to user
