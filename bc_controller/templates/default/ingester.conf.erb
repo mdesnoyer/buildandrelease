@@ -4,6 +4,11 @@ api:
     max_read_connections: 50
     max_retries: 5
 
+cmsapiv2:
+  client:
+    auth_host: <%= @node[:bc_controller][:auth_host] %>
+    api_host: <%= @node[:bc_controller][:api_host] %>
+
 integrations:
   ingester:
     poll_period: <%= @node[:bc_controller][:ingester_poll_period] %>
@@ -15,6 +20,8 @@ integrations:
   ovp:
     cmsapi_host: <%= @cmsapi_host %>
     cmsapi_port: <%= @cmsapi_port %>
+    cmsapi_user: <%= @node[:bc_controller][:cmsapi_user] %>
+    cmsapi_pass: <%= @node[:bc_controller][:cmsapi_pass] %>
 
 cmsdb:
   neondata:
