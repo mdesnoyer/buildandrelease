@@ -11,6 +11,7 @@ integrations:
 
   brightcove:
     max_vids_for_new_account: <%= @node[:bc_controller][:max_vids_in_new_account] %>
+    bc_servingurl_push_callback_host: <%= @node[:bc_controller][:serving_url_pusher][:host] %>
 
   ovp:
     cmsapi_host: <%= @cmsapi_host %>
