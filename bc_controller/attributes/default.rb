@@ -24,6 +24,13 @@ default[:bc_controller][:cmsapi_layer] = "cmsapi"
 default[:bc_controller][:ingester_poll_period] = 293
 default[:bc_controller][:max_vids_in_new_account] = 100
 
+# Parameters for the serving url pusher service
+default[:bc_controller][:serving_url_pusher][:internal_port] = 8087
+default[:bc_controller][:serving_url_pusher][:host] = "internal-serving-url-pusher-164837995.us-east-1.elb.amazonaws.com"
+default[:bc_controller][:serving_url_pusher][:config] = "#{node[:neon][:config_dir]}/serving_url_pusher.conf"
+default[:bc_controller][:serving_url_pusher][:log_file] = "#{node[:neon][:config_dir]}/serving_url_pusher.log"
+default[:bc_controller][:serving_url_pusher][:service_name] = "url_pusher"
+
 # Specify the repos to user
 default[:neon][:repos]["brightcove_controller"] = true
 default[:neon][:repos]["core"] = true

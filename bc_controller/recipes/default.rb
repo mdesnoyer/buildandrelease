@@ -26,6 +26,14 @@ file node[:bc_controller][:log_file] do
   mode "0644"
 end
 
+services = [
+            #"bc_controller" # Disabled because we don't run tests via BC anymore
+            "bc_ingester",
+            "fox_ingester",
+            "cnn_ingester",
+            node[:bc_controller][:serving_url_pusher][:service_name]
+]
+
 node[:deploy].each do |app_name, deploy|
   Chef::Log.info("Start Deploying app #{app_name}") 
 
@@ -113,6 +121,19 @@ node[:deploy].each do |app_name, deploy|
               })
   end
 
+  template "/etc/init/#{node[:bc_controller][:serving_url_pusher][:service_name]}.conf" do
+    source "serving_url_pusher_service.conf.erb"
+    owner "root"
+    group "root"
+    mode "0644"
+    variables({
+                :neon_root_dir => "#{repo_path}",
+                :config_file => node[:bc_controller][:serving_url_pusher][:config],
+                :user => "neon",
+                :group => "neon",
+              })
+  end
+
   # Write a script that will send a mail when the service dies
   template "/etc/init/bc_controller-email.conf" do
     source "mail-on-restart.conf.erb"
@@ -141,40 +162,21 @@ node[:deploy].each do |app_name, deploy|
               })
   end
 
-  # TODO: Re-enable the controller when we actually run tests through
-  # Brightcove
-  #service "bc_controller" do
-  #  provider Chef::Provider::Service::Upstart
-  #  supports :status => true, :restart => true, :start => true, :stop => true
-  #  action [:enable, :start]
-  #  subscribes :restart, "git[#{repo_path}]", :delayed
-  #end
-  service "bc_ingester" do
-    provider Chef::Provider::Service::Upstart
-    supports :status => true, :restart => true, :start => true, :stop => true
-    action [:enable, :start]
-    subscribes :restart, "git[#{repo_path}]", :delayed
-  end
-
-  service "cnn_ingester" do
-    provider Chef::Provider::Service::Upstart
-    supports :status => true, :restart => true, :start => true, :stop => true
-    action [:enable, :start]
-    subscribes :restart, "git[#{repo_path}]", :delayed
-  end
-
-  service "fox_ingester" do
-    provider Chef::Provider::Service::Upstart
-    supports :status => true, :restart => true, :start => true, :stop => true
-    action [:enable, :start]
-    subscribes :restart, "git[#{repo_path}]", :delayed
+  services.each do | serv |
+    service serv do
+      provider Chef::Provider::Service::Upstart
+      supports :status => true, :restart => true, :start => true, :stop => true
+      action [:enable, :start]
+      subscribes :restart, "git[#{repo_path}]", :delayed
+     end
   end
 end
 
 
 if ['undeploy', 'shutdown'].include? node[:opsworks][:activity] then
-  # Turn off bc_controller
-  service "bc_controller" do
-    action :stop
+  services.each do | serv |
+    service serv do
+      action :stop
+     end
   end
 end
