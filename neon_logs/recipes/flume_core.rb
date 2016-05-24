@@ -8,6 +8,7 @@ include_recipe "hadoop::repo"
 
 package "flume-ng" do
   action :install
+  options "--force-yes"
 end
 
 user node[:neon_logs][:flume_user] do
