@@ -10,7 +10,6 @@ cmsdb:
     videoDB: <%= @video_db_host %>
     thumbnailDB: <%= @video_db_host %>
     dbPort: <%= @video_db_port %>
-    video_server: <%= @video_server_host %>
     db_address: <%= @node[:deploy][:cmsapi][:database][:host] %> 
     db_port: <%= @node[:deploy][:cmsapi][:database][:port] %> 
     db_user: <%= @node[:deploy][:cmsapi][:database][:username] %> 
@@ -20,11 +19,13 @@ cmsdb:
 
 cmsapiv2:
   controllers:
-    video_server: <%= @video_server_host %>
-    video_server_port: <%= @video_server_port %>
     cmsapiv1_port: <%= @cmsapiv1_port %>
   apiv2: 
     stripe_api_key: <%= @node[:cmsapiv2][:stripe_api_key] %>  
+
+video_processor:
+  video_processing_queue:
+    queue_prefix: <%= @node[:cmsapiv2][:video_queue_prefix]%>
 
 utils:
   logs:
