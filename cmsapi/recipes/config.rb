@@ -17,20 +17,13 @@ end
 video_db_host = get_master_cmsdb_ip()
 Chef::Log.info("Connecting to video db at #{video_db_host}")
 
-# Find the video server 
-Chef::Log.info "Looking for the video server in layer: #{node[:cmsapi][:video_server_layer]}"
-video_server_host = get_host_in_layer(node[:cmsapi][:video_server_layer],
-                                      node[:cmsapi][:video_server_fallbackhost])
-
 # Write the configuration file for CMS API 
 template node[:cmsapi][:config] do
   source "cmsapi.conf.erb"
   owner "cmsapi"
   group "cmsapi"
   mode "0644"
-  variables({
-              :video_server_port => node[:cmsapi][:video_server_port],
-              :video_server_host => video_server_host, 
+  variables({ 
               :cmsapi_port => node[:cmsapi][:port],
               :video_db_host => video_db_host,
               :video_db_port => node[:cmsdb][:master_port],
@@ -49,8 +42,6 @@ template node[:cmsapiv2][:config] do
   group "cmsapi"
   mode "0644"
   variables({
-              :video_server_port => node[:cmsapi][:video_server_port],
-              :video_server_host => video_server_host, 
               :cmsapiv2_port => node[:cmsapiv2][:port],
               :cmsapiv1_port => node[:cmsapi][:port],
               :video_db_host => video_db_host,

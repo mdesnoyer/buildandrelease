@@ -8,6 +8,9 @@ video_processor:
     server_auth: <%= @video_server_auth %>
     extra_workers: <%= @extra_workers %>
     video_temp_dir: <%= @video_temp_dir %>
+
+  video_processing_queue:
+    queue_prefix: <%= @node[:video_client][:video_queue_prefix]%>
  
 cmsdb:
   neondata:
