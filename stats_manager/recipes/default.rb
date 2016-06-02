@@ -28,7 +28,7 @@ pydeps = {
   "dateutils" => "0.6.6",
   "winpdb" => "1.4.8",
   "pyhs2" => "0.6.0",
-  "happybase" => "0.9"
+  "happybase" => "0.9",
   "hdfs" => "2.0.6"
 }
 
