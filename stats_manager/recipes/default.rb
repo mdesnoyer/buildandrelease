@@ -15,7 +15,7 @@ include_recipe "stats_manager::config"
 pydeps = {
   "numpy" => "1.6.1",
   "futures" => "2.1.5",
-  "tornado" => "4.1",
+  "tornado" => "4.2.1",
   "setuptools" => "4.0.1",
   "avro" => "1.7.6",
   "boto" => "2.32.1",
@@ -29,6 +29,7 @@ pydeps = {
   "winpdb" => "1.4.8",
   "pyhs2" => "0.6.0",
   "happybase" => "0.9"
+  "hdfs" => "2.0.6"
 }
 
 # Install the python dependencies
@@ -92,7 +93,9 @@ node[:deploy].each do |app_name, deploy|
     recursive true
   end
   s3_file "#{node[:neon][:home]}/statsmanager/.ssh/emr.pem" do
-    source node[:stats_manager][:emr_key]
+    #source node[:stats_manager][:emr_key]
+    bucket node[:stats_manager][:emr_key_bucket]
+    remote_path node[:stats_manager][:emr_key_path]
     owner node[:stats_manager][:user]
     group node[:stats_manager][:group]
     action :create
