@@ -2,6 +2,7 @@ video_processor:
   client:
     model_file: <%= @model_file %>
     model_autoscale_groups: <%= @node[:video_client][:model_autoscale_groups] %>
+    request_concurrency: <%= @node[:video_client][:request_concurrency] %>
     max_videos_per_proc: <%= @max_videos_per_proc %>
     dequeue_period: <%= @dequeue_period %>
     notification_api_key: <%= @notification_api_key %>
