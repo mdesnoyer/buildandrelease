@@ -20,7 +20,8 @@ cmsdb:
 
 cmsapi:
   services:
-    video_server: <%= @video_server_host %>
+    apiv2_user: <%= @node[:cmsapi][:apiv2_user] %>
+    apiv2_pass: <%= @node[:cmsapi][:apiv2_pass] %>
 
 utils:
   logs:
