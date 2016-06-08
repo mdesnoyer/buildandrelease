@@ -17,11 +17,6 @@ end
 video_db_host = get_master_cmsdb_ip()
 Chef::Log.info("Connecting to video db at #{video_db_host}")
 
-# Find the video server 
-Chef::Log.info "Looking for the video server in layer: #{node[:video_client][:video_server_layer]}"
-video_server_host = get_host_in_layer(node[:video_client][:video_server_layer],
-                                      node[:video_client][:video_server_fallbackhost])
-
 repo_path = get_repo_path("video_client")
 
 # Write the configuration file for the video client 
@@ -31,15 +26,11 @@ template node[:video_client][:config] do
   group "video_client"
   mode "0644"
   variables({
-              :video_server_host => video_server_host,
-              :video_server_port => node[:video_client][:video_server_port],
-              :video_server_auth => node[:video_client][:video_server_auth],
               :video_db_host => video_db_host,
               :video_db_port => node[:cmsdb][:master_port],
               :max_videos_per_proc => node[:video_client][:max_videos_per_proc],
               :dequeue_period => node[:video_client][:dequeue_period],
               :notification_api_key => node[:video_client][:notification_api_key],
-              :server_auth => node[:video_client][:server_auth],
               :extra_workers => node[:video_client][:extra_workers],
               :video_temp_dir => node[:video_client][:video_temp_dir],
               :model_file => "#{node[:video_client][:model_data_folder]}/#{node[:video_client][:model_file]}", 

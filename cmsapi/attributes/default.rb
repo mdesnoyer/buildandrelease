@@ -7,6 +7,8 @@ default[:cmsapi][:config] = "#{node[:neon][:config_dir]}/cmsapi.conf"
 default[:cmsapi][:log_file] = "#{node[:cmsapi][:log_dir]}/cmsapi.log"
 default[:cmsapi][:access_log_file] = "#{node[:cmsapi][:log_dir]}/access.log"
 default[:cmsapi][:port] = 8083
+default[:cmsapi][:apiv2_user] = ""
+default[:cmsapi][:apiv2_pass] = ""
 
 # Parameters for cmsapiv2
 default[:cmsapiv2][:log_dir] = "#{node[:neon][:log_dir]}/cmsapiv2"
