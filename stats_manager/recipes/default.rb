@@ -109,6 +109,16 @@ node[:deploy].each do |app_name, deploy|
     user "neon"
   end
 
+  node.default[:airflow][:dags_folder] = "#{repo_path}"
+  node.default[:airflow][:db_user] = node[:deploy][:stats_manager][:database][:username]
+  node.default[:airflow][:db_password] = node[:deploy][:stats_manager][:database][:password]
+  node.default[:airflow][:db_port] = node[:deploy][:stats_manager][:database][:port]
+  node.default[:airflow][:db_host] = node[:deploy][:stats_manager][:database][:host]
+  node.default[:airflow][:db_name] = node[:deploy][:stats_manager][:database][:database]
+
+  # Setup Airflow
+  include_recipe "airflow"
+
   # Write the daemon service wrapper
   template "/etc/init/cluster_manager.conf" do
     source "cluster_manager_service.conf.erb"
@@ -144,18 +154,6 @@ node[:deploy].each do |app_name, deploy|
     action [:enable, :start]
     subscribes :restart, "git[#{repo_path}]", :delayed
   end
-
-  sleep 300
-
-  node.default[:airflow][:dags_folder] = "#{repo_path}"
-  node.default[:airflow][:db_user] = node[:deploy][:stats_manager][:database][:username]
-  node.default[:airflow][:db_password] = node[:deploy][:stats_manager][:database][:password]
-  node.default[:airflow][:db_port] = node[:deploy][:stats_manager][:database][:port]
-  node.default[:airflow][:db_host] = node[:deploy][:stats_manager][:database][:host]
-  node.default[:airflow][:db_name] = node[:deploy][:stats_manager][:database][:database]
-
-  # Setup Airflow
-  include_recipe "airflow"
 end
 
 
