@@ -2,7 +2,8 @@
 
 user node[:airflow][:user] do
   action :create
-  shell '/bin/false'
+  system true
+  shell "/bin/false"
   home node[:airflow][:home]
 end
 
