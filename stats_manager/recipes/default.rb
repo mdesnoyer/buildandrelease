@@ -116,6 +116,7 @@ node[:deploy].each do |app_name, deploy|
   node.default[:airflow][:db_host] = node[:deploy][:stats_manager][:database][:host]
   node.default[:airflow][:db_name] = node[:deploy][:stats_manager][:database][:database]
 
+
   # Setup Airflow
   include_recipe "airflow"
 

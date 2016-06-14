@@ -120,4 +120,3 @@ if ['shutdown'].include? node[:opsworks][:activity] then
     end
   end
 end
-
