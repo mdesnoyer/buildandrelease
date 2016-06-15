@@ -1,8 +1,7 @@
 # Installs Airflow for cleaning and loading click logs via stats modules
 
-user node[:airflow][:user] do
+user 'airflow' do
   action :create
-  system true
   shell "/bin/false"
   home node[:airflow][:home]
 end
