@@ -21,7 +21,7 @@ default[:airflow][:webserver_port] = 8080
 
 # MySQL RDS for Airflow state
 default[:airflow][:db_user] = "airflow"
-default[:airflow][:db_password] = "airflow"
+default[:airflow][:db_password] = "airflow1"
 default[:airflow][:db_host] = "localhost"
 default[:airflow][:db_port] = 3306
 default[:airflow][:db_name] = "airflow"
