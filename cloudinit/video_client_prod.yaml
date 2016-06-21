@@ -1,0 +1,14 @@
+#cloud-config
+
+
+write_files:
+-   path: /opt/neon/config/video_client.conf
+    owner: video_client:video_client
+    permissions: '0644'
+    content: |
+    
+
+runcmd:
+-   [
+-   [start, video_client]
+-   [
