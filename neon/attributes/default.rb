@@ -35,3 +35,7 @@ default[:python][:virtualenv_version] = "1.11.6"
 
 # Address to get the ip ranges inside amazon from
 default[:aws][:ip_ranges_url] = "https://ip-ranges.amazonaws.com/ip-ranges.json"
+
+# Model
+default[:neon][:model_file] = "local_search_input_20160523"
+default[:neon][:model_autoscale_groups] = "AquilaOnDemand,AquilaSpot"
