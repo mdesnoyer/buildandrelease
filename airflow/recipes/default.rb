@@ -84,7 +84,6 @@ end
 # ----------------------------------------
 execute "airflow initialize db" do
   command "airflow initdb"
-  user "statsmanager"
 end
 
 # ----------------------------
