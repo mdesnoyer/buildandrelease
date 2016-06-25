@@ -79,6 +79,13 @@ end
 #   include_recipe "neon_logs::flume_core"
 # end
 
+# ----------------------------------------
+# Initialize the airflow metadata database
+# ----------------------------------------
+execute "airflow initialize db" do
+  command "airflow initdb"
+  user "statsmanager"
+end
 
 # ----------------------------
 # Airflow services
