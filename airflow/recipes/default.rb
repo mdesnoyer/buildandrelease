@@ -83,7 +83,7 @@ end
 # Initialize the airflow metadata database
 # ----------------------------------------
 execute "airflow initialize db" do
-  command "airflow resetdb"
+  command "airflow resetdb -y"
 end
 
 # ----------------------------
