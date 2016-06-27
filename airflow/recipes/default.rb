@@ -79,13 +79,6 @@ end
 #   include_recipe "neon_logs::flume_core"
 # end
 
-# ----------------------------------------
-# Initialize the airflow metadata database
-# ----------------------------------------
-execute "airflow initialize db" do
-  command "airflow resetdb -y"
-end
-
 # ----------------------------
 # Airflow services
 # ----------------------------
@@ -114,6 +107,12 @@ service "airflow-worker" do
   subscribes :restart, "template[#{node[:airflow][:config_file]}]", :delayed
 end
 
+# ----------------------------------------
+# Initialize the airflow metadata database
+# ----------------------------------------
+execute "airflow initialize db" do
+  command "airflow resetdb -y"
+end
 
 if ['shutdown'].include? node[:opsworks][:activity] then
   services = [
