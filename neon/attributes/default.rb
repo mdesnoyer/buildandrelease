@@ -38,4 +38,6 @@ default[:aws][:ip_ranges_url] = "https://ip-ranges.amazonaws.com/ip-ranges.json"
 
 # Model
 default[:neon][:model_file] = "local_search_input_20160523"
-default[:neon][:model_autoscale_groups] = "AquilaOnDemand,AquilaSpot"
+default[:neon][:model_data_folder] = "#{node[:neon][:home]}/model_data/repo"
+default[:neon][:model_autoscale_groups] = "AquilaOnDemandTest"
+default[:neon][:request_concurrency] = 22

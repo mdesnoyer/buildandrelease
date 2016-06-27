@@ -32,6 +32,7 @@ template node[:cmsapi][:config] do
               :carbon_host => node[:neon][:carbon_host],
               :carbon_port => node[:neon][:carbon_port],
               :flume_log_port => node[:neon_logs][:json_http_source_port],
+              :model_file => "#{node[:neon][:model_data_folder]}/#{node[:neon][:model_file]}",
             })
 end
 
