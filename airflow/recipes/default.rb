@@ -112,7 +112,7 @@ end
 # ----------------------------------------
 execute "airflow initialize db" do
   command "airflow resetdb -y"
-  user "airflow"
+  user "statsmanager"
 end
 
 if ['shutdown'].include? node[:opsworks][:activity] then
