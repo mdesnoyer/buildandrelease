@@ -51,6 +51,12 @@ py_deps.each do |dep|
   end
 end
 
+# ----------------------------------------
+# Initialize the airflow metadata database
+# ----------------------------------------
+execute "airflow initialize db" do
+  command "sudo su -c "airflow resetdb" -s /bin/sh statsmanager"
+end
 
 # ----------------------------
 # capture logs via flume
@@ -105,13 +111,6 @@ service "airflow-worker" do
   action [:enable, :start]
   subscribes :restart, "template[/etc/init/airflow-worker.conf]", :delayed
   subscribes :restart, "template[#{node[:airflow][:config_file]}]", :delayed
-end
-
-# ----------------------------------------
-# Initialize the airflow metadata database
-# ----------------------------------------
-execute "airflow initialize db" do
-  command "airflow resetdb -y"
 end
 
 if ['shutdown'].include? node[:opsworks][:activity] then
