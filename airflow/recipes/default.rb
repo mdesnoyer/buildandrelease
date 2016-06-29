@@ -42,7 +42,8 @@ py_deps = [
   'airflow',
   'airflow[mysql]',
   'airflow[s3]',
-  'airflow[hive]'
+  'airflow[hive]',
+  'airflow[celery]'
 ]
 py_deps.each do |dep|
   python_pip dep do
