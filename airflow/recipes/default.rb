@@ -28,7 +28,8 @@ deps = [
   'libblas-dev',
   'liblapack-dev',
   'libkrb5-dev',
-  'libsasl2-dev'
+  'libsasl2-dev',
+  'libffi-dev'
 ]
 
 deps.each do |dep|
