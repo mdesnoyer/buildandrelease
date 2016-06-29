@@ -55,7 +55,7 @@ end
 # Initialize the airflow metadata database
 # ----------------------------------------
 execute "airflow initialize db" do
-  command "sudo su -c 'airflow initdb' -s /bin/sh statsmanager"
+  command "sudo su -c 'airflow resetdb -y' -s /bin/sh statsmanager"
 end
 
 # ----------------------------
