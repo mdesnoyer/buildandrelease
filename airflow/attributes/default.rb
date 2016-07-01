@@ -31,6 +31,17 @@ default[:airflow][:smtp_user] = "AKIAJZLS2HPKH33MY5RA"
 default[:airflow][:smtp_password] = "AtpM77bc0orv6qT+e0G3Hrazz3cs1gn9Kk9TWZF+A19j"
 default[:airflow][:smtp_host] = "some_host"
 default[:airflow][:smtp_port] = 25
-default[:airflow][:smtp_from] = "airflow@neon-lab.com"
+default[:airflow][:smtp_from] = "airflow@airflow.com"
 
+# Other configs
+default[:airflow][:parallelism] = 32
+default[:airflow][:non_pooled_task_slot_count] = 128
+default[:airflow][:fernet_key] = "cryptography_not_found_storing_passwords_in_plain_text"
+default[:airflow][:expose_config] = true
+default[:airflow][:workers] = 4
+default[:airflow][:celeryd_concurrency] = 16
+default[:airflow][:flower_port] = 5555
+default[:airflow][:task_memory] = 128
+
+# Airflow version to install
 default[:airflow][:version] = "1.7.1.2"

@@ -51,7 +51,7 @@ default[:airflow][:airflow_logs] = "#{node[:stats_manager][:log_dir]}/airflow"
 default[:airflow][:dags_folder] = "Set to the correct location"
 # TODO: set the sql parameters to hold the state
 default[:airflow][:smtp_host] = "email-smtp.us-east-1.amazonaws.com"
-default[:airflow][:smtp_from] = "nazeer@neon-lab.com"
+default[:airflow][:smtp_from] = "airflow@airflow.com"
 default[:airflow][:params][:neon][:config_file] = node[:stats_manager][:config]
 
 
