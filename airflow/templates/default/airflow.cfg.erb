@@ -22,7 +22,10 @@ sql_alchemy_conn = mysql://<%= @db_user %>:<%= @db_password %>@<%= @db_host %>:<
 # The amount of parallelism as a setting to the executor. This defines
 # the max number of task instances that should run simultaneously
 # on this airflow installation
-parallelism = 4
+parallelism = 32
+
+# Are DAGs paused by default at creation
+dags_are_paused_at_creation = True
 
 # Whether to load the examples that ship with Airflow. It's good to
 # get started, but you probably want to set this to False in a production
@@ -31,6 +34,9 @@ load_examples = False
 
 # Where your Airflow plugins are stored
 plugins_folder = <%= @airflow_home %>/plugins
+
+# Secret key to save connection passwords in the db
+fernet_key = cryptography_not_found_storing_passwords_in_plain_text
 
 
 [webserver]
@@ -48,6 +54,11 @@ web_server_port = <%= @webserver_port %>
 # Secret key used to run your flask app
 secret_key = temporary_key
 
+# Number of workers to run the Gunicorn web server
+workers = 4
+
+# Expose the configuration file in the web server
+expose_config = true
 
 [smtp]
 # If you want airflow to send emails on retries, failure, and you want to
@@ -71,7 +82,7 @@ celery_app_name = airflow.executors.celery_executor
 # "airflow worker" command. This defines the number of task instances that
 # a worker will take, so size up your workers based on the resources on
 # your worker box and the nature of your tasks
-celeryd_concurrency = 8
+celeryd_concurrency = 16
 
 # When you start an airflow worker, airflow starts a tiny web server
 # subprocess to serve the workers local log files to the airflow main
@@ -90,7 +101,7 @@ celery_result_backend = db+mysql://<%= @db_user %>:<%= @db_password %>@<%= @db_h
 
 # Celery Flower is a sweet UI for Celery. Airflow has a shortcut to start
 # it `airflow flower`. This defines the port that Celery Flower runs on
-flower_port = 8383
+flower_port = 5555
 
 # Default queue that tasks get assigned to and that worker listen on.
 default_queue = default
