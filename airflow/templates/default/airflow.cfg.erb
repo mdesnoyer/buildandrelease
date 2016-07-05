@@ -22,7 +22,7 @@ sql_alchemy_conn = mysql://<%= @db_user %>:<%= @db_password %>@<%= @db_host %>:<
 # The amount of parallelism as a setting to the executor. This defines
 # the max number of task instances that should run simultaneously
 # on this airflow installation
-parallelism = 16
+parallelism = 8
 
 # Are DAGs paused by default at creation
 dags_are_paused_at_creation = True
@@ -37,6 +37,7 @@ plugins_folder = <%= @airflow_home %>/plugins
 
 # Secret key to save connection passwords in the db
 fernet_key = cryptography_not_found_storing_passwords_in_plain_text
+
 
 
 [webserver]
@@ -54,11 +55,10 @@ web_server_port = <%= @webserver_port %>
 # Secret key used to run your flask app
 secret_key = temporary_key
 
-# Number of workers to run the Gunicorn web server
-workers = 1
-
 # Expose the configuration file in the web server
 expose_config = true
+
+
 
 [smtp]
 # If you want airflow to send emails on retries, failure, and you want to
@@ -71,6 +71,8 @@ smtp_password = "<%= @smtp_password %>"
 smtp_mail_from = <%= @smtp_from %>
 smtp_starttls = True
 
+
+
 [celery]
 # This section only applies if you are using the CeleryExecutor in
 # [core] section above
@@ -82,7 +84,7 @@ celery_app_name = airflow.executors.celery_executor
 # "airflow worker" command. This defines the number of task instances that
 # a worker will take, so size up your workers based on the resources on
 # your worker box and the nature of your tasks
-celeryd_concurrency = 1
+celeryd_concurrency = 4
 
 # When you start an airflow worker, airflow starts a tiny web server
 # subprocess to serve the workers local log files to the airflow main
@@ -105,6 +107,8 @@ flower_port = 5555
 
 # Default queue that tasks get assigned to and that worker listen on.
 default_queue = default
+
+
 
 
 [scheduler]
