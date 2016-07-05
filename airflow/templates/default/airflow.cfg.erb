@@ -22,7 +22,7 @@ sql_alchemy_conn = mysql://<%= @db_user %>:<%= @db_password %>@<%= @db_host %>:<
 # The amount of parallelism as a setting to the executor. This defines
 # the max number of task instances that should run simultaneously
 # on this airflow installation
-parallelism = 32
+parallelism = 16
 
 # Are DAGs paused by default at creation
 dags_are_paused_at_creation = True
@@ -55,7 +55,7 @@ web_server_port = <%= @webserver_port %>
 secret_key = temporary_key
 
 # Number of workers to run the Gunicorn web server
-workers = 4
+workers = 2
 
 # Expose the configuration file in the web server
 expose_config = true
@@ -82,7 +82,7 @@ celery_app_name = airflow.executors.celery_executor
 # "airflow worker" command. This defines the number of task instances that
 # a worker will take, so size up your workers based on the resources on
 # your worker box and the nature of your tasks
-celeryd_concurrency = 4
+celeryd_concurrency = 1
 
 # When you start an airflow worker, airflow starts a tiny web server
 # subprocess to serve the workers local log files to the airflow main
