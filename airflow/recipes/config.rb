@@ -20,14 +20,6 @@ template node[:airflow][:config_file] do
               :smtp_host => node[:airflow][:smtp_host],
               :smtp_port => node[:airflow][:smtp_port],
               :smtp_from => node[:airflow][:smtp_from],
-              :parallelism => node[:airflow][:parallelism],
-              :non_pooled_task_slot_count => node[:airflow][:non_pooled_task_slot_count],
-              :fernet_key => node[:airflow][:fernet_key],
-              :expose_config => node[:airflow][:expose_config],
-              :workers => node[:airflow][:workers],
-              :celeryd_concurrency => node[:airflow][:celeryd_concurrency],
-              :flower_port => node[:airflow][:flower_port],
-              :task_memory => node[:airflow][:task_memory],
               :extra_params => node[:airflow][:params]
             })
 end

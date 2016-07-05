@@ -21,7 +21,7 @@ default[:stats_manager][:log_file] = "#{node[:stats_manager][:log_dir]}/statsman
 default[:stats_manager][:cluster_log_file] = "#{node[:stats_manager][:log_dir]}/cluster_manager.log"
 
 # Pramaters for the process
-default[:stats_manager][:clicklog_period] = 24 # In hours
+default[:stats_manager][:clicklog_period] = 15 # In minutes
 default[:stats_manager][:cluster_name] = "#{node[:opsworks][:stack][:name]} (Video Events)"
 default[:stats_manager][:cluster_type] = "video_click_stats"
 default[:stats_manager][:cluster_public_ip] = "54.210.126.245" # Production US-East
