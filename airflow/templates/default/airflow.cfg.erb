@@ -35,6 +35,9 @@ load_examples = False
 # Where your Airflow plugins are stored
 plugins_folder = <%= @airflow_home %>/plugins
 
+# Secret key to save connection passwords in the db
+fernet_key = cryptography_not_found_storing_passwords_in_plain_text
+
 # The number of task instances allowed to run concurrently by the scheduler
 dag_concurrency = 99999
 
@@ -61,9 +64,6 @@ secret_key = temporary_key
 
 # Expose the configuration file in the web server
 expose_config = true
-
-# Secret key to save connection passwords in the db
-fernet_key = cryptography_not_found_storing_passwords_in_plain_text
 
 
 
