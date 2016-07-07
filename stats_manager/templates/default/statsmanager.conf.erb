@@ -5,7 +5,6 @@ stats:
         quiet_period: <%= @node[:stats_manager][:quiet_period] %>
         mr_jar: <%= @node[:stats_manager][:mr_jar] %>
         input_path: "<%= @node[:stats_manager][:input_path] %>"
-        output_path: "<%= @node[:stats_manager][:output_path] %>"
         staging_path: "<%= @node[:stats_manager][:staging_path] %>"
         output_path: "<%= @node[:stats_manager][:cleaned_output_path] %>"
         cleaning_mr_memory: <%= @node[:stats_manager][:cleaning_mr_memory] %>
