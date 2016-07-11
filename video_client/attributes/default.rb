@@ -23,6 +23,8 @@ default[:video_client][:model_autoscale_groups] = "AquilaOnDemandTest"
 default[:video_client][:request_concurrency] = 22
 default[:video_client][:cmsapi_user] = "admin_neon_ingester"
 default[:video_client][:cmsapi_pass] = nil
+default[:video_client][:auth_host] = "auth.neon-lab.com"
+default[:video_client][:api_host] = "services.neon-lab.com"
 
 # Specify the repos to user
 default[:neon][:repos]["video_client"] = true

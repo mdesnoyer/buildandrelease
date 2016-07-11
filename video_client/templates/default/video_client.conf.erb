@@ -13,6 +13,11 @@ video_processor:
 
   video_processing_queue:
     queue_prefix: <%= @node[:video_client][:video_queue_prefix]%>
+
+cmsapiv2:
+  client:
+    auth_host: <%= @node[:video_client][:auth_host] %>
+    api_host: <%= @node[:video_client][:api_host] %>
  
 cmsdb:
   neondata:
