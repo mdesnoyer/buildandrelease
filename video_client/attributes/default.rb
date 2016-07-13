@@ -21,8 +21,6 @@ default[:video_client][:video_temp_dir] = "/mnt/tmp1"
 default[:video_client][:video_queue_prefix] = "videojobs_priority_"
 default[:video_client][:model_autoscale_groups] = "AquilaOnDemandTest"
 default[:video_client][:request_concurrency] = 22
-default[:video_client][:cmsapi_user] = "admin_neon_ingester"
-default[:video_client][:cmsapi_pass] = nil
 
 # Specify the repos to user
 default[:neon][:repos]["video_client"] = true

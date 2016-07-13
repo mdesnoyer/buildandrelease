@@ -20,8 +20,8 @@ cmsdb:
 
 cmsapi:
   services:
-    apiv2_user: <%= @node[:cmsapi][:apiv2_user] %>
-    apiv2_pass: <%= @node[:cmsapi][:apiv2_pass] %>
+    apiv2_user: <%= @node[:neon][:cmsapi_user] %>
+    apiv2_pass: <%= @node[:neon][:cmsapi_pass] %>
 
 utils:
   logs:

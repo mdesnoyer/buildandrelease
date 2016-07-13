@@ -6,8 +6,8 @@ api:
 
 cmsapiv2:
   client:
-    auth_host: <%= @node[:bc_controller][:auth_host] %>
-    api_host: <%= @node[:bc_controller][:api_host] %>
+    auth_host: <%= @node[:neon][:auth_host] %>
+    api_host: <%= @node[:neon][:api_host] %>
 
 integrations:
   ingester:
@@ -21,8 +21,8 @@ integrations:
   ovp:
     cmsapi_host: <%= @cmsapi_host %>
     cmsapi_port: <%= @cmsapi_port %>
-    cmsapi_user: <%= @node[:bc_controller][:cmsapi_user] %>
-    cmsapi_pass: <%= @node[:bc_controller][:cmsapi_pass] %>
+    cmsapi_user: <%= @node[:neon][:cmsapi_user] %>
+    cmsapi_pass: <%= @node[:neon][:cmsapi_pass] %>
 
 cmsdb:
   neondata:
