@@ -10,6 +10,7 @@ video_processor:
     video_temp_dir: <%= @video_temp_dir %>
     cmsapi_user: <%= @node[:neon][:cmsapi_user] %>
     cmsapi_pass: <%= @node[:neon][:cmsapi_pass] %>
+    frontend_base_url: <%= @node[:neon][:frontend_base_url] %>
 
   video_processing_queue:
     queue_prefix: <%= @node[:video_client][:video_queue_prefix]%>
