@@ -35,3 +35,9 @@ default[:python][:virtualenv_version] = "1.11.6"
 
 # Address to get the ip ranges inside amazon from
 default[:aws][:ip_ranges_url] = "https://ip-ranges.amazonaws.com/ip-ranges.json"
+
+# Parameters needed for cmsapi
+default[:neon][:auth_host] = "auth.neon-lab.com"
+default[:neon][:api_host] = "services.neon-lab.com"
+default[:neon][:cmsapi_user] = "admin_neon_ingester"
+default[:neon][:cmsapi_pass] = nil
