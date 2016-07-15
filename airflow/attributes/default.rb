@@ -31,7 +31,7 @@ default[:airflow][:smtp_user] = "AKIAJZLS2HPKH33MY5RA"
 default[:airflow][:smtp_password] = "AtpM77bc0orv6qT+e0G3Hrazz3cs1gn9Kk9TWZF+A19j"
 default[:airflow][:smtp_host] = "some_host"
 default[:airflow][:smtp_port] = 25
-default[:airflow][:smtp_from] = "airflow@airflow.com"
+default[:airflow][:smtp_from] = "airflow@neon-lab.com"
 
 # Airflow version to install
 default[:airflow][:version] = "1.7.0"
