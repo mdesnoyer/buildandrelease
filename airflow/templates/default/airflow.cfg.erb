@@ -96,7 +96,7 @@ celery_app_name = airflow.executors.celery_executor
 # "airflow worker" command. This defines the number of task instances that
 # a worker will take, so size up your workers based on the resources on
 # your worker box and the nature of your tasks
-celeryd_concurrency = 4
+celeryd_concurrency = 16
 
 # When you start an airflow worker, airflow starts a tiny web server
 # subprocess to serve the workers local log files to the airflow main
@@ -132,7 +132,7 @@ job_heartbeat_sec = 5
 # The scheduler constantly tries to trigger new tasks (look at the
 # scheduler section in the docs for more information). This defines
 # how often the scheduler should run (in seconds).
-scheduler_heartbeat_sec = 600
+scheduler_heartbeat_sec = 300
 
 # Statsd (https://github.com/etsy/statsd) integration settings
 # statsd_on =  False
