@@ -9,6 +9,8 @@ stats:
         output_path: "<%= @node[:stats_manager][:cleaned_output_path] %>"
         cleaning_mr_memory: <%= @node[:stats_manager][:cleaning_mr_memory] %>
         clicklog_period: <%= @node[:stats_manager][:clicklog_period] %>
+        max_task_instances: <%= @node[:stats_manager][:max_task_instances] %>
+        full_run_input_path: <%= @node[:stats_manager][:full_run_input_path] %>
 
   cluster:
     ssh_key: <%= @emr_key %>    

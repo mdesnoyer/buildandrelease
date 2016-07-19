@@ -31,6 +31,7 @@ default[:stats_manager][:max_task_instances] = 30
 default[:stats_manager][:quiet_period] = 30
 default[:stats_manager][:mr_jar] = "neon-stats-1.0-job.jar"
 default[:stats_manager][:input_path] = "s3://neon-tracker-logs-v2/v2.2"
+default[:stats_manager][:full_run_input_path] = "s3://neon-tracker-logs-v2/v2.2/*/*/*/*"
 default[:stats_manager][:output_path] = "s3://neon-tracker-logs-test-hadoop/"
 default[:stats_manager][:staging_path] = "s3://neon-tracker-logs-v2/airflow/staging"
 default[:stats_manager][:cleaned_output_path] = "s3://neon-tracker-logs-v2/airflow/cleaned"
