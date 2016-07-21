@@ -113,20 +113,11 @@ service "airflow-worker" do
   subscribes :restart, "template[#{node[:airflow][:config_file]}]", :delayed
 end
 
-service "airflow-flower" do
-  provider Chef::Provider::Service::Upstart
-  supports :status => true, :restart => true, :start => true, :stop => true
-  action [:enable, :start]
-  subscribes :restart, "template[/etc/init/airflow-flower.conf]", :delayed
-  subscribes :restart, "template[#{node[:airflow][:config_file]}]", :delayed
-end
-
 if ['shutdown'].include? node[:opsworks][:activity] then
   services = [
     'airflow-worker',
     'airflow-scheduler',
-    'airflow-web',
-    'airflow-flower'
+    'airflow-web'
   ]
   services.each do |service_name|
     service service_name do

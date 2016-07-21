@@ -27,7 +27,7 @@ sql_alchemy_pool_recycle = 3600
 # The amount of parallelism as a setting to the executor. This defines
 # the max number of task instances that should run simultaneously
 # on this airflow installation
-parallelism = 32
+parallelism = 9999
 
 # Are DAGs paused by default at creation
 dags_are_paused_at_creation = True
@@ -114,10 +114,6 @@ broker_url = sqla+mysql://<%= @db_user %>:<%= @db_password %>@<%= @db_host %>:<%
 # Another key Celery setting
 celery_result_backend = db+mysql://<%= @db_user %>:<%= @db_password %>@<%= @db_host %>:<%= @db_port %>/<%= @db_name %>
 
-# Celery Flower is a sweet UI for Celery. Airflow has a shortcut to start
-# it `airflow flower`. This defines the port that Celery Flower runs on
-flower_port = 5555
-
 # Default queue that tasks get assigned to and that worker listen on.
 default_queue = default
 
@@ -133,7 +129,7 @@ job_heartbeat_sec = 5
 # The scheduler constantly tries to trigger new tasks (look at the
 # scheduler section in the docs for more information). This defines
 # how often the scheduler should run (in seconds).
-scheduler_heartbeat_sec = 120
+scheduler_heartbeat_sec = 5
 
 # Statsd (https://github.com/etsy/statsd) integration settings
 # statsd_on =  False

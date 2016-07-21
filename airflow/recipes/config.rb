@@ -74,16 +74,3 @@ template "/etc/init/airflow-worker.conf" do
               :airflow_home => node[:airflow][:home]
             })
 end
-
-# Airflow Flower (Celery-based)
-template "/etc/init/airflow-flower.conf" do
-  source "airflow-flower.conf.erb"
-  owner "root"
-  group "root"
-  mode "0644"
-  variables({
-              :user => node[:airflow][:user],
-              :group => node[:airflow][:group],
-              :airflow_home => node[:airflow][:home]
-            })
-end
