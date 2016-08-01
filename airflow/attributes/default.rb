@@ -34,4 +34,4 @@ default[:airflow][:smtp_port] = 25
 default[:airflow][:smtp_from] = "airflow@neon-lab.com"
 
 # Airflow version to install
-default[:airflow][:version] = "1.7.0"
+default[:airflow][:version] = "1.7.1.2"
