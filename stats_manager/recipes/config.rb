@@ -26,6 +26,7 @@ template node[:stats_manager][:config] do
               :emr_key => node[:stats_manager][:emr_key],
               :max_task_instances => node[:stats_manager][:max_task_instances],
               :airflow_start_date => node[:stats_manager][:airflow_start_date],
+              :email => node[:stats_manager][:notify_email],
               :input_path => node[:neon][:input_path],
               :cleaned_output_path => node[:neon][:cleaned_output_path],
               :log_file => node[:stats_manager][:log_file],

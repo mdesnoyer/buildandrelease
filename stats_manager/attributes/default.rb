@@ -42,6 +42,7 @@ default[:stats_manager][:yarn_max_memory_allocation] = 32000
 default[:stats_manager][:parquet_memory] = 22000
 default[:stats_manager][:heap_size] = 12000
 default[:stats_manager][:cleaning_mr_memory] = 2048
+default[:stats_manager][:notify_email] = 'ops@neon-lab.com'
 
 
 # Parameters for airflow
