@@ -62,7 +62,7 @@ template "/etc/init/airflow-scheduler.conf" do
             })
 end
 
-# Airflow Worker (Celery-based)
+# Airflow Worker
 template "/etc/init/airflow-worker.conf" do
   source "airflow-worker.conf.erb"
   owner "root"

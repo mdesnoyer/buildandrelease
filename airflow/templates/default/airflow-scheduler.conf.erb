@@ -14,11 +14,10 @@ env AIRFLOW_HOME=<%= @airflow_home %>
 export AIRFLOW_HOME
 
 # required setting, 0 sets it to unlimited. Scheduler will restart after every X runs
-# env SCHEDULER_RUNS=5
-# export SCHEDULER_RUNS
+env SCHEDULER_RUNS=3
+export SCHEDULER_RUNS
 
 console log
 
-# exec /usr/local/bin/airflow scheduler -n ${SCHEDULER_RUNS}
-exec /usr/local/bin/airflow scheduler
+exec /usr/local/bin/airflow scheduler -n ${SCHEDULER_RUNS}
 
