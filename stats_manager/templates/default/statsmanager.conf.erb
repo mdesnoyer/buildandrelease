@@ -12,7 +12,7 @@ stats:
         max_task_instances: <%= @node[:stats_manager][:max_task_instances] %>
         airflow_start_date: "<%= @node[:stats_manager][:airflow_start_date] %>"
         full_run_input_path: <%= @node[:stats_manager][:full_run_input_path] %>
-        email: "<%= @node[:stats_manager][:notify_email] %>"
+        notify_email: "<%= @node[:stats_manager][:notify_email] %>"
 
   cluster:
     ssh_key: <%= @emr_key %>    

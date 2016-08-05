@@ -39,8 +39,6 @@ plugins_folder = <%= @airflow_home %>/plugins
 fernet_key = cryptography_not_found_storing_passwords_in_plain_text
 
 
-
-
 [webserver]
 # The base url of your website as airflow cannot guess what domain or
 # cname you are using. This is use in automated emails that
@@ -60,8 +58,6 @@ secret_key = temporary_key
 expose_config = true
 
 
-
-
 [smtp]
 # If you want airflow to send emails on retries, failure, and you want to
 # the airflow.utils.send_email function, you have to configure an smtp
@@ -72,7 +68,6 @@ smtp_user = <%= @smtp_user %>
 smtp_password = "<%= @smtp_password %>"
 smtp_mail_from = <%= @smtp_from %>
 smtp_starttls = True
-
 
 
 [scheduler]
