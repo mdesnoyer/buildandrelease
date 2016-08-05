@@ -70,6 +70,38 @@ smtp_mail_from = <%= @smtp_from %>
 smtp_starttls = True
 
 
+[celery]
+# This section only applies if you are using the CeleryExecutor in
+# [core] section above
+
+# The app name that will be used by celery
+celery_app_name = airflow.executors.celery_executor
+
+# The concurrency that will be used when starting workers with the
+# "airflow worker" command. This defines the number of task instances that
+# a worker will take, so size up your workers based on the resources on
+# your worker box and the nature of your tasks
+celeryd_concurrency = 5
+
+# When you start an airflow worker, airflow starts a tiny web server
+# subprocess to serve the workers local log files to the airflow main
+# web server, who then builds pages and sends them to users. This defines
+# the port on which the logs are served. It needs to be unused, and open
+# visible from the main web server to connect into the workers.
+worker_log_server_port = 8793
+
+# The Celery broker URL. Celery supports RabbitMQ, Redis and experimentally
+# a sqlalchemy database. Refer to the Celery documentation for more
+# information.
+broker_url = sqla+mysql://<%= @db_user %>:<%= @db_password %>@<%= @db_host %>:<%= @db_port %>/<%= @db_name %>
+
+# Another key Celery setting
+celery_result_backend = db+mysql://<%= @db_user %>:<%= @db_password %>@<%= @db_host %>:<%= @db_port %>/<%= @db_name %>
+
+# Default queue that tasks get assigned to and that worker listen on.
+default_queue = default
+
+
 [scheduler]
 # Task instances listen for external kill signal (when you clear tasks
 # from the CLI or the UI), this defines the frequency at which they should
