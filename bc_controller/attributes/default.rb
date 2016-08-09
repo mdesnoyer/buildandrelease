@@ -23,10 +23,6 @@ default[:bc_controller][:cmsapi_fallbackhost] = "cmsapi1"
 default[:bc_controller][:cmsapi_layer] = "cmsapi"
 default[:bc_controller][:ingester_poll_period] = 293
 default[:bc_controller][:max_vids_in_new_account] = 100
-default[:bc_controller][:cmsapi_user] = "admin_neon_ingester"
-default[:bc_controller][:cmsapi_pass] = nil
-default[:bc_controller][:auth_host] = "auth.neon-lab.com"
-default[:bc_controller][:api_host] = "services.neon-lab.com"
 
 # Parameters for the serving url pusher service
 default[:bc_controller][:serving_url_pusher][:internal_port] = 8087

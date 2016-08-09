@@ -25,8 +25,8 @@ cmsapiv2:
   apiv2: 
     stripe_api_key: <%= @node[:cmsapiv2][:stripe_api_key] %>  
   client:
-    auth_host: <%= @node[:cmsapiv2][:auth_host] %>
-    api_host: <%= @node[:cmsapiv2][:api_host] %>
+    auth_host: <%= @node[:neon][:auth_host] %>
+    api_host: <%= @node[:neon][:api_host] %>
 
 video_processor:
   video_processing_queue:

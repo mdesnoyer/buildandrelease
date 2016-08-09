@@ -41,3 +41,9 @@ default[:neon][:model_file] = "local_search_input_20160523"
 default[:neon][:model_data_folder] = "#{node[:neon][:home]}/model_data/repo"
 default[:neon][:model_autoscale_groups] = "AquilaOnDemandTest"
 default[:neon][:request_concurrency] = 22
+
+# Parameters needed for cmsapi
+default[:neon][:auth_host] = "auth.neon-lab.com"
+default[:neon][:api_host] = "services.neon-lab.com"
+default[:neon][:cmsapi_user] = "admin_neon_ingester"
+default[:neon][:cmsapi_pass] = nil
