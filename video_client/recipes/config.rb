@@ -33,7 +33,7 @@ template node[:video_client][:config] do
               :notification_api_key => node[:video_client][:notification_api_key],
               :extra_workers => node[:video_client][:extra_workers],
               :video_temp_dir => node[:video_client][:video_temp_dir],
-              :model_file => "#{node[:video_client][:model_data_folder]}/#{node[:video_client][:model_file]}", 
+              :model_file => "#{node[:neon][:model_data_folder]}/#{node[:neon][:model_file]}",
               :log_file => node[:video_client][:log_file],
               :carbon_host => node[:neon][:carbon_host],
               :carbon_port => node[:neon][:carbon_port],
