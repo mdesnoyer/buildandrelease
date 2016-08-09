@@ -22,7 +22,7 @@ sql_alchemy_conn = mysql://<%= @db_user %>:<%= @db_password %>@<%= @db_host %>:<
 # The amount of parallelism as a setting to the executor. This defines
 # the max number of task instances that should run simultaneously
 # on this airflow installation
-parallelism = 32
+parallelism = 5
 
 # Are DAGs paused by default at creation
 dags_are_paused_at_creation = True
