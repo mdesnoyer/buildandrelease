@@ -28,6 +28,7 @@ template node[:stats_manager][:config] do
               :airflow_start_date => node[:stats_manager][:airflow_start_date],
               :notify_email => node[:stats_manager][:notify_email],
               :full_run_input_path => node[:stats_manager][:full_run_input_path],
+              :n_core_instances => node[:stats_manager][:n_core_instances],
               :input_path => node[:neon][:input_path],
               :cleaned_output_path => node[:neon][:cleaned_output_path],
               :log_file => node[:stats_manager][:log_file],

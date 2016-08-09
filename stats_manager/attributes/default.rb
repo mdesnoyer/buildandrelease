@@ -43,6 +43,7 @@ default[:stats_manager][:parquet_memory] = 22000
 default[:stats_manager][:heap_size] = 12000
 default[:stats_manager][:cleaning_mr_memory] = 2048
 default[:stats_manager][:notify_email] = 'ops@neon-lab.com'
+default[:stats_manager][:n_core_instances] = 10
 
 
 # Parameters for airflow
