@@ -160,7 +160,6 @@ end
 stats_user = node[:stats_manager][:user]
 execute "sudoers for statsmanager" do
   command "echo '#{stats_user} ALL=NOPASSWD: /usr/sbin/service airflow-scheduler *' >> /etc/sudoers"
-  not_if "grep -F '#{stats_user} ALL=NOPASSWD: /usr/sbin/service airflow-scheduler *' >> /etc/sudoers"
 end
 
 if ['undeploy', 'shutdown'].include? node[:opsworks][:activity] then
