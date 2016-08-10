@@ -12,6 +12,12 @@ end
 
 include_recipe "stats_manager::config"
 
+# Give statsmanager access to airflow scheduler service
+execute "sudoers for statsmanager" do
+  command "echo 'statsmanager ALL=NOPASSWD: /usr/sbin/service airflow-scheduler *' >> /etc/sudoers"
+  not_if "grep -F 'statsmanager ALL=NOPASSWD: /usr/sbin/service airflow-scheduler *' /etc/sudoers"
+end
+
 pydeps = {
   "numpy" => "1.6.1",
   "futures" => "2.1.5",
@@ -154,12 +160,6 @@ node[:deploy].each do |app_name, deploy|
     action [:enable, :start]
     subscribes :restart, "git[#{repo_path}]", :delayed
   end
-end
-
-# Give statsmanager access to airflow scheduler service
-stats_user = node[:stats_manager][:user]
-execute "sudoers for statsmanager" do
-  command "echo '#{stats_user} ALL=NOPASSWD: /usr/sbin/service airflow-scheduler *' >> /etc/sudoers"
 end
 
 if ['undeploy', 'shutdown'].include? node[:opsworks][:activity] then
