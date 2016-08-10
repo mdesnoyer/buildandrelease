@@ -11,9 +11,10 @@ user node[:stats_manager][:user] do
 end
 
 # Give statsmanager access to airflow scheduler service
+stats_user = node[:stats_manager][:user]
 execute "sudoers for statsmanager" do
-  command "echo '#node[:stats_manager][:user] ALL=NOPASSWD: /usr/sbin/service airflow-scheduler *' >> /etc/sudoers"
-  not_if "grep -F '#node[:stats_manager][:user] ALL=NOPASSWD: /usr/sbin/service airflow-scheduler *' >> /etc/sudoers"
+  command "echo '#{stats_user} ALL=NOPASSWD: /usr/sbin/service airflow-scheduler *' >> /etc/sudoers"
+  not_if "grep -F '#{stats_user} ALL=NOPASSWD: /usr/sbin/service airflow-scheduler *' >> /etc/sudoers"
 end
 
 include_recipe "stats_manager::config"
