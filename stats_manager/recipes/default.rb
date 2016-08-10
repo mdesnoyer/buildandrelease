@@ -10,13 +10,6 @@ user node[:stats_manager][:user] do
   shell "/bin/false"
 end
 
-# Give statsmanager access to airflow scheduler service
-stats_user = node[:stats_manager][:user]
-execute "sudoers for statsmanager" do
-  command "echo '#{stats_user} ALL=NOPASSWD: /usr/sbin/service airflow-scheduler *' >> /etc/sudoers"
-  not_if "grep -F '#{stats_user} ALL=NOPASSWD: /usr/sbin/service airflow-scheduler *' >> /etc/sudoers"
-end
-
 include_recipe "stats_manager::config"
 
 pydeps = {
@@ -72,7 +65,6 @@ directory node[:stats_manager][:log_dir] do
   mode "0755"
   recursive true
 end
-
 
 aws_keys = {}
 if not node[:aws][:access_key_id].nil? then
@@ -164,6 +156,12 @@ node[:deploy].each do |app_name, deploy|
   end
 end
 
+# Give statsmanager access to airflow scheduler service
+stats_user = node[:stats_manager][:user]
+execute "sudoers for statsmanager" do
+  command "echo '#{stats_user} ALL=NOPASSWD: /usr/sbin/service airflow-scheduler *' >> /etc/sudoers"
+  not_if "grep -F '#{stats_user} ALL=NOPASSWD: /usr/sbin/service airflow-scheduler *' >> /etc/sudoers"
+end
 
 if ['undeploy', 'shutdown'].include? node[:opsworks][:activity] then
   # Turn off the statsmanager
