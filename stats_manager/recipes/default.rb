@@ -16,6 +16,7 @@ include_recipe "stats_manager::config"
 execute "sudoers for statsmanager" do
   command "echo 'statsmanager ALL=NOPASSWD: /usr/sbin/service airflow-scheduler *' >> /etc/sudoers"
   not_if "grep -F 'statsmanager ALL=NOPASSWD: /usr/sbin/service airflow-scheduler *' /etc/sudoers"
+  Chef::Log.info("Modifying sudoers to add statsmanager access to airflow service")
 end
 
 pydeps = {
@@ -113,14 +114,6 @@ node[:deploy].each do |app_name, deploy|
     cwd "#{repo_path}/stats/java"
     user "neon"
   end
-
-  node.default[:airflow][:dags_folder] = "#{repo_path}"
-  node.default[:airflow][:db_user] = node[:deploy][:stats_manager][:database][:username]
-  node.default[:airflow][:db_password] = node[:deploy][:stats_manager][:database][:password]
-  node.default[:airflow][:db_port] = node[:deploy][:stats_manager][:database][:port]
-  node.default[:airflow][:db_host] = node[:deploy][:stats_manager][:database][:host]
-  node.default[:airflow][:db_name] = node[:deploy][:stats_manager][:database][:database]
-
 
   # Setup Airflow
   include_recipe "airflow"

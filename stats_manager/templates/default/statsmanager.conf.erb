@@ -13,7 +13,6 @@ stats:
         airflow_start_date: "<%= @node[:stats_manager][:airflow_start_date] %>"
         full_run_input_path: "<%= @node[:stats_manager][:full_run_input_path] %>"
         notify_email: "<%= @node[:stats_manager][:notify_email] %>"
-        n_core_instances: <%= @node[:stats_manager][:n_core_instances] %>
 
   cluster:
     ssh_key: <%= @emr_key %>    
@@ -22,9 +21,8 @@ stats:
     cluster_log_uri: <%= @cluster_log_uri %>
     cluster_type: <%= @cluster_type %>
     public_ip: <%= @cluster_ip %>
-    min_hdd_space: <%= @node[:stats_manager][:min_cluster_hdd] %>
-    min_memory: <%= @node[:stats_manager][:min_cluster_memory] %>
     yarn_max_memory_allocation: <%= @node[:stats_manager][:yarn_max_memory_allocation] %>
+    n_core_instances: <%= @node[:stats_manager][:n_core_instances] %>
 
   impala_table:
     schema_bucket: neon-avro-schema

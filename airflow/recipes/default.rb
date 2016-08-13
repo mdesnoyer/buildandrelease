@@ -58,33 +58,6 @@ execute "airflow initialize db" do
 end
 
 # ----------------------------
-# capture logs via flume
-# ----------------------------
-# https://flume.apache.org/FlumeUserGuide.html#spooling-directory-source
-
-# default[:neon_logs][:flume_streams][:stream_name] = {
-#   :sources => [source_names],
-#   :channels => [channel_names],
-#   :sinks => [sink_names],
-#   :sinkgroups => [sinkgroup_names],
-#   :template => template_file,
-#   :template_cookbook => cookbook containing the template_file
-#                         [defaults to neon_logs]
-#   :variables => {hash of variables for the template}
-
-# Configure the flume agent that will listen to the logs from the
-# stats manager job
-# node.default[:neon_logs][:flume_streams][:airflow_logs] =
-#   get_jsonagent_config(node[:neon_logs][:json_http_source_port],
-#                        "airflow")
-
-# if node[:opsworks][:activity] == "config" then
-#   include_recipe "neon_logs::flume_core_config"
-# else
-#   include_recipe "neon_logs::flume_core"
-# end
-
-# ----------------------------
 # Airflow services
 # ----------------------------
 
