@@ -11,10 +11,17 @@ cmsdb:
     thumbnailDB: <%= @video_db_host %>
     dbPort: <%= @video_db_port %>
     video_server: <%= @video_server_host %>
+    db_address: <%= @node[:deploy][:cmsapi][:database][:host] %> 
+    db_port: <%= @node[:deploy][:cmsapi][:database][:port] %> 
+    db_user: <%= @node[:deploy][:cmsapi][:database][:username] %> 
+    db_password: <%= @node[:deploy][:cmsapi][:database][:password] %> 
+    db_name: <%= @node[:deploy][:cmsapi][:database][:database] %>
+    wants_postgres: 1 
 
 cmsapi:
   services:
-    video_server: <%= @video_server_host %>
+    apiv2_user: <%= @node[:neon][:cmsapi_user] %>
+    apiv2_pass: <%= @node[:neon][:cmsapi_pass] %>
 
 utils:
   logs:

@@ -8,10 +8,10 @@
 #
 
 # Location of the OpenCV repo
-default[:opencv][:repo] = "https://github.com/Itseez/opencv.git"
+default[:opencv][:repo] = "https://github.com/neon-lab/opencv.git"
 
 # The version of OpenCV to install. This will be a tag from the repo
-default[:opencv][:version] = "2.4.9"
+default[:opencv][:version] = "neon-3.0" #"2.4.9-neon-fix4939"
 
 # Where to install opencv
 default[:opencv][:install_prefix] = "/usr/local"
@@ -26,4 +26,10 @@ default[:opencv][:with_v4l] = false
 default[:opencv][:with_tbb] = true
 
 # Options for where to build OpenCV
-default[:opencv][:build_path] = "/tmp/opencv"
+default[:opencv][:build_dir] = "/tmp/opencv"
+
+# Options for opencv_contrib
+default[:opencv][:include_contrib] = true
+default[:opencv][:contrib_dir] = "/opt/neon/opencv_contrib"
+default[:opencv][:contrib_repo] = "https://github.com/neon-lab/opencv_contrib.git"
+default[:opencv][:contrib_version] = "neon-3.0"

@@ -26,6 +26,14 @@ file node[:bc_controller][:log_file] do
   mode "0644"
 end
 
+services = [
+            #"bc_controller" # Disabled because we don't run tests via BC anymore
+            "bc_ingester",
+            "fox_ingester",
+            "cnn_ingester",
+            node[:bc_controller][:serving_url_pusher][:service_name]
+]
+
 node[:deploy].each do |app_name, deploy|
   Chef::Log.info("Start Deploying app #{app_name}") 
 
@@ -53,7 +61,7 @@ node[:deploy].each do |app_name, deploy|
     group "neon"
     code <<-EOH
        . enable_env
-       nosetests --exe api utils controllers cmsdb
+       nosetests --exe api utils integrations cmsdb
     EOH
     not_if {  ::File.exists?(app_tested) }
     notifies :restart, "service[bc_ingester]", :delayed
@@ -62,26 +70,65 @@ node[:deploy].each do |app_name, deploy|
   end
 
   # Write the daemon service wrapper
-  template "/etc/init/bc_controller.conf" do
-    source "bc_controller_service.conf.erb"
-    owner "root"
-    group "root"
-    mode "0644"
-    variables({
-                :neon_root_dir => "#{repo_path}",
-                :config_file => node[:bc_controller][:config],
-                :user => "neon",
-                :group => "neon",
-              })
-  end
+  #template "/etc/init/bc_controller.conf" do
+  #  source "bc_controller_service.conf.erb"
+  #  owner "root"
+  #  group "root"
+  #  mode "0644"
+  #  variables({
+  #              :neon_root_dir => "#{repo_path}",
+  #              :config_file => node[:bc_controller][:config],
+  #              :user => "neon",
+  #              :group => "neon",
+  #            })
+  #end
   template "/etc/init/bc_ingester.conf" do
-    source "bc_ingester_service.conf.erb"
+    source "ingester_service.conf.erb"
     owner "root"
     group "root"
     mode "0644"
     variables({
                 :neon_root_dir => "#{repo_path}",
                 :config_file => node[:bc_controller][:ingester_config],
+                :user => "neon",
+                :group => "neon",
+              })
+  end
+
+  template "/etc/init/cnn_ingester.conf" do
+    source "ingester_service.conf.erb"
+    owner "root"
+    group "root"
+    mode "0644"
+    variables({
+                :neon_root_dir => "#{repo_path}",
+                :config_file => node[:bc_controller][:cnn_ingester_config],
+                :user => "neon",
+                :group => "neon",
+              })
+  end
+
+  template "/etc/init/fox_ingester.conf" do
+    source "ingester_service.conf.erb"
+    owner "root"
+    group "root"
+    mode "0644"
+    variables({
+                :neon_root_dir => "#{repo_path}",
+                :config_file => node[:bc_controller][:fox_ingester_config],
+                :user => "neon",
+                :group => "neon",
+              })
+  end
+
+  template "/etc/init/#{node[:bc_controller][:serving_url_pusher][:service_name]}.conf" do
+    source "serving_url_pusher_service.conf.erb"
+    owner "root"
+    group "root"
+    mode "0644"
+    variables({
+                :neon_root_dir => "#{repo_path}",
+                :config_file => node[:bc_controller][:serving_url_pusher][:config],
                 :user => "neon",
                 :group => "neon",
               })
@@ -115,26 +162,21 @@ node[:deploy].each do |app_name, deploy|
               })
   end
 
-  # TODO: Re-enable the controller when we actually run tests through
-  # Brightcove
-  #service "bc_controller" do
-  #  provider Chef::Provider::Service::Upstart
-  #  supports :status => true, :restart => true, :start => true, :stop => true
-  #  action [:enable, :start]
-  #  subscribes :restart, "git[#{repo_path}]", :delayed
-  #end
-  service "bc_ingester" do
-    provider Chef::Provider::Service::Upstart
-    supports :status => true, :restart => true, :start => true, :stop => true
-    action [:enable, :start]
-    subscribes :restart, "git[#{repo_path}]", :delayed
+  services.each do | serv |
+    service serv do
+      provider Chef::Provider::Service::Upstart
+      supports :status => true, :restart => true, :start => true, :stop => true
+      action [:enable, :start]
+      subscribes :restart, "git[#{repo_path}]", :delayed
+     end
   end
 end
 
 
 if ['undeploy', 'shutdown'].include? node[:opsworks][:activity] then
-  # Turn off bc_controller
-  service "bc_controller" do
-    action :stop
+  services.each do | serv |
+    service serv do
+      action :stop
+     end
   end
 end

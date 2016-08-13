@@ -10,5 +10,5 @@ setuid <%= @user %>
 setgid <%= @group %>
 
 chdir <%= @neon_root_dir %>
-exec <%= @neon_root_dir %>/monitoring/check_system_health.py --carbon_server <%= @carbon_host %> --carbon_port <%= @carbon_port %>
+exec <%= @neon_root_dir %>/monitoring/check_system_health.py --utils.monitor.carbon_server <%= @carbon_host %> --utils.monitor.carbon_port <%= @carbon_port %>
 respawn

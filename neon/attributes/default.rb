@@ -4,7 +4,8 @@ include_attribute "java"
 default[:neon][:home] = "/opt/neon"
 
 # The ssh key to serving machines
-default[:neon][:serving_key] = "s3://neon-keys/neon-serving.pem"
+default[:neon][:serving_key_bucket] = "neon-keys"
+default[:neon][:serving_key_path] = "neon-serving.pem"
 
 # The python virtualenv
 default[:neon][:pyenv] = "#{node[:neon][:code_root]}/.pyenv"
@@ -34,3 +35,15 @@ default[:python][:virtualenv_version] = "1.11.6"
 
 # Address to get the ip ranges inside amazon from
 default[:aws][:ip_ranges_url] = "https://ip-ranges.amazonaws.com/ip-ranges.json"
+
+# Model
+default[:neon][:model_file] = "local_search_input_20160523"
+default[:neon][:model_data_folder] = "#{node[:neon][:home]}/model_data/repo"
+default[:neon][:model_autoscale_groups] = "AquilaOnDemandTest"
+default[:neon][:request_concurrency] = 22
+
+# Parameters needed for cmsapi
+default[:neon][:auth_host] = "auth.neon-lab.com"
+default[:neon][:api_host] = "services.neon-lab.com"
+default[:neon][:cmsapi_user] = "admin_neon_ingester"
+default[:neon][:cmsapi_pass] = nil

@@ -22,10 +22,14 @@ package_deps = [
                 "libpcre3",
                 "libpcre3-dev",
                 "libgtest-dev",
+                "libpq-dev", 
                 "cython",
                 "libsnappy-dev",
                 "libsnappy1",
-                "python-snappy"
+                "postgresql-9.4", 
+                "postgresql-contrib-9.4", 
+                "python-snappy",
+                "libboost-python1.46-dev"
                ]
 package_deps.each do |pkg|
   package pkg do
@@ -141,6 +145,26 @@ apps.each do |app, data|
     action :nothing
     subscribes :delete, "git[#{code_path}]", :immediately
   end
+
+  # Write the build configuration to a file - if it changes, we recompile
+  # TODO: Add subscriptions for changes to libunwind or perftools or gflags
+  template "#{code_path}/build-configuration" do
+    source "build-configuration.erb"
+    owner "root"
+    group "root"
+    mode 0600
+    variables(
+              :package_deps => package_deps,
+              :params => { 
+                :python_venv_version => node[:python][:virtualenv_version],
+                :redis_version => node[:neon][:redis_version],
+                :opencv_version => node[:opencv][:version]
+              }
+    )
+    notifies :delete, "file[#{app_built}]", :immediately
+  end
+
+
   bash "compile_#{app}" do
     cwd code_path
     user "neon"

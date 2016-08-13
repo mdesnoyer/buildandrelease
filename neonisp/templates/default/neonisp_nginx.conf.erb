@@ -39,6 +39,16 @@ server {
     add_header 'Access-Control-Allow-Credentials' 'true';
 
   }
+   
+  location ~ ^/v1/video/?$ {
+    set_unescape_uri $args;
+    add_header 'Access-Control-Allow-Origin' '*';
+    add_header 'Access-Control-Allow-Credentials' 'true';
+    add_header 'Access-Control-Allow-Methods' 'GET,OPTIONS';
+    add_header 'Access-Control-Allow-Headers' 'DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type';
+    proxy_pass http://localhost:<%= @port%>/v1/video?$args;
+    v1_video;
+  }
 
   location ~ ^/v1/server/(.+\.*)$ {
     v1_server;

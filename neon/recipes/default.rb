@@ -54,3 +54,12 @@ end
 package "libsasl2-dev" do
   :install
 end
+
+# grab the postgresql repo 
+apt_repository 'apt.postgresql.org' do
+  uri 'http://apt.postgresql.org/pub/repos/apt'
+  distribution "precise-pgdg"
+  components ['main', '9.4']
+  key 'https://www.postgresql.org/media/keys/ACCC4CF8.asc'
+  action :add
+end

@@ -1,0 +1,33 @@
+port: <%= @node[:bc_controller][:serving_url_pusher][:internal_port] %>
+
+api:
+  brightcove_api:
+    max_write_connections: 1
+    max_read_connections: 50
+    max_retries: 5
+
+cmsdb:
+  neondata:
+    accountDB: <%= @video_db_host %>
+    videoDB: <%= @video_db_host %>
+    thumbnailDB: <%= @video_db_host %>
+    dbPort: <%= @video_db_port %>
+    db_address: <%= @node[:deploy][:brightcove_controller][:database][:host] %> 
+    db_port: <%= @node[:deploy][:brightcove_controller][:database][:port] %> 
+    db_user: <%= @node[:deploy][:brightcove_controller][:database][:username] %> 
+    db_password: <%= @node[:deploy][:brightcove_controller][:database][:password] %> 
+    db_name: <%= @node[:deploy][:brightcove_controller][:database][:database] %>
+    wants_postgres: 1 
+
+utils:
+  logs:
+    file: <%= @log_file %>
+    do_stderr: 0
+    do_stdout: 1
+    level: info
+    flume_url: http://localhost:<%= @flume_log_port %>
+    loggly_tag: bc_ingester 
+  monitor:
+    carbon_server: <%= @carbon_host %>
+    carbon_port: <%= @carbon_port %>
+    service_name: <%= @service_name %>

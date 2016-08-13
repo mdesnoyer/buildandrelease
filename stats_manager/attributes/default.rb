@@ -4,7 +4,6 @@ include_attribute "neon_logs::default"
 include_attribute "airflow"
 
 # ssh key to control Elastic Map Reduce clusters
-#default[:stats_manager][:emr_key] = "s3://neon-keys/emr-runner-2015.pem"
 default[:stats_manager][:emr_key_bucket] = "neon-keys"
 default[:stats_manager][:emr_key_path] = "emr-runner.pem"
 

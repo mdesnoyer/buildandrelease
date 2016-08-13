@@ -96,26 +96,6 @@ node[:deploy].each do |app_name, deploy|
     action [:enable, :start]
     subscribes :restart, "git[#{repo_path}]", :delayed
   end
-
-  # create video request script
-  template '/etc/init.d/create_video_requests' do
-    source 'create_requests.erb'
-    mode '0755'
-    variables({
-                :neon_root_dir => "#{repo_path}",
-                :cron_user => "neon",
-                :config_file => node[:video_server][:config]
-
-             })
-  end
-
-  #CRON to create video requests
-  cron "createvideorequests" do
-    action :create
-    user "root"
-    minute "*/5"
-    command "/etc/init.d/create_video_requests"
-  end
 end
 
 

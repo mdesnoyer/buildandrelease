@@ -1,8 +1,12 @@
-cmsapi_host: <%= @cmsapi_host %>
-isp_host: <%= @isp_host %>
 sleep: <%= @sleep %>
 account: "<%= @account %>"
-api_key: <%= @api_key %>
+cmsapi_user: <%= @node[:monitoring][:cmsapi_user] %>
+cmsapi_pass: <%= @node[:monitoring][:cmsapi_pass] %>
+
+cmsapiv2:
+  client:
+    auth_host: <%= @node[:monitoring][:auth_host] %>
+    api_host: <%= @node[:monitoring][:api_host] %>
 
 cmsdb:
   neondata:
@@ -10,6 +14,12 @@ cmsdb:
     videoDB: <%= @video_db_host %>
     thumbnailDB: <%= @video_db_host %>
     dbPort: <%= @video_db_port %>
+    db_address: <%= @node[:deploy][:monitoring][:database][:host] %> 
+    db_port: <%= @node[:deploy][:monitoring][:database][:port] %> 
+    db_user: <%= @node[:deploy][:monitoring][:database][:username] %> 
+    db_password: <%= @node[:deploy][:monitoring][:database][:password] %> 
+    db_name: <%= @node[:deploy][:monitoring][:database][:database] %>
+    wants_postgres: 1 
 
 utils:
   logs:

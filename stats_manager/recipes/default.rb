@@ -99,8 +99,7 @@ node[:deploy].each do |app_name, deploy|
     recursive true
   end
   s3_file "#{node[:neon][:home]}/statsmanager/.ssh/emr.pem" do
-    #source node[:stats_manager][:emr_key]
-    bucket node[:stats_manager][:emr_key_bucket]
+    bucket node[:stats_manager][:emr_key_bucket] 
     remote_path node[:stats_manager][:emr_key_path]
     owner node[:stats_manager][:user]
     group node[:stats_manager][:group]

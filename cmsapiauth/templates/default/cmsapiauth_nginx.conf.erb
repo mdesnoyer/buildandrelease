@@ -1,0 +1,36 @@
+upstream tornado_servers { 
+  server 127.0.0.1:<%= @service_port %>;
+}
+
+server {
+  listen <%= @frontend_port %>;
+  large_client_header_buffers <%= node[:nginx][:large_client_header_buffers] %>;
+  location / {
+    # CORS header configuration
+    if ($request_method = OPTIONS ) {
+        add_header Access-Control-Allow-Origin "*";
+        add_header Access-Control-Allow-Methods "GET,POST,PUT,OPTIONS";
+        add_header Access-Control-Allow-Headers "Authorization,DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type";
+        add_header Access-Control-Allow-Credentials "true";
+        add_header Content-Length 0;
+        add_header Content-Type text/plain;
+        return 200;
+    }
+    
+    add_header 'Access-Control-Allow-Origin' '*' always;
+    add_header 'Access-Control-Allow-Credentials' 'true' always;
+    add_header 'Access-Control-Allow-Methods' 'GET,POST,PUT,OPTIONS' always;
+    add_header 'Access-Control-Allow-Headers' 'Authorization,DNT,Keep-Alive,User-Agent,X-Requested-With,X-Mx-ReqToken,If-Modified-Since,Cache-Control,Content-Type,X-Neon-API-Key' always;
+    proxy_redirect off;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header GEOIP_COUNTRY_CODE3 $geoip_country_code3;
+    proxy_set_header GEOIP_CITY $geoip_city;
+    proxy_set_header GEOIP_REGION $geoip_region;
+    proxy_set_header GEOIP_POSTAL_CODE $geoip_postal_code;
+    proxy_set_header GEOIP_LATITUDE $geoip_latitude;
+    proxy_set_header GEOIP_LONGITUDE $geoip_longitude;
+    proxy_pass http://tornado_servers;
+  }
+}

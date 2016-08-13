@@ -12,12 +12,13 @@ default[:mastermind][:stats_polling_delay] = 247
 default[:mastermind][:video_polling_delay] = 261
 default[:mastermind][:incr_stats_layer] = "hbase"
 default[:mastermind][:incr_stats_fallbackhost] = "hbase1"
-default[:mastermind][:directive_bucket] = "neon-image-serving-directives"
+default[:mastermind][:directive_bucket] = "neon-image-serving-directives-hold"
 default[:mastermind][:directive_filename] = "mastermind"
 default[:mastermind][:publishing_period] = 300
 default[:mastermind][:expiry_buffer] = 30
 default[:mastermind][:serving_update_delay] = 120
-
+default[:mastermind][:send_callbacks] = 0
+default[:mastermind][:isp_host] = "isp-usw-388475351.us-west-2.elb.amazonaws.com" 
 
 # Specify the repos to user
 default[:neon][:repos]["mastermind"] = true

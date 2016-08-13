@@ -1,12 +1,6 @@
 video_processor:
   server:
     port: <%= @video_server_port %> 
-
-api:
-  brightcove_api:
-    max_write_connections: 1
-    max_read_connections: 50
-    max_retries: 5
  
 cmsdb:
   neondata:
@@ -14,6 +8,12 @@ cmsdb:
     videoDB: <%= @video_db_host %>
     thumbnailDB: <%= @video_db_host %>
     dbPort: <%= @video_db_port %>
+    db_address: <%= @node[:deploy][:video_server][:database][:host] %> 
+    db_port: <%= @node[:deploy][:video_server][:database][:port] %> 
+    db_user: <%= @node[:deploy][:video_server][:database][:username] %> 
+    db_password: <%= @node[:deploy][:video_server][:database][:password] %> 
+    db_name: <%= @node[:deploy][:video_server][:database][:database] %>
+    wants_postgres: 1 
 
 utils:
   logs:

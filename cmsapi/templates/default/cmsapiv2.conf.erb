@@ -1,0 +1,46 @@
+api:
+  brightcove_api:
+    max_write_connections: 1
+    max_read_connections: 50
+    max_retries: 5
+ 
+cmsdb:
+  neondata:
+    accountDB: <%= @video_db_host %>
+    videoDB: <%= @video_db_host %>
+    thumbnailDB: <%= @video_db_host %>
+    dbPort: <%= @video_db_port %>
+    db_address: <%= @node[:deploy][:cmsapi][:database][:host] %> 
+    db_port: <%= @node[:deploy][:cmsapi][:database][:port] %> 
+    db_user: <%= @node[:deploy][:cmsapi][:database][:username] %> 
+    db_password: <%= @node[:deploy][:cmsapi][:database][:password] %> 
+    db_name: <%= @node[:deploy][:cmsapi][:database][:database] %>
+    wants_postgres: 1
+
+cmsapiv2:
+  controllers:
+    cmsapiv1_port: <%= @cmsapiv1_port %>
+    model_autoscale_groups: <%= @node[:neon][:model_autoscale_groups] %>
+    request_concurrency: <%= @node[:neon][:request_concurrency] %>
+  apiv2: 
+    stripe_api_key: <%= @node[:cmsapiv2][:stripe_api_key] %>  
+  client:
+    auth_host: <%= @node[:neon][:auth_host] %>
+    api_host: <%= @node[:neon][:api_host] %>
+
+video_processor:
+  video_processing_queue:
+    queue_prefix: <%= @node[:cmsapiv2][:video_queue_prefix]%>
+
+utils:
+  logs:
+    file: <%= @log_file %>
+    access_log_file: <%= @access_log_file %>
+    do_stderr: 0
+    do_stdout: 1
+    level: info
+    flume_url: http://localhost:<%= @flume_log_port %>
+    loggly_tag: cmsapiv2 
+  monitor:
+    carbon_server: <%= @carbon_host %>
+    carbon_port: <%= @carbon_port %>

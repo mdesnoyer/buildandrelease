@@ -1,13 +1,24 @@
 video_processor:
   client:
     model_file: <%= @model_file %>
-    video_server: <%= @video_server_host %>:<%= @video_server_port %>
+    model_autoscale_groups: <%= @node[:neon][:model_autoscale_groups] %>
+    request_concurrency: <%= @node[:neon][:request_concurrency] %>
     max_videos_per_proc: <%= @max_videos_per_proc %>
     dequeue_period: <%= @dequeue_period %>
     notification_api_key: <%= @notification_api_key %>
-    server_auth: <%= @video_server_auth %>
     extra_workers: <%= @extra_workers %>
     video_temp_dir: <%= @video_temp_dir %>
+    cmsapi_user: <%= @node[:neon][:cmsapi_user] %>
+    cmsapi_pass: <%= @node[:neon][:cmsapi_pass] %>
+    frontend_base_url: <%= @node[:neon][:frontend_base_url] %>
+
+  video_processing_queue:
+    queue_prefix: <%= @node[:video_client][:video_queue_prefix]%>
+
+cmsapiv2:
+  client:
+    auth_host: <%= @node[:neon][:auth_host] %>
+    api_host: <%= @node[:neon][:api_host] %>
  
 cmsdb:
   neondata:
@@ -15,6 +26,12 @@ cmsdb:
     videoDB: <%= @video_db_host %>
     thumbnailDB: <%= @video_db_host %>
     dbPort: <%= @video_db_port %>
+    db_address: <%= @node[:deploy][:video_client][:database][:host] %> 
+    db_port: <%= @node[:deploy][:video_client][:database][:port] %> 
+    db_user: <%= @node[:deploy][:video_client][:database][:username] %> 
+    db_password: <%= @node[:deploy][:video_client][:database][:password] %> 
+    db_name: <%= @node[:deploy][:video_client][:database][:database] %>
+    wants_postgres: 1 
 
 utils:
   logs:

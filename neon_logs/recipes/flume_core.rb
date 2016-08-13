@@ -8,6 +8,7 @@ include_recipe "hadoop::repo"
 
 package "flume-ng" do
   action :install
+  options "--force-yes"
 end
 
 user node[:neon_logs][:flume_user] do
@@ -71,4 +72,8 @@ cron "monitor_flume_cron" do
   user node[:neon_logs][:flume_user]
   mailto "ops@neon-lab.com"
   command "#{conf_dir}/monitor_flume.py"
+end
+
+file '/usr/lib/flume-ng/lib/jets3t-0.6.1.jar' do
+  action :delete
 end

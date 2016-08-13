@@ -110,3 +110,8 @@ default[:hadoop][:core_site]['fs.s3.buffer.dir'] = \
 default[:hadoop][:core_site]['fs.s3n.multipart.uploads.enabled'] = true
 default[:hadoop][:core_site]['fs.s3n.multipart.uploads.block.size'] = 67108864 # 64 MB
 default[:hadoop][:core_site]['fs.s3n.multipart.copy.block.size'] = 5368709120 #5GB
+
+# Choose the java version
+default[:java][:install_flavor] = 'oracle'
+default[:java][:jdk_version] = '7'
+default[:java][:oracle][:accept_oracle_download_terms] = true
