@@ -32,6 +32,7 @@ template node[:stats_manager][:config] do
               :input_path => node[:stats_manager][:input_path],
               :cleaned_output_path => node[:stats_manager][:cleaned_output_path],
               :cc_cleaned_path => node[:stats_manager][:cc_cleaned_path],
+              :quiet_period => node[:stats_manager][:quiet_period],
               :log_file => node[:stats_manager][:log_file],
               :carbon_host => node[:neon][:carbon_host],
               :carbon_port => node[:neon][:carbon_port],
