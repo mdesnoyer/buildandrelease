@@ -35,6 +35,7 @@ default[:stats_manager][:full_run_input_path] = "s3://neon-tracker-logs-v2/v2.2/
 default[:stats_manager][:output_path] = "s3://neon-tracker-logs-test-hadoop/"
 default[:stats_manager][:staging_path] = "s3://neon-tracker-logs-v2/airflow/staging"
 default[:stats_manager][:cleaned_output_path] = "s3://neon-tracker-logs-v2/airflow/cleaned"
+default[:stats_manager][:cc_cleaned_path] = "s3://neon-tracker-logs-v2/airflow/cc_cleaned"
 default[:stats_manager][:yarn_max_memory_allocation] = 32000
 default[:stats_manager][:parquet_memory] = 22000
 default[:stats_manager][:heap_size] = 12000

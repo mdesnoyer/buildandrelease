@@ -7,6 +7,7 @@ stats:
         input_path: "<%= @node[:stats_manager][:input_path] %>"
         staging_path: "<%= @node[:stats_manager][:staging_path] %>"
         output_path: "<%= @node[:stats_manager][:cleaned_output_path] %>"
+        cc_cleaned_path: "<%= @node[:stats_manager][:cc_cleaned_path] %>"
         cleaning_mr_memory: <%= @node[:stats_manager][:cleaning_mr_memory] %>
         clicklog_period: <%= @node[:stats_manager][:clicklog_period] %>
         max_task_instances: <%= @node[:stats_manager][:max_task_instances] %>
