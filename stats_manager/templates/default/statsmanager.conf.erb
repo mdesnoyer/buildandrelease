@@ -17,13 +17,14 @@ stats:
 
   cluster:
     ssh_key: <%= @emr_key %>    
-    cluster_subnet_id: <%= @cluster_subnet_id %>
+    cluster_subnet_ids: <%= @cluster_subnet_ids %>
     cluster_name: <%= @cluster_name %>
     cluster_log_uri: <%= @cluster_log_uri %>
     cluster_type: <%= @cluster_type %>
     public_ip: <%= @cluster_ip %>
     yarn_max_memory_allocation: <%= @node[:stats_manager][:yarn_max_memory_allocation] %>
     n_core_instances: <%= @node[:stats_manager][:n_core_instances] %>
+    master_instance_type: <%= @node[:stats_manager][:master_instance_type] %>
 
   impala_table:
     schema_bucket: neon-avro-schema
