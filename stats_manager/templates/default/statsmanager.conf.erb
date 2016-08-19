@@ -12,6 +12,7 @@ stats:
         clicklog_period: <%= @node[:stats_manager][:clicklog_period] %>
         max_task_instances: <%= @node[:stats_manager][:max_task_instances] %>
         airflow_start_date: "<%= @node[:stats_manager][:airflow_start_date] %>"
+        airflow_rebase_date: "<%= @node[:stats_manager][:airflow_rebase_date] %>"
         full_run_input_path: "<%= @node[:stats_manager][:full_run_input_path] %>"
         notify_email: "<%= @node[:stats_manager][:notify_email] %>"
 
