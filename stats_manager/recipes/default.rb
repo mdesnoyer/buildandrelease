@@ -20,7 +20,7 @@ execute "sudoers for statsmanager" do
 end
 
 pydeps = {
-  "numpy" => "1.6.1",
+#  "numpy" => "1.6.1",
   "futures" => "2.1.5",
   "tornado" => "4.2.1",
   "setuptools" => "4.0.1",
