@@ -10,6 +10,7 @@ server {
   listen <%= @frontend_port %>;
   listen 443; 
   large_client_header_buffers <%= node[:nginx][:large_client_header_buffers] %>;
+  client_max_body_size 10M;
   location / {
     # CORS header configuration
     if ($request_method = OPTIONS ) {
