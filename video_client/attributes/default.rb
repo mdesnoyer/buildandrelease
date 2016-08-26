@@ -9,6 +9,7 @@ default[:video_client][:gitannex_key] = "s3://neon-keys/git-annex.pem"
 default[:video_client][:model_data_host] = "184.169.132.151"
 default[:video_client][:model_data_repo] = "git@#{node[:video_client][:model_data_host]}:/backup/repos/model_data.git"
 default[:video_client][:model_data_repo_rev] = "master"
+default[:video_client][:model_data_folder] = "#{node[:neon][:home]}/model_data/repo"
 default[:video_client][:model_files] = [node[:neon][:model_file], node[:video_client][:model_data_folder] + "/svm_pca", node[:video_client][:model_data_folder] + "/pca", default[:video_client][:model_data_folder] + "/haar_cascades"]
 default[:video_client][:max_videos_per_proc] = 10
 default[:video_client][:dequeue_period] = 10.0
