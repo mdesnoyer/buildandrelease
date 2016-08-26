@@ -28,7 +28,6 @@ default[:stats_manager][:cluster_subnet_ids] = "subnet-74c10003" # Stats Cluster
 default[:stats_manager][:cluster_log_uri] = "s3://neon-cluster-logs/"
 default[:stats_manager][:max_task_instances] = 30
 default[:stats_manager][:master_instance_type] = 'r3.xlarge'
-default[:stats_manager][:airflow_start_date] = '2016-08-19'
 default[:stats_manager][:airflow_rebase_date] = '2016-08-19'
 default[:stats_manager][:quiet_period] = 30
 default[:stats_manager][:mr_jar] = "neon-stats-1.0-job.jar"

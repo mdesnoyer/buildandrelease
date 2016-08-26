@@ -25,7 +25,6 @@ template node[:stats_manager][:config] do
               :emr_key => node[:stats_manager][:emr_key],
               :max_task_instances => node[:stats_manager][:max_task_instances],
               :master_instance_type => node[:stats_manager][:master_instance_type],
-              :airflow_start_date => node[:stats_manager][:airflow_start_date],
               :airflow_rebase_date => node[:stats_manager][:airflow_rebase_date],
               :notify_email => node[:stats_manager][:notify_email],
               :full_run_input_path => node[:stats_manager][:full_run_input_path],
