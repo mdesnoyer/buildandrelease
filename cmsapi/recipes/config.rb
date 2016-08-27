@@ -31,7 +31,7 @@ template node[:cmsapi][:config] do
               :access_log_file => node[:cmsapi][:access_log_file],
               :carbon_host => node[:neon][:carbon_host],
               :carbon_port => node[:neon][:carbon_port],
-              :flume_log_port => node[:neon_logs][:json_http_source_port],
+              :flume_log_port => node[:neon_logs][:json_http_source_port]
             })
 end
 

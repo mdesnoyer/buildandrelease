@@ -20,6 +20,8 @@ cmsdb:
 cmsapiv2:
   controllers:
     cmsapiv1_port: <%= @cmsapiv1_port %>
+    model_autoscale_groups: <%= @node[:neon][:model_autoscale_groups] %>
+    request_concurrency: <%= @node[:neon][:request_concurrency] %>
   apiv2: 
     stripe_api_key: <%= @node[:cmsapiv2][:stripe_api_key] %>  
   client:
