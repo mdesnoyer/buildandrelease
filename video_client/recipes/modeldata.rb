@@ -76,7 +76,12 @@ end
 #   action :run
 # end
 
-node[:video_client][:model_files].each do |file|
+model_files = (node[:video_client][:model_files] + 
+               node[:video_client][:custom_model_files].map { 
+                 |x| File.join(node[:video_client][:model_data_folder], x)})
+
+
+model_files.each do |file|
   # iterate through the model files
   bash "get_model_file #{file}" do
     user "neon"
