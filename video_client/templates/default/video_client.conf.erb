@@ -15,6 +15,10 @@ video_processor:
   video_processing_queue:
     queue_prefix: <%= @node[:video_client][:video_queue_prefix]%>
 
+model:
+  _model:
+    model_data_dir: <%= @node[:video_client][:model_data_folder]%>
+
 cmsapiv2:
   client:
     auth_host: <%= @node[:neon][:auth_host] %>
