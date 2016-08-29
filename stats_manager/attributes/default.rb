@@ -24,10 +24,10 @@ default[:stats_manager][:clicklog_period] = 3 # In hours
 default[:stats_manager][:cluster_name] = "#{node[:opsworks][:stack][:name]} (Video Events)"
 default[:stats_manager][:cluster_type] = "video_click_stats"
 default[:stats_manager][:cluster_public_ip] = "54.210.126.245" # Production US-East
-default[:stats_manager][:cluster_subnet_ids] = "subnet-74c10003" # Stats Cluster us-east-1c (10.0.128.0/17) | vpc-90ad09f5
+default[:stats_manager][:cluster_subnet_ids] = "subnet-e7be7f90,subnet-abf214f2"
 default[:stats_manager][:cluster_log_uri] = "s3://neon-cluster-logs/"
 default[:stats_manager][:max_task_instances] = 30
-default[:stats_manager][:master_instance_type] = 'r3.xlarge'
+default[:stats_manager][:master_instance_type] = 'r3.2xlarge'
 default[:stats_manager][:airflow_rebase_date] = '2016-08-19'
 default[:stats_manager][:quiet_period] = 30
 default[:stats_manager][:mr_jar] = "neon-stats-1.0-job.jar"
@@ -42,7 +42,7 @@ default[:stats_manager][:parquet_memory] = 22000
 default[:stats_manager][:heap_size] = 12000
 default[:stats_manager][:cleaning_mr_memory] = 2048
 default[:stats_manager][:notify_email] = 'ops@neon-lab.com'
-default[:stats_manager][:n_core_instances] = 10
+default[:stats_manager][:n_core_instances] = 15
 
 
 # Parameters for airflow
