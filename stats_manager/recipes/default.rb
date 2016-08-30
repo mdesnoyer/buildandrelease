@@ -4,13 +4,20 @@ include_recipe "neon::default"
 include_recipe "java"
 
 # Create a statsmanager user
-user "statsmanager" do
+user node[:stats_manager][:user] do
   action :create
   system true
   shell "/bin/false"
 end
 
 include_recipe "stats_manager::config"
+
+# Give statsmanager access to airflow scheduler service
+execute "sudoers for statsmanager" do
+  command "echo 'statsmanager ALL=NOPASSWD: /usr/sbin/service airflow-scheduler *' >> /etc/sudoers"
+  not_if "grep -F 'statsmanager ALL=NOPASSWD: /usr/sbin/service airflow-scheduler *' /etc/sudoers"
+  Chef::Log.info("Modifying sudoers to add statsmanager access to airflow service")
+end
 
 pydeps = {
   "numpy" => "1.6.1",
@@ -44,7 +51,7 @@ end
 package "mailutils" do
   :install
 end
-  
+
 # Install maven
 package "maven" do
   :install
@@ -59,13 +66,12 @@ end
 
 # Create the log dir
 directory node[:stats_manager][:log_dir] do
-  owner "statsmanager"
-  group "statsmanager"
+  owner node[:stats_manager][:user]
+  group node[:stats_manager][:group]
   action :create
   mode "0755"
   recursive true
 end
-
 
 aws_keys = {}
 if not node[:aws][:access_key_id].nil? then
@@ -86,8 +92,8 @@ node[:deploy].each do |app_name, deploy|
 
   # Grab the ssh identity file to talk to the cluster with
   directory "#{node[:neon][:home]}/statsmanager/.ssh" do
-    owner "statsmanager"
-    group "statsmanager"
+    owner node[:stats_manager][:user]
+    group node[:stats_manager][:group]
     action :create
     mode "0700"
     recursive true
@@ -95,8 +101,8 @@ node[:deploy].each do |app_name, deploy|
   s3_file "#{node[:neon][:home]}/statsmanager/.ssh/emr.pem" do
     bucket node[:stats_manager][:emr_key_bucket] 
     remote_path node[:stats_manager][:emr_key_path]
-    owner "statsmanager"
-    group "statsmanager"
+    owner node[:stats_manager][:user]
+    group node[:stats_manager][:group]
     action :create
     mode "0600"
   end
@@ -108,35 +114,39 @@ node[:deploy].each do |app_name, deploy|
     user "neon"
   end
 
+  # Setup Airflow
+  include_recipe "airflow"
+
   # Write the daemon service wrapper
-  template "/etc/init/neon-statsmanager.conf" do
-    source "statsmanager_service.conf.erb"
+  template "/etc/init/cluster_manager.conf" do
+    source "cluster_manager_service.conf.erb"
     owner "root"
     group "root"
     mode "0644"
     variables({
                 :neon_root_dir => repo_path,
                 :config_file => node[:stats_manager][:config],
-                :user => "statsmanager",
-                :group => "statsmanager",
-                :mr_jar => "#{repo_path}/stats/java/target/neon-stats-1.0-job.jar"
+                :user => node[:stats_manager][:user],
+                :group => node[:stats_manager][:group],
+                :airflow_home => node[:airflow][:home],
+                :log_file => node[:stats_manager][:cluster_log_file]
               })
   end
-  template "/etc/init/neon-statsmanager-email.conf" do
+  template "/etc/init/cluster_manager-email.conf" do
     source "mail-on-restart.conf.erb"
     cookbook "neon"
     owner "root"
     group "root"
     mode "0644"
     variables({
-                :service => "neon-statsmanager",
+                :service => "cluster_manager",
                 :host => node[:hostname],
                 :email => node[:neon][:ops_email],
                 :log_file => node[:stats_manager][:log_file]
               })
   end
 
-  service "neon-statsmanager" do
+  service "cluster_manager" do
     provider Chef::Provider::Service::Upstart
     supports :status => true, :restart => true, :start => true, :stop => true
     action [:enable, :start]
@@ -144,14 +154,13 @@ node[:deploy].each do |app_name, deploy|
   end
 end
 
-
 if ['undeploy', 'shutdown'].include? node[:opsworks][:activity] then
   # Turn off the statsmanager
-  service "neon-statsmanager" do
+  service "cluster_manager" do
     action :stop
   end
 
-  file "/etc/init/neon-statsmanager.conf" do
+  file "/etc/init/cluster_manager.conf" do
     action :delete
   end
 end
