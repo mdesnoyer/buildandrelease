@@ -99,7 +99,7 @@ end
 # Use an md5 of the model file to see if it has changed and trigger a
 # service restart.
 file "#{node[:neon][:home]}/model_file.md5" do
-  content lazy { Digest::MD5.file("#{node[:video_client][:model_data_folder]}/#{node[:video_client][:model_file]}").hexdigest }
+  content lazy { Digest::MD5.file("#{node[:video_client][:model_data_folder]}/#{node[:neon][:model_file]}").hexdigest }
   owner "neon"
   group "neon"
   mode "0644"
