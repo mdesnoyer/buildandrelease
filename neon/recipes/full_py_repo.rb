@@ -29,7 +29,8 @@ package_deps = [
                 "postgresql-9.4", 
                 "postgresql-contrib-9.4", 
                 "python-snappy",
-                "libboost-python1.46-dev"
+                "libboost-python1.46-dev",
+                "libfreeimage-dev",
                ]
 package_deps.each do |pkg|
   package pkg do
