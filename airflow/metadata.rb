@@ -1,13 +1,11 @@
-name             'stats_manager'
+name             'airflow'
 maintainer       'Neon'
 maintainer_email 'ops@neon-lab.com'
-description      'The Neon stats manager'
+description      'Airflow for Neon Labs'
 license          'Proprietary - All Rights Reserved'
-version          '0.9.1'
+version          '0.1.0'
 
-depends 'airflow'
 depends 'apt'
-depends 'java'
 depends 'neon'
 depends 'neon_logs'
 depends 'python', "= 1.4.6"
