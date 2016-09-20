@@ -22,7 +22,7 @@ agent.sinks.<%= @ck %>.hdfs.threadsPoolSize = 100
 agent.sinks.<%= @ck %>.hdfs.rollSize = <%= @max_log_size %>
 agent.sinks.<%= @ck %>.hdfs.rollCount = 0
 agent.sinks.<%= @ck %>.hdfs.rollInterval = <%= @max_log_rolltime %>
-agent.sinks.<%= @ck %>.hdfs.idleTimeout = 1800
+agent.sinks.<%= @ck %>.hdfs.idleTimeout = 900
 agent.sinks.<%= @ck %>.hdfs.callTimeout = 600000
 agent.sinks.<%= @ck %>.hdfs.batchSize = <%= @s3_flush_batch_size %>
 agent.sinks.<%= @ck %>.serializer = <%= @s3_output_serializer %>
