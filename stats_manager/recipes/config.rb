@@ -10,13 +10,6 @@ else
   include_recipe "neon_logs::flume_core"
 end
 
-# Give statsmanager access to airflow scheduler service
-execute "sudoers for statsmanager" do
-  command "echo 'statsmanager ALL=NOPASSWD: /usr/sbin/service airflow-scheduler *' >> /etc/sudoers"
-  not_if "grep -F 'statsmanager ALL=NOPASSWD: /usr/sbin/service airflow-scheduler *' /etc/sudoers"
-  Chef::Log.info("Modifying sudoers to add statsmanager access to airflow service")
-end
-
 # Write the configuration file for the statsmanager
 template node[:stats_manager][:config] do
   source "statsmanager.conf.erb"
