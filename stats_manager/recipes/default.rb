@@ -36,7 +36,8 @@ pydeps = {
   "winpdb" => "1.4.8",
   "pyhs2" => "0.6.0",
   "happybase" => "0.9",
-  "hdfs" => "2.0.6"
+  "hdfs" => "2.0.6",
+  "ConcurrentLogHandler" => "0.9.1"
 }
 
 # Install the python dependencies
