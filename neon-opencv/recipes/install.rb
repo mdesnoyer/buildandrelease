@@ -19,7 +19,6 @@ end
 package_deps = [ 'libjpeg-dev',
                  'libjasper-dev',
                  'libmp3lame-dev',
-                 'libfdk-aac-dev',
                  'libopencore-amrnb-dev',
                  'libopencore-amrwb-dev',
                  'libtheora-dev',
