@@ -98,7 +98,6 @@ node.default[:ffmpeg][:compile_flags] = [
                                          "--enable-gpl",
                                          "--disable-indev=jack",
                                          "--enable-libx264",
-                                         "--enable-libfdk-aac",
                                          "--enable-libmp3lame",
                                          "--enable-libtheora",
                                          "--enable-libvorbis",
