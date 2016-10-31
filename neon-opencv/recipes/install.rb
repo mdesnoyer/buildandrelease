@@ -92,7 +92,7 @@ end
 
 # Install ffmpeg
 node.default[:ffmpeg][:git_repository] = 'https://github.com/FFmpeg/FFmpeg.git'
-node.default[:ffmpeg][:git_revision] = 'n2.3'
+node.default[:ffmpeg][:git_revision] = 'n3.2'
 node.default[:ffmpeg][:compile_flags] = [
                                          "--enable-pthreads",
                                          "--enable-nonfree",
