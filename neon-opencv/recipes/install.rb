@@ -18,8 +18,8 @@ end
 # List the dependencies
 package_deps = [ 'libjpeg-dev',
                  'libjasper-dev',
-                 'libfaac-dev',
                  'libmp3lame-dev',
+                 'libfdk-aac-dev',
                  'libopencore-amrnb-dev',
                  'libopencore-amrwb-dev',
                  'libtheora-dev',
@@ -99,7 +99,7 @@ node.default[:ffmpeg][:compile_flags] = [
                                          "--enable-gpl",
                                          "--disable-indev=jack",
                                          "--enable-libx264",
-                                         "--enable-libfaac",
+                                         "--enable-libfdk-aac",
                                          "--enable-libmp3lame",
                                          "--enable-libtheora",
                                          "--enable-libvorbis",
@@ -107,6 +107,7 @@ node.default[:ffmpeg][:compile_flags] = [
                                          "--enable-libxvid",
                                          "--enable-libopencore-amrnb",
                                          "--enable-libopencore-amrwb",
+                                         "--enable-nonfree",
                                          "--enable-version3",
                                          "--enable-shared",
                                          "--enable-pic"
