@@ -16,17 +16,14 @@ package "cmake" do
 end
 
 # List the dependencies
-package_deps = [ 'libjpeg-dev',
-                 'libjasper-dev',
-                 'libmp3lame-dev',
-                 'libopencore-amrnb-dev',
-                 'libopencore-amrwb-dev',
-                 'libtheora-dev',
-                 'libvorbis-dev',
-                 'libxvidcore-dev',
-                 'libtiff4-dev',
-                 'libpng-dev'
-               ]
+package_deps = [
+    'libjpeg-dev',
+    'libjasper-dev',
+    'libtheora-dev',
+    'libxvidcore-dev',
+    'libtiff4-dev',
+    'libpng-dev',
+]
 
 cmake_params = {
   "CMAKE_INSTALL_PREFIX" => node[:opencv][:install_prefix],
@@ -91,25 +88,19 @@ end
 
 # Install ffmpeg
 node.default[:ffmpeg][:git_repository] = 'https://github.com/FFmpeg/FFmpeg.git'
-node.default[:ffmpeg][:git_revision] = 'n2.8.8'
+node.default[:ffmpeg][:git_revision] = 'n3.2'
 node.default[:ffmpeg][:compile_flags] = [
-                                         "--enable-pthreads",
-                                         "--enable-nonfree",
-                                         "--enable-gpl",
-                                         "--disable-indev=jack",
-                                         "--enable-libx264",
-                                         "--enable-libmp3lame",
-                                         "--enable-libtheora",
-                                         "--enable-libvorbis",
-                                         "--enable-libvpx",
-                                         "--enable-libxvid",
-                                         "--enable-libopencore-amrnb",
-                                         "--enable-libopencore-amrwb",
-                                         "--enable-nonfree",
-                                         "--enable-version3",
-                                         "--enable-shared",
-                                         "--enable-pic"
-                                          ]
+    "--enable-pthreads",
+    "--disable-indev=jack",
+    "--enable-libx264",
+    "--enable-libtheora",
+    "--enable-libvpx",
+    "--enable-libxvid",
+    "--enable-gpl",
+    "--enable-version3",
+    "--enable-shared",
+    "--enable-pic",
+]
 include_recipe "ffmpeg::source"
 
 opencv_include = "#{node[:opencv][:install_prefix]}/include/opencv2/core/core.hpp"
