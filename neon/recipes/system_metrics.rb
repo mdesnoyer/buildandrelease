@@ -12,7 +12,8 @@ pydeps = {
   "boto" => "2.32.1",
   "psutil" => "1.2.1",
   "winpdb" => "1.4.8",
-  "futures" => "2.1.5"
+  "futures" => "2.1.5",
+  "ConcurrentLogHandler" => "0.9.1",
 }
 
 # Install the python dependencies
