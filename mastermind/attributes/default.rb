@@ -18,7 +18,7 @@ default[:mastermind][:publishing_period] = 300
 default[:mastermind][:expiry_buffer] = 30
 default[:mastermind][:serving_update_delay] = 120
 default[:mastermind][:send_callbacks] = 0
-default[:mastermind][:isp_host] = "isp-usw-388475351.us-west-2.elb.amazonaws.com" 
+default[:mastermind][:isp_host] = "isp-103281060.us-east-1.elb.amazonaws.com"
 
 # Specify the repos to user
 default[:neon][:repos]["mastermind"] = true
