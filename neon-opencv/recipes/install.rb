@@ -23,6 +23,7 @@ package_deps = [
     'libxvidcore-dev',
     'libtiff4-dev',
     'libpng-dev',
+    'libfdk-aac-dev',
 ]
 
 cmake_params = {
