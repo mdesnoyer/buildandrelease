@@ -40,11 +40,12 @@ directory node[:neon][:log_dir] do
   recursive true
 end
 
-# Install the mail client. 
-apt_preference 'libmysqlclient18' do
-  pin 'version 5.5.38-0'
-  pin_priority '700'
+# grab most recent version of libmysqlclient
+package "libmysqlclient18" do 
+  :install
 end
+
+# Install the mail client. 
 package "mailutils" do
   :install
   options "--fix-missing"
