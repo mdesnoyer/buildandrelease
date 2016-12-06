@@ -20,6 +20,7 @@ directory node[:airflow][:home] do
   recursive true
 end
 
+include_recipe "apt::default"
 include_recipe "airflow::config"
 
 # Build dependencies
