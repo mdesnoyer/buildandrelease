@@ -23,7 +23,7 @@ package_deps = [
     'libxvidcore-dev',
     'libtiff4-dev',
     'libpng-dev',
-    'libfdk-aac-dev',
+    'libfaac-dev',
 ]
 
 cmake_params = {
@@ -101,7 +101,7 @@ node.default[:ffmpeg][:compile_flags] = [
     "--enable-version3",
     "--enable-shared",
     "--enable-pic",
-    "--enable-libfdk-aac",
+    "--enable-libfaac",
     "--enable-nonfree",
 ]
 include_recipe "ffmpeg::source"
