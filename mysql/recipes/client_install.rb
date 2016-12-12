@@ -7,9 +7,6 @@
 # for backwards compatiblity default the package name to mysql
 mysql_name = node[:mysql][:name] || "mysql"
 
-# kf change - update package lists, get most recent libmysqlclient18 
-include_recipe "apt::default"
-
 case node[:platform]
 when "redhat", "centos", "fedora", "amazon"
   if rhel7?
@@ -21,6 +18,11 @@ when "redhat", "centos", "fedora", "amazon"
     package "#{mysql_name}-devel"
   end
 else # "ubuntu"
+  # kf change - update package lists, get most recent libmysqlclient18 
+  include_recipe "apt::default"
+  package "libmysqlclient18" do 
+    action :upgrade
+  end
   package "libmysqlclient-dev"
 end
 
