@@ -20,6 +20,14 @@ when "redhat", "centos", "fedora", "amazon"
 else # "ubuntu"
   # kf change - update package lists, get most recent libmysqlclient18 
   include_recipe "apt"
+  apt_preference 'libmysqlclient18' do
+    pin 'version 5.5.53-0'
+    pin_priority '1000'
+  end
+  apt_preference 'libmysqlclient-dev' do
+    pin 'version 5.5.53-0'
+    pin_priority '1000'
+  end
   apt_package "libmysqlclient18" do 
     action :upgrade
   end
