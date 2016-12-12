@@ -19,11 +19,14 @@ when "redhat", "centos", "fedora", "amazon"
   end
 else # "ubuntu"
   # kf change - update package lists, get most recent libmysqlclient18 
-  include_recipe "apt::default"
-  package "libmysqlclient18" do 
+  include_recipe "apt"
+  apt_package "libmysqlclient18" do 
     action :upgrade
   end
-  package "libmysqlclient-dev"
+  apt_package "libmysqlclient-dev" do 
+    action :install 
+    options "--fix-broken"
+  end 
 end
 
 case node[:platform]
