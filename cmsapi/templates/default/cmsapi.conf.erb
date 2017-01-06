@@ -31,7 +31,6 @@ utils:
     do_stdout: 1
     level: info
     flume_url: http://localhost:<%= @flume_log_port %>
-    loggly_tag: cmsapi 
   monitor:
     carbon_server: <%= @carbon_host %>
     carbon_port: <%= @carbon_port %>
